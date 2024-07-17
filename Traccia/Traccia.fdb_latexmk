@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1721137044 "/home/link/Uni/Tecnologie Web/Progetto_Tec-Web/Traccia/Traccia.tex" "Traccia.pdf" "Traccia" 1721137044 0
+["pdflatex"] 1721231301 "/home/link/Uni/Tecnologie Web/Progetto_Tec-Web/Traccia/Traccia.tex" "Traccia.pdf" "Traccia" 1721231301 0
   "/etc/texmf/web2c/texmf.cnf" 1713790288 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/link/Uni/Tecnologie Web/Progetto_Tec-Web/Traccia/Traccia.tex" 1721137044 1857 99269e080636bf3318443635cdd8cc10 ""
+  "/home/link/Uni/Tecnologie Web/Progetto_Tec-Web/Traccia/Traccia.tex" 1721231301 1932 19af5bca824709516682e0bbeae81bf1 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -28,8 +28,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1681034085 39561 34c98e380bf7c7201ee6a7909aff625a ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1713790319 4623455 fa0568a71dd9a288d6c226ee477506c6 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1713790357 7882465 0a7ec1ae243bc7ce0ae8e4b4d82a6225 ""
-  "Traccia.aux" 1721137044 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
-  "Traccia.tex" 1721137044 1857 99269e080636bf3318443635cdd8cc10 ""
+  "Traccia.aux" 1721231301 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
+  "Traccia.tex" 1721231301 1932 19af5bca824709516682e0bbeae81bf1 ""
   (generated)
   "Traccia.aux"
   "Traccia.log"
