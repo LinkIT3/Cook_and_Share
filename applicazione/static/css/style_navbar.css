@@ -1,0 +1,72 @@
+:root {
+    --custom-navbar-color-rgb: 16, 16, 214;
+    --navbar-color: rgba(var(--custom-navbar-color-rgb), 0.7);
+    --selected-color: rgba(var(--custom-navbar-color-rgb), 1);
+    --text-color: white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.navbar-custom{
+    background-color: var(--navbar-color);
+}
+
+.navbar-custom a{
+    color: var(--text-color);
+
+}
+
+.navbar-brand-font{
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+}
+
+
+
+li.active {
+    background-color: var(--selected-color);
+    border-radius: 10px;
+
+    margin-top: -.7vh;
+    margin-bottom: -.7vh;
+    
+    padding-top: .7vh;
+}
+
+.nav-item-separator{
+    margin-right: 4vh;
+}
+
+@media(max-width: 650px) {
+    .navbar-custom .nav-item a {
+        font-size: 0;
+    }
+    .navbar-custom .nav-item i{
+        font-size: initial;
+    }
+
+    .nav-item-separator{
+        margin-right: 3vw;
+    }
+
+    .navbar-custom li:not(.navbar-brand) {
+        margin-top: 3vh;
+        padding-top: 1.5vh;
+        padding-left: 1.5vh;
+        padding-right: 1.5vh;
+
+    }
+}
