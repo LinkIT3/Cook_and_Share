@@ -3,6 +3,7 @@
     --navbar-color: rgba(var(--custom-navbar-color-rgb), 0.7);
     --selected-color: rgba(var(--custom-navbar-color-rgb), 1);
     --text-color: white;
+    --brand-color: white;
 }
 
 * {
@@ -14,14 +15,22 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 
+.mb-2 {
+    margin-bottom: 0 !important;
+}
 
 .navbar-custom{
     background-color: var(--navbar-color);
 }
 
-.navbar-custom a{
-    color: var(--text-color);
+/* Brand text settings */
+.navbar-brand{
+    margin-right: 10vw;
+    color: var(--brand-color);
+}
 
+.navbar-brand:hover{
+    color: var(--brand-color);
 }
 
 .navbar-brand-font{
@@ -34,23 +43,39 @@ body{
         "WONK" 0;
 }
 
+div#navbarToggler{
+    margin-right: 5%;
+}
 
+ul.navbar-nav{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 
-li.active {
+li.nav-item > a{
+    color: var(--text-color);
+}
+
+li.nav-item{
+    padding: 1vh 1vh;
+    z-index: 1;
+}
+
+/* li.active {
     background-color: var(--selected-color);
     border-radius: 10px;
+} */
 
-    margin-top: -.7vh;
-    margin-bottom: -.7vh;
-    
-    padding-top: .7vh;
+.moving-bg{
+    position:absolute;
+    background-color: var(--selected-color);;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+    z-index: 0;
 }
 
-.nav-item-separator{
-    margin-right: 4vh;
-}
-
-@media(max-width: 650px) {
+@media(max-width: 800px) {
     .navbar-custom .nav-item a {
         font-size: 0;
     }
@@ -58,15 +83,11 @@ li.active {
         font-size: initial;
     }
 
-    .nav-item-separator{
-        margin-right: 3vw;
-    }
-
-    .navbar-custom li:not(.navbar-brand) {
-        margin-top: 3vh;
-        padding-top: 1.5vh;
-        padding-left: 1.5vh;
-        padding-right: 1.5vh;
-
+    .navbar-custom li{
+        /* padding-top: 1.5vh; */
+        /* padding-left: 1.5vh;
+        padding-right: 1.5vh; */
+        padding: 2vh;
     }
 }
+

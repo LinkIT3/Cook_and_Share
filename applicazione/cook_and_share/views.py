@@ -15,6 +15,7 @@ def load_page(request):
     context = {
         "logged": True,
         "homepage": "home",
+        "profile_pic_setted": False,
         "profile_pic_path": "",
     }
     

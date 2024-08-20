@@ -14,9 +14,10 @@
     
     <body> {% endcomment %}
         <header>
+            <div class="moving-bg"></div>
             <nav class="navbar navbar-custom navbar-expand">
                 <div class="container-fluid">
-                    <a class="navbar-brand navbar-brand-font" href="#home" onclick="go_to_homepage()">Cook & Share</a>
+                    <a class="navbar-brand navbar-brand-font" href="" onclick="go_to_homepage()">Cook & Share</a>
 
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                         <!-- <span class="navbar-toggler-icon"></span> -->
@@ -25,60 +26,61 @@
                     </button>
                     
                     <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
+
                         <ul class="navbar-nav mb-2 mb-lg-0">
                             
-                            <li class="nav-item home active" id="{{ homepage }}" onclick="change_active(this)">
+                            <li class="nav-item home active" id="{{ homepage }}">
                                 <a class="nav-link active" aria-current="page" href="#home">
                                     <i class="fa-solid fa-home"></i>
                                     Home
                                 </a>
                             </li>
                             
-                            <div class="nav-item-separator"></div>
+                            
 
-                            <li class="nav-item trending" onclick="change_active(this)">
+                            <li class="nav-item trending">
                                 <a class="nav-link" href="#trending">
                                     <i class="fa-solid fa-arrow-trend-up"></i>
                                     Trending
                                 </a>
                             </li>
                             
-                            <div class="nav-item-separator"></div>
+                            
                             
                             {% if logged == True %}
-                                <li class="nav-item last" onclick="change_active(this)">
+                                <li class="nav-item last">
                                     <a class="nav-link" href="#last">
                                         <i class="fa-solid fa-newspaper"></i>
                                         Last
                                     </a>
                                 </li>
                                 
-                                <div class="nav-item-separator"></div>
+                                
 
-                                <li class="nav-item saved" onclick="change_active(this)">
+                                <li class="nav-item saved">
                                     <a class="nav-link" href="#saved">
                                         <i class="fa-solid fa-book-bookmark"></i>
                                         Saved
                                     </a>
                                 </li>
                                 
-                                <div class="nav-item-separator"></div>
+                                
 
-                                <li class="nav-item new" onclick="change_active(this)">
+                                <li class="nav-item new">
                                     <a class="nav-link" href="#new">
                                         <i class="fa-solid fa-plus"></i>
                                         New
                                     </a>
                                 </li>
 
-                                <div class="nav-item-separator"></div>
+                                
                             {% endif %}
 
-                            <li class="nav-item profile" onclick="change_active(this)">
+                            <li class="nav-item profile">
                                 <a class="nav-link profile" href="#profile">
                                     
                                     <!-- Se loggato mostra la foto profilo -->
-                                    {% if logged %}
+                                    {% if logged and profile_pic_setted %}
                                         <img src="{{ profile_pic_path }}"/>
                                     {% else %}
                                         <i class="fa-solid fa-user"></i>
