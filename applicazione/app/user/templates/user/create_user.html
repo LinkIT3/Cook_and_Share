@@ -3,30 +3,35 @@
 {% load crispy_forms_tags %}
 
 {% block head %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {% load static %}
+    <link rel="stylesheet" href="{% static 'user/css/style.css' %}">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const checkUsernameUrl = "{% url 'check_nickname' %}";
+        const checkEmailUrl = "{% url 'check_email' %}";
+    </script>
     <script src="{% static 'user/js/check.js' %}"></script>
 {% endblock head %}
 
-{% block title %} Cook & Share | Sing Up {% endblock title %} 
+{% block title %} Cook & Share | Sign Up {% endblock title %} 
 
 {% block content %}
-    <h2>Sign Up</h2>
+    <div class="container mt-3">
+        <h2>Sign Up</h2>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
     
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
     
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <div id="username-feedback" style="color: red;"></div>
-        <div id="email-feedback" style="color: red;"></div>
-        <div id="password-feedback" style="color: red;"></div>
-        <button type="submit" id="submit-btn">Sign Up</button>
-    </form>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% crispy form %}
+        </form>
+    </div>
 {% endblock content %}

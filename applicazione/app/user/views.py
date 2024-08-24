@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from app.user.singup_form import SignUpForm
+from .signup_form import SignUpForm
 from django.contrib import messages
 from django.http import JsonResponse
 from .models import CustomUser
@@ -18,6 +18,7 @@ def signup(request):
             
             if user:
                 messages.success(request, 'Registration compeated')
+                # login(request, user)
                 return redirect('home')
             
             else:
@@ -37,13 +38,15 @@ def signup(request):
     
     
 
-def check_username(request):
+def check_nickname(request):
     if request.method == "POST":
-        username = request.POST.get('username', None)
+        nickname = request.POST.get('nickname', None)
         data = {
-            'is_taken': CustomUser.objects.filter(username__iexact=username).exists()
+            'is_taken': CustomUser.objects.filter(nickname__iexact=nickname).exists()
         }
         return JsonResponse(data)
+    
+    return JsonResponse(None)
 
 def check_email(request):
     if request.method == "POST":
@@ -52,3 +55,5 @@ def check_email(request):
             'is_taken': CustomUser.objects.filter(email__iexact=email).exists()
         }
         return JsonResponse(data)
+    
+    return JsonResponse(None)

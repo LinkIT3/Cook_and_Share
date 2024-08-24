@@ -11,21 +11,22 @@ MAX_DISH_PIC_WIDTH = 1000
 MAX_DISH_PIC_HEIGTH = 1000
 
 def validate_image_size(image: str, max_size_kb) -> None:
-    if image.size > max_size_kb * 1024:
+    if os.stat(image).st_size > max_size_kb * 1024:
         raise ValidationError(f"The image must not exceed {max_size_kb} KB")
 
 
 def validate_image_extension(image: str) -> None:
-    valid_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '']
-    ext = os.path.splitext(image.name)[1]
+    valid_format = ["JPEG", "PNG", "WEBP"]
     
-    if ext.lower() not in valid_extensions:
-        raise ValidationError('Invalid extension. Allowed extensions are: ' + ', '.join(valid_extensions))
+    with Image.open(image) as img:    
+        if img.format not in valid_format:
+            raise ValidationError('Invalid extension. Allowed extensions are: ' + ', '.join(valid_format))
 
 
 def validate_image_dimensions(image: str, max_width, max_height) -> None:
     
     with Image.open(image) as img:
+        img.format
         width, height = img.size
         
         if width > max_width or height > max_height:

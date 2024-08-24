@@ -1,17 +1,15 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django.db import models
+from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, RegexValidator
+from django.db import models
 
 from .custom.validators import validate_image as vi
 
-from django.core.exceptions import ValidationError
-from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+
 
 
 # Validators
-valid_char_nickname = RegexValidator(r'^[0-9a-zA-Z._-]*$', "Only alphanumeric characters and the characters . - _ are allowed")
+valid_char_nickname = RegexValidator(r'^[0-9a-z._-]*$', "Only alphanumeric characters and the characters . - _ are allowed")
 profile_pic_validators = [vi.validate_profile_image_size, vi.validate_image_extension, vi.validate_profile_image_dimension]
 
 
