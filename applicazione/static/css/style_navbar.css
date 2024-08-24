@@ -23,9 +23,8 @@ body{
     background-color: var(--navbar-color);
 }
 
-/* Brand text settings */
 .navbar-brand{
-    margin-right: 10vw;
+    margin-right: 20vw;
     color: var(--brand-color);
 }
 
@@ -43,8 +42,8 @@ body{
         "WONK" 0;
 }
 
-div#navbarToggler{
-    margin-right: 5%;
+.navbar-collapse{
+    margin: 0;
 }
 
 ul.navbar-nav{
@@ -62,11 +61,6 @@ li.nav-item{
     z-index: 1;
 }
 
-/* li.active {
-    background-color: var(--selected-color);
-    border-radius: 10px;
-} */
-
 .moving-bg{
     position:absolute;
     background-color: var(--selected-color);;
@@ -75,19 +69,27 @@ li.nav-item{
     z-index: 0;
 }
 
-@media(max-width: 800px) {
+@media(orientation: portrait) {
     .navbar-custom .nav-item a {
         font-size: 0;
     }
     .navbar-custom .nav-item i{
         font-size: initial;
     }
-
+    
     .navbar-custom li{
-        /* padding-top: 1.5vh; */
-        /* padding-left: 1.5vh;
-        padding-right: 1.5vh; */
-        padding: 2vh;
+        padding: 1.5vw;
+    }
+
+    .navbar-brand{
+        display: none;
+    }
+
+    .container-fluid{
+        --margin-value: 10vw; 
+        
+        margin-left: var(--margin-value);
+        margin-right: var(--margin-value);
     }
 }
 

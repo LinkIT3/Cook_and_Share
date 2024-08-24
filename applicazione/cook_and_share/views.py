@@ -1,11 +1,5 @@
-
-from math import fabs
-from multiprocessing import context
-from re import template
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.template import loader
-from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
