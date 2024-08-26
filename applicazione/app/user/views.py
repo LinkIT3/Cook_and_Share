@@ -17,15 +17,15 @@ def signup(request):
             user = form.save()
             
             if user:
-                messages.success(request, 'Registration compeated')
+                messages.success(request, 'Registration compleated')
                 # login(request, user)
                 return redirect('home')
             
             else:
-                messages.error(request, 'Error during registrtion')
+                messages.error(request, 'Error during registration')
         
         else:
-            messages.error(request, 'Error during registrtion')
+            messages.error(request, 'Error during registration')
     
     else:
         form = SignUpForm()

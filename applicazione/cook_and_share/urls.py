@@ -26,5 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', load_page, name="home"),
     path('signup/', include("app.user.urls")),
+    path('logout/', log_out, name='logout')
     # re_path(r"^$|^/$|^home/$", home_page, name="homepage")    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -37,5 +37,7 @@
         
         {% block new_page %}{% endblock new_page %}
         
-        {% block profile_page %}{% endblock profile_page %}
+        {% block profile_page %}
+            {% include "./profile.html" %}
+        {% endblock profile_page %}
     {% endblock content %}
