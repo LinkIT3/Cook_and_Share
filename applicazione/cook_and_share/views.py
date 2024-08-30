@@ -15,11 +15,11 @@ logger = logging.getLogger(__name__)
 
 def load_page(request):
     template = loader.get_template("index.html")
-    homepage = "latest-page"
+    homepage = "last"
     form = login_view(request)
     cont = {}
     if request.user.is_authenticated:
-        homepage = "home-page"   
+        homepage = "home"   
         number_of_recipes_created = CustomUser.objects.filter(pk=request.user.id).annotate(number_of_recipes=Count('recipes_created')).first()
 
         cont = {
