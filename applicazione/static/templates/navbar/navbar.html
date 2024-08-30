@@ -12,7 +12,9 @@
         <script src="../js/script_navbar.js"></script>
     </head>
     
-    <body> {% endcomment %}
+    <body> 
+{% endcomment %}
+{% block header_navbar %}
         <header>
             <div class="moving-bg"></div>
             <nav class="navbar navbar-custom navbar-expand">
@@ -34,29 +36,29 @@
                                 </a>
                             </li>
                             
-                            <li class="nav-item trending">
+                            <li class="nav-item trending" id="trending-page">
                                 <a class="nav-link">
                                     <i class="fa-solid fa-arrow-trend-up"></i>
                                     Trending
                                 </a>
                             </li>
                             
-                            {% if logged == True %}
-                                <li class="nav-item last">
+                            {% if user.is_authenticated %}
+                                <li class="nav-item last" id="last-page">
                                     <a class="nav-link">
                                         <i class="fa-solid fa-newspaper"></i>
                                         Last
                                     </a>
                                 </li>
                                 
-                                <li class="nav-item saved">
+                                <li class="nav-item saved" id="saved-page">
                                     <a class="nav-link">
                                         <i class="fa-solid fa-book-bookmark"></i>
                                         Saved
                                     </a>
                                 </li>
                                 
-                                <li class="nav-item new">
+                                <li class="nav-item new" id="new-page">
                                     <a class="nav-link">
                                         <i class="fa-solid fa-plus"></i>
                                         New
@@ -64,7 +66,7 @@
                                 </li>
                             {% endif %}
                             
-                            <li class="nav-item profile">
+                            <li class="nav-item profile" id="profile-page">
                                 <a class="nav-link profile">        
                                     <!-- Se loggato mostra la foto profilo -->
                                     {% if logged and profile_pic_setted %}
@@ -81,5 +83,6 @@
                 </div>
             </nav>
         </header>
+{% endblock header_navbar %}
     {% comment %} </body>
 </html> {% endcomment %}

@@ -1,7 +1,19 @@
 {% load crispy_forms_tags %}
 
-<div class="profile-page container mt-3 mb-5">
-{% if logged == False %}
+<div class="page container mt-3 mb-5" id="profile-page" style="display: none;">
+{% if user.is_authenticated %}
+    <div class="profile-top">
+        <img class="profile-pic">
+        <div class="nickname">{{ user.nickname }}</div>
+        <div class="following">Followed {{ user.followed.count }}</div>
+        <div class="followers">Followers {{ user.followers.count }}</div>
+        <div class="recipes_created">Recipes Created {{ number_of_recipes }}</div>
+        <a href="/settings" class="settings">
+            <i class="fa-solid fa-gear"></i>
+        </a>
+        <a href ="{% url 'logout' %}" class="btn btn-primary">Log out</a>
+    </div>
+{% else %}
     <h2>You are not logged in</h2>
     <form method="post">
         {% csrf_token %}
@@ -10,9 +22,5 @@
     <hr>
     <h5>If you don't have an account</h5>
     <a href ="signup/" class="btn btn-primary">Sign Up</a>
-    {% else %}
-    
-<a href ="{% url 'logout' %}" class="btn btn-primary">Log out</a>
-
 {% endif %}
 </div>

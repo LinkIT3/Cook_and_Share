@@ -1,8 +1,12 @@
+from heapq import merge
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
+from app.user.models import CustomUser
+from django.db.models import Count
+
 import logging
 
 from .login_form import LoginForm
@@ -11,20 +15,25 @@ logger = logging.getLogger(__name__)
 
 def load_page(request):
     template = loader.get_template("index.html")
-    logged = False
-    homepage = "latest"
+    homepage = "latest-page"
     form = login_view(request)
-    
+    cont = {}
     if request.user.is_authenticated:
-        logged = True
-        homepage = "home"        
+        homepage = "home-page"   
+        number_of_recipes_created = CustomUser.objects.filter(pk=request.user.id).annotate(number_of_recipes=Count('recipes_created')).first()
+
+        cont = {
+            "nickname": request.user.nickname,
+            "number_of_recipes": number_of_recipes_created.number_of_recipes, # type: ignore
+        }
+    
     context = {
-        "logged": logged,
         "homepage": homepage,
         "login_form": form,
         "profile_pic_setted": False,
         "profile_pic_path": "",
-    }
+    }  
+    context.update(cont)
     
     return render(request, 'index.html', context)
 

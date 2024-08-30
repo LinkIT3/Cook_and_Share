@@ -9,13 +9,15 @@
             <!-- #endregion -->
             
             <!-- #region custom css -->
-                <link rel="stylesheet" href="static/css/style_navbar.css"> <!-- navbar style -->
+                {% include "navbar/navbar-css.html" %}
             <!-- #endregion -->
         <!-- #endregion -->
         
         <!-- #region js import -->
             <!-- #region custom js -->
-                <script src="static/js/script_navbar.js"></script> <!-- navbar script -->
+                {% include "navbar/navbar-js.html" %}
+                <script src="static/js/script_change_page.js"></script> <!-- change page script -->
+
             <!-- #endregion -->
         <!-- #endregion -->
     {% endblock head %}
@@ -23,10 +25,8 @@
     {% block title %} Cook & Share {% endblock title %} 
 
     {% block content %}
-        {% block navbar %} 
-            {% include "./navbar.html" %}
-        {% endblock navbar %}
-        
+        {% include "navbar/navbar.html" %}
+    
         {% block home_page %}{% endblock home_page %}
         
         {% block trending_page %}{% endblock trending_page %}
