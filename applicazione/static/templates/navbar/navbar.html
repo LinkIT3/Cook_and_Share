@@ -29,15 +29,15 @@
                     <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
                         <ul class="navbar-nav mb-2 mb-lg-0">
                             
-                            <li class="nav-item home active" id="{{ homepage }}">
-                                <a class="nav-link active" aria-current="page">
+                            <li class="nav-item home active" id="{{ homepage }}-page">
+                                <a href="#{{ homepage }}" class="nav-link active" aria-current="page">
                                     <i class="fa-solid fa-home"></i>
                                     Home
                                 </a>
                             </li>
                             
                             <li class="nav-item trending" id="trending-page">
-                                <a class="nav-link">
+                                <a href="#trending" class="nav-link">
                                     <i class="fa-solid fa-arrow-trend-up"></i>
                                     Trending
                                 </a>
@@ -45,21 +45,21 @@
                             
                             {% if user.is_authenticated %}
                                 <li class="nav-item last" id="last-page">
-                                    <a class="nav-link">
+                                    <a href="#last" class="nav-link">
                                         <i class="fa-solid fa-newspaper"></i>
                                         Last
                                     </a>
                                 </li>
                                 
                                 <li class="nav-item saved" id="saved-page">
-                                    <a class="nav-link">
+                                    <a href="#saved" class="nav-link">
                                         <i class="fa-solid fa-book-bookmark"></i>
                                         Saved
                                     </a>
                                 </li>
                                 
                                 <li class="nav-item new" id="new-page">
-                                    <a class="nav-link">
+                                    <a href="#new" class="nav-link">
                                         <i class="fa-solid fa-plus"></i>
                                         New
                                     </a>
@@ -67,7 +67,7 @@
                             {% endif %}
                             
                             <li class="nav-item profile" id="profile-page">
-                                <a class="nav-link profile">        
+                                <a href="#profile" class="nav-link profile">        
                                     <!-- Se loggato mostra la foto profilo -->
                                     {% if logged and profile_pic_setted %}
                                         <img src="{{ profile_pic_path }}"/>
