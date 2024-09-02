@@ -1,14 +1,21 @@
-.page{
+.page.profile{
     position: relative;
     display: flex;
+    flex-direction: column;
     margin-top: 1rem
+}
+
+.top-profile{
+    display: flex;
+    flex-direction: row;
 }
 
 .container-profile{
     margin-left: 2vw;
+    margin-right: 0;
 }
 
-.profile-top{
+.profile-info{
     width: 75%;
     display: flex;
     justify-content: space-between;
@@ -23,6 +30,10 @@
     flex-direction: column;
 }
 
+.nickname{
+    font-weight: bold;
+}
+
 .interactive{
     margin-top: 1rem;
     display: flex;
@@ -35,42 +46,35 @@
     
 }
 
-
-.nickname{
-    font-weight: bold;
-}
-
-
 @media(orientation: portrait){
-    .interactive{
-        flex-direction: column;
-        right: 1vw;
-
-
+    .top-profile > *{
+        font-size: .9rem;
     }
     
-    .settings{
-        order: 2;
+    .container-profile{
+        margin-left: 2vw;
+        padding-left: 0;
+        padding-right: 0;
     }
     
-    .profile-top{
+    .profile-info{
         gap: 2vw;
     }
-
+    
     .nick-pic, .following, .followers, .recipes{
         justify-content: center;
         align-items: center;
         display: flex;
         flex-direction: column;
     }
-
-    .profile-top > *, .interactive > *{
-        font-size: .9rem;
+    
+    .interactive{
+        flex-direction: column;
+        right: 1vw;
+    }
+    
+    .settings{
+        order: 2;
     }
 
-    .container-profile{
-        margin-left: 2vw;
-        padding-left: 0;
-        padding-right: 0;
-    }
 }

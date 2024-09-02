@@ -1,18 +1,16 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from django.template import loader
 from app.user.models import CustomUser
 from django.db.models import Count
 
 import logging
 
-from .login_form import LoginForm
+from .forms.login_form import LoginForm
 
 logger = logging.getLogger(__name__)
 
 def load_page(request):
-    template = loader.get_template("index.html")
     homepage = "last"
     form = login_view(request)
     cont = {}
@@ -45,12 +43,12 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, f"Benvenuto {user.get_username}!")
-                return redirect('home')  # Modifica 'home' con il nome della tua vista
+                messages.success(request, f"Welcome {user.nickname}!") # type: ignore
+                return redirect('home')
             else:
-                messages.error(request, "Username o password non validi.")
+                messages.error(request, "Incorrect username or password")
         else:
-            messages.error(request, "Username o password non validi.")
+            messages.error(request, "Incorrect username or password")
     else:
         form = LoginForm()
         
@@ -59,3 +57,7 @@ def login_view(request):
 def log_out(request):
     logout(request)
     return redirect('home')
+
+def settings_page(request):
+    context = {}
+    return render(request, 'settings-page/settings.html', context)

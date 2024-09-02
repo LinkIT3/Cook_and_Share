@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+<div class="settings-page container mt-3 mb-5" id="settings-page">
+    <div class="profile-pic-form">
+        <form method="post">
+            {% csrf_token %}
+            {% crispy profile_pic_form %}
+        </form>
+    </div>
+    
+    <div class="name-form">
+        <form method="post">
+            {% csrf_token %}
+            {% crispy name_form %}
+        </form>
+    </div>
+
+    <div class="password-form">
+        <form method="post">
+            {% csrf_token %}
+            {% crispy password_form %}
+        </form>
+    </div>
+</div>

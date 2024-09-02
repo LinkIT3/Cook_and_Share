@@ -4,19 +4,15 @@
     --selected-color: rgba(var(--custom-navbar-color-rgb), 1);
     --text-color: white;
     --brand-color: white;
+    color: #1010d6b3
 }
 
-* {
-    margin: 0;
-    padding: 0;
-}
-
-body{
-    font-family: 'Roboto', sans-serif;
-}
-
-.mb-2 {
-    margin-bottom: 0 !important;
+.navbar-nav {
+    margin-bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
 }
 
 .navbar-custom{
@@ -44,13 +40,6 @@ body{
 
 .navbar-collapse{
     margin: 0;
-}
-
-ul.navbar-nav{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: left;
 }
 
 /* colore elementi navbar */

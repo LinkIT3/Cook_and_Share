@@ -1,41 +1,47 @@
 {% load crispy_forms_tags %}
 
 {% if user.is_authenticated %}
-    <div class="page" id="profile-page" style="display: none;">
-        <div class="container mt-3 mb-5 container-profile">
-            <div class="profile-top">
-                <div class="nick-pic">
-                    <img class="profile-pic">pic</img>
-                    <div class="nickname">{{ user.nickname }}</div>
+    <div class="page profile" id="profile-page" style="display: none;">
+        <div class="top-profile">
+            <div class="container mt-3 mb-5 container-profile">
+                <div class="profile-info">
+                    <div class="nick-pic">
+                        <img class="profile-pic">pic</img>
+                        <div class="nickname">{{ user.nickname }}</div>
+                    </div>
+                    
+                    <div class="following">
+                        <div class="following-number">{{ user.followed.count }}</div>
+                        <div class="following-text">followed</div> 
+                    </div>
+                    
+                    <div class="followers">
+                        <div class="followers-number">{{ user.followers.count }}</div>
+                        <div class="followers-text">followers</div> 
+                    </div>
+                    
+                    
+                    <div class="recipes">
+                        <div class="recipes-number">{{ number_of_recipes }}</div>
+                        <div class="recipes-text">recipes</div> 
+                    </div>
+                    
                 </div>
-                
-                <div class="following">
-                    <div class="following-number">{{ user.followed.count }}</div>
-                    <div class="following-text">followed</div> 
-                </div>
-                
-                <div class="followers">
-                    <div class="followers-number">{{ user.followers.count }}</div>
-                    <div class="followers-text">followers</div> 
-                </div>
-                
-                
-                <div class="recipes">
-                    <div class="recipes-number">{{ number_of_recipes }}</div>
-                    <div class="recipes-text">recipes</div> 
-                </div>
-                
+            </div>
+            <div class="interactive">
+                <a href="/settings" class="settings">
+                    <i class="fa-solid fa-gear fa-xl"></i>
+                </a>
+                <a href ="{% url 'logout' %}" class="btn btn-primary logout">Log out</a>
             </div>
         </div>
-        <div class="interactive">
-            <a href="/settings" class="settings">
-                <i class="fa-solid fa-gear fa-xl"></i>
-            </a>
-            <a href ="{% url 'logout' %}" class="btn btn-primary logout">Log out</a>
+        <div class="content-profile">
+            <div class="container mt-3 mb-3 container-recipes">
+            </div>
         </div>
     </div>
 {% else %}
-    <div class="container mt-3 mb-5" id="profile-page" style="display: none;">
+    <div class="page container mt-3 mb-5" id="profile-page" style="display: none;">
         <h2>You are not logged in</h2>
         <form method="post">
             {% csrf_token %}
@@ -43,6 +49,6 @@
         </form>
         <hr>
         <h5>If you don't have an account</h5>
-        <a href ="signup/" class="btn btn-primary">Sign Up</a>
+        <a href ="signup/" class="btn btn-primary signup">Sign Up</a>
     </div>
 {% endif %}

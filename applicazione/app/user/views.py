@@ -17,7 +17,7 @@ def signup(request):
             user = form.save()
             
             if user:
-                messages.success(request, 'Registration compleated')
+                messages.success(request, 'Registration completed')
                 # login(request, user)
                 return redirect('home')
             
