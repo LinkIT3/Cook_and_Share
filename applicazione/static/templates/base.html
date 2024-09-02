@@ -4,12 +4,18 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+    {% comment %}         
         <!-- #region logo -->
         <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-touch-icon.png' %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'icons/favicon-32x32.png' %}">
         <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16x16.png' %}">
         <link rel="manifest" href="{% static 'icons/site.webmanifest' %}">
+        <!-- #endregion --> 
+    {% endcomment %}
+
+
+        <!-- #region icons -->
+            {% include "icons.html" %}
         <!-- #endregion -->
 
 
@@ -28,7 +34,18 @@
 
         <!-- base style -->
         <link rel="stylesheet" href="{% static 'css/style_base.css' %}">
-        
+
+
+        <!-- service worker -->
+            <script>
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register("{% static 'js/service_worker.js' %}").then(function(registration) {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    }).catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+                }
+            </script>
         {% block head %} {% endblock head %}
         
         <title> {% block title %}{% endblock %} </title>
