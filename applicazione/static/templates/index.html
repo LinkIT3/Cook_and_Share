@@ -10,6 +10,7 @@
             
             <!-- #region custom css -->
                 {% include "navbar/navbar-css.html" %}
+                {% include "profile-page/profile-css.html" %}
             <!-- #endregion -->
         <!-- #endregion -->
         
@@ -17,7 +18,7 @@
             <!-- #region custom js -->
                 {% include "navbar/navbar-js.html" %}
                 <script src="static/js/script_change_page.js"></script> <!-- change page script -->
-
+                {% include "profile-page/profile-js.html" %}
             <!-- #endregion -->
         <!-- #endregion -->
     {% endblock head %}
@@ -38,6 +39,6 @@
         {% block new_page %}{% endblock new_page %}
         
         {% block profile_page %}
-            {% include "./profile.html" %}
+            {% include "./profile-page/profile.html" %}
         {% endblock profile_page %}
     {% endblock content %}

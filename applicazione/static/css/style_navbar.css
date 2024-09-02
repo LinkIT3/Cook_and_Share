@@ -50,10 +50,17 @@ ul.navbar-nav{
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: left;
 }
 
-li.nav-item > a{
-    color: var(--text-color);
+/* colore elementi navbar */
+.navbar-nav .nav-link{
+    color: var(--text-color) !important;
+}
+
+/* colore elemento navbar selezionato */
+.navbar-nav .nav-link.active{
+    color: black !important;
 }
 
 li.nav-item{

@@ -1,0 +1,76 @@
+.page{
+    position: relative;
+    display: flex;
+    margin-top: 1rem
+}
+
+.container-profile{
+    margin-left: 2vw;
+}
+
+.profile-top{
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    gap: 10vw;
+    align-items: center;
+}
+
+.nick-pic, .following, .followers, .recipes{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.interactive{
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    right: 2vw;
+    gap: 1rem;
+    
+}
+
+
+.nickname{
+    font-weight: bold;
+}
+
+
+@media(orientation: portrait){
+    .interactive{
+        flex-direction: column;
+        right: 1vw;
+
+
+    }
+    
+    .settings{
+        order: 2;
+    }
+    
+    .profile-top{
+        gap: 2vw;
+    }
+
+    .nick-pic, .following, .followers, .recipes{
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .profile-top > *, .interactive > *{
+        font-size: .9rem;
+    }
+
+    .container-profile{
+        margin-left: 2vw;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
