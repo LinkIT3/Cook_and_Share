@@ -3,31 +3,45 @@
 {% if user.is_authenticated %}
     <div class="page profile" id="profile-page" style="display: none;">
         <div class="top-profile">
+            <div class="before-container-profile"></div>
+            
             <div class="container mt-3 mb-5 container-profile">
                 <div class="profile-info">
-                    <div class="nick-pic">
-                        <img class="profile-pic">pic</img>
-                        <div class="nickname">{{ user.nickname }}</div>
+                    <div class="nick-pic profile-item">
+                        {% if profile_pic_setted %}
+                            <img src="{{ profile_pic_path }}" alt="profile picture" class="profile-pic"></img>
+                        {% else %}
+                            <img src="{{ default_profile_pic_path }}" alt="profile picture" class="profile-pic"></img>
+                        {% endif %}
                     </div>
                     
-                    <div class="following">
+                    <div class="following profile-item">
                         <div class="following-number">{{ user.followed.count }}</div>
                         <div class="following-text">followed</div> 
                     </div>
                     
-                    <div class="followers">
+                    <div class="followers profile-item">
                         <div class="followers-number">{{ user.followers.count }}</div>
                         <div class="followers-text">followers</div> 
                     </div>
                     
                     
-                    <div class="recipes">
+                    <div class="recipes profile-item">
                         <div class="recipes-number">{{ number_of_recipes }}</div>
                         <div class="recipes-text">recipes</div> 
                     </div>
-                    
+                </div>
+                
+                <div class="nickname">
+                    {{ user.nickname }}
+                    {% if user.food_critic %}
+                        <i class="fa-solid fa-utensils food-critic-icon"></i>
+                    {% endif %}
                 </div>
             </div>
+            
+            <div class="after-container-profile"></div>
+            
             <div class="interactive">
                 <a href="/settings" class="settings">
                     <i class="fa-solid fa-gear fa-xl"></i>
@@ -35,19 +49,23 @@
                 <a href ="{% url 'logout' %}" class="btn btn-primary logout">Log out</a>
             </div>
         </div>
+        
         <div class="content-profile">
-            <div class="container mt-3 mb-3 container-recipes">
-            </div>
+            <div class="container mt-3 mb-3 container-recipes"></div>
         </div>
     </div>
+
 {% else %}
     <div class="page container mt-3 mb-5" id="profile-page" style="display: none;">
         <h2>You are not logged in</h2>
+        
         <form method="post">
             {% csrf_token %}
             {% crispy login_form %}
         </form>
+        
         <hr>
+        
         <h5>If you don't have an account</h5>
         <a href ="signup/" class="btn btn-primary signup">Sign Up</a>
     </div>

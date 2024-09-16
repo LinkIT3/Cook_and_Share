@@ -5,7 +5,7 @@ class Ingredient(models.Model):
     name = models.CharField(null=False, blank=False, validators=[MinLengthValidator(2)], max_length=30, db_index=True)
     
     def __str__(self) -> str:
-        pass
+        return self.name
     
-    def Meta() -> None:
+    class Meta():
         verbose_name_plural = "Ingredients"

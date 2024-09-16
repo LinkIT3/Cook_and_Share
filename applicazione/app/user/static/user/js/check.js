@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    
-    // Aggiungi il token CSRF a tutte le richieste AJAX
     function getCookie(name) {
         let cookieValue = null;
         
@@ -21,13 +19,12 @@ $(document).ready(function() {
     
     const csrftoken = getCookie('csrftoken');
     
-    // Controllo Username in tempo reale    
     $('#id_nickname').on('input', function() {
         var username = $(this).val().toLowerCase();
         $(this).val(username); 
-
+        
         $('#nickname-feedback').show();
-
+        
         if (username.match(/^[0-9a-z._-]*$/)){
             if (username.length > 0) {
                 $.ajax({
@@ -76,11 +73,10 @@ $(document).ready(function() {
         }
     });
     
-    // Controllo Email in tempo reale
     $('#id_email').on('input', function() {
         var email = $(this).val();
         $('#email-feedback').show();
-
+        
         if (email.length > 0) {
             if (String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
                 $.ajax({
@@ -127,10 +123,8 @@ $(document).ready(function() {
             $('#id_email').removeClass('is-invalid');
             $('#submit-btn').prop('disabled', true);
         }
-        
     });
     
-    // Controllo Password in tempo reale
     $('#id_password1, #id_password2').on('input', function() {
         var password = $('#id_password1').val();
         var passwordConfirm = $('#id_password2').val();
@@ -164,10 +158,10 @@ $(document).ready(function() {
         else {
             if (password.length == 0)
                 $('#id_password1').addClass('is-invalid');
-
+            
             if (passwordConfirm.length == 0)
                 $('#id_password2').addClass('is-invalid');
-
+            
             $('#password-feedback').text('The password cannot be empty');
             $('#id_password1').removeClass('is-valid');
             $('#id_password2').removeClass('is-valid');

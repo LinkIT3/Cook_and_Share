@@ -14,5 +14,5 @@ class LoginForm(AuthenticationForm):
         try:
             cleaned_data = super().clean()
         except forms.ValidationError:
-            pass  # Non fare nulla in caso di errore
+            pass
         return self.cleaned_data

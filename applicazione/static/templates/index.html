@@ -1,49 +1,50 @@
 {% extends "base.html" %}
+
 {% load static %}
 
-    {% block head %}
-        <!-- #region css import -->
-            <!-- #region Logo font -->
-                <link rel="preconnect" href="https://fonts.googleapis.com">
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
-            <!-- #endregion -->
+{% block head %}
+    <!-- #region css import -->
+        <!-- #region Logo font -->
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+        <!-- #endregion -->
+        
+        <!-- #region custom css -->
+            {% include "navbar/navbar-css.html" %}
+            {% include "profile-page/profile-css.html" %}
+        <!-- #endregion -->
+    <!-- #endregion -->
+    
+    <!-- #region js import -->
+        <!-- #region custom js -->
+            {% include "navbar/navbar-js.html" %}
             
-            <!-- #region custom css -->
-                {% include "navbar/navbar-css.html" %}
-                {% include "profile-page/profile-css.html" %}
-            <!-- #endregion -->
+            <!-- change page script -->
+            <script src="{% static 'js/script_change_page.js' %}"></script> 
+            
+            {% include "profile-page/profile-js.html" %}
         <!-- #endregion -->
-        
-        <!-- #region js import -->
-            <!-- #region custom js -->
-                {% include "navbar/navbar-js.html" %}
-                
-                <!-- change page script -->
-                <script src="{% static 'js/script_change_page.js' %}"></script> 
-                
-                {% include "profile-page/profile-js.html" %}
-            <!-- #endregion -->
-        <!-- #endregion -->
-    {% endblock head %}
+    <!-- #endregion -->
+{% endblock head %}
+
+{% block title %} Cook & Share {% endblock title %} 
+
+{% block content %}
+    {% include "navbar/navbar.html" %}
     
-    {% block title %} Cook & Share {% endblock title %} 
+    {% block home_page %}{% endblock home_page %}
     
-    {% block content %}
-        {% include "navbar/navbar.html" %}
-        
-        {% block home_page %}{% endblock home_page %}
-        
-        {% block trending_page %}{% endblock trending_page %}
-        
-        {% block last_page %}{% endblock last_page %}
-        
-        {% block saved_page %}{% endblock saved_page %}
-        
-        {% block new_page %}{% endblock new_page %}
-        
-        {% block profile_page %}
-            {% include "./profile-page/profile.html" %}
-        {% endblock profile_page %}
-        
-    {% endblock content %}
+    {% block trending_page %}{% endblock trending_page %}
+    
+    {% block last_page %}{% endblock last_page %}
+    
+    {% block saved_page %}{% endblock saved_page %}
+    
+    {% block new_page %}{% endblock new_page %}
+    
+    {% block profile_page %}
+        {% include "./profile-page/profile.html" %}
+    {% endblock profile_page %}
+    
+{% endblock content %}

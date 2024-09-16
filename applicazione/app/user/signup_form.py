@@ -1,10 +1,10 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from app.user.models import CustomUser
+from crispy_bootstrap5.bootstrap5 import FloatingField
+from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML
-from crispy_forms.bootstrap import FormActions
-from crispy_bootstrap5.bootstrap5 import FloatingField
+from app.user.models import CustomUser
 
 class SignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'id_password1'}), label="Password")
@@ -19,6 +19,7 @@ class SignUpForm(forms.ModelForm):
             'nickname': forms.TextInput(attrs={'id': 'id_nickname'}),
             'email': forms.EmailInput(attrs={'id': 'id_email'}),
         }
+
     
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
@@ -98,19 +99,3 @@ class SignUpForm(forms.ModelForm):
         except ValidationError as e:
             self.add_error(None, e)
             return None
-    
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.helper = FormHelper(self)
-    #     self.helper.form_action = self.create_user()
-    #     self.helper.add_input(Submit("submit", "Submit"))
-        
-    # nickname = forms.CharField()
-    # email = forms.EmailField()
-    # first_name = forms.CharField()
-    # last_name = forms.CharField()
-    # profile_pic = forms.ImageField()
-    
-    
-    # def create_user(self):
-    #     reverse_lazy("home")

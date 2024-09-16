@@ -5,9 +5,6 @@ from django.db import models
 
 from .custom.validators import validate_image as vi
 
-
-
-
 # Validators
 valid_char_nickname = RegexValidator(r'^[0-9a-z._-]*$', "Only alphanumeric characters and the characters . - _ are allowed")
 profile_pic_validators = [vi.validate_profile_image_size, vi.validate_image_extension, vi.validate_profile_image_dimension]
@@ -35,11 +32,9 @@ class CustomUserManager(BaseUserManager):
             raise e
         
         return user
-
+    
     def create_superuser(self, email, nickname, password, **extra_fields):
-        extra_fields.setdefault('is_admin', True)
-
-        return self.create_user(email, nickname, password, **extra_fields)
+        return self.create_user(email, nickname, password, is_staff=True)
 
 
 
@@ -64,36 +59,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     recipes_created = models.ForeignKey("recipe.Recipe", on_delete=models.CASCADE, null=True, blank=True, 
                                         related_name="author", verbose_name="Recipes created", db_index=True)
     
+    is_staff = models.BooleanField(default=False)
+    
     objects = CustomUserManager()
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["nickname", "password"]
-
+    
     def __str__(self) -> str:
         return str(self.nickname)
-
+    
     class Meta():
         verbose_name_plural = "Users"    
-
-
-
-
-
-
-
-
-""" Creazione Utente
-
-user = User.objects.create_user(
-    nickname="jhon",
-    email='john@example.com',
-    password='password123',
-    first_name='John',
-    last_name='Doe',
-    )
-
-print(user.nickname)  # jhon
-print(user.email)  # john@example.com
-print(user.first_name)  # John
-print(user.last_name)  # Doe
-"""

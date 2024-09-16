@@ -5,7 +5,6 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'user/css/style.css' %}">
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const checkUsernameUrl = "{% url 'check_nickname' %}";
@@ -25,7 +24,7 @@
             {% crispy form %}
         </form>
     </div>
-
+    
     {% if messages %}
         {% for message in messages %}
             <div id="alert"

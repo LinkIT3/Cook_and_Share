@@ -7,12 +7,11 @@
     color: #1010d6b3
 }
 
-.navbar-nav {
-    margin-bottom: 0;
+.navbar-nav.mb-2 {
+    margin-bottom: 0 !important;
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: left;
 }
 
 .navbar-custom{
@@ -20,7 +19,7 @@
 }
 
 .navbar-brand{
-    margin-right: 20vw;
+    /* margin-right: 20vw; */
     color: var(--brand-color);
 }
 
@@ -40,6 +39,7 @@
 
 .navbar-collapse{
     margin: 0;
+    max-width: 80vw;
 }
 
 /* colore elementi navbar */
@@ -53,39 +53,56 @@
 }
 
 li.nav-item{
-    padding: 1vh 1vh;
+    padding: 8px;
     z-index: 1;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
 }
 
 .moving-bg{
     position:absolute;
-    background-color: var(--selected-color);;
+    background-color: var(--selected-color);
     border-radius: 10px;
     transition: all 0.5s ease;
     z-index: 0;
+}
+
+img.profile_pic_navbar{
+    width: 1.5em;
+    height: 1.5em;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.container-fluid{
+    height: 58px;
 }
 
 @media(orientation: portrait) {
     .navbar-custom .nav-item a {
         font-size: 0;
     }
-    .navbar-custom .nav-item i{
+    
+    .nav-item i, .nav-item img{
         font-size: initial;
     }
     
-    .navbar-custom li{
-        padding: 1.5vw;
-    }
-
     .navbar-brand{
         display: none;
     }
-
+    
+    .navbar-collapse{
+        max-width: 100vw;
+    }
+    
     .container-fluid{
-        --margin-value: 10vw; 
+        --margin-value: 5vw; 
         
         margin-left: var(--margin-value);
         margin-right: var(--margin-value);
+        
+        padding: 0;
     }
 }
 

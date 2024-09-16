@@ -2,25 +2,35 @@
 
 {% load crispy_forms_tags %}
 
-<div class="settings-page container mt-3 mb-5" id="settings-page">
-    <div class="profile-pic-form">
-        <form method="post">
-            {% csrf_token %}
-            {% crispy profile_pic_form %}
-        </form>
-    </div>
-    
-    <div class="name-form">
-        <form method="post">
-            {% csrf_token %}
-            {% crispy name_form %}
-        </form>
-    </div>
+{% block head %}
+    {% load static %}
+    <!-- settings page script -->
+    <script src="{% static 'js/script_settings_page.js' %}"></script>
+{% endblock head %}
 
-    <div class="password-form">
-        <form method="post">
-            {% csrf_token %}
-            {% crispy password_form %}
-        </form>
+{% block title %} Cook & Share | Settings {% endblock title %} 
+
+{% block content %}
+    <div class="settings-page container mt-3 mb-5" id="settings-page">
+        <div class="profile-pic-form">
+            <form method="post" enctype="multipart/form-data" id="profile_pic_form">
+                {% csrf_token %}
+                {% crispy profile_pic_form %}
+            </form>
+        </div>
+        
+        <div class="name-form">
+            <form method="post" id="name_form">
+                {% csrf_token %}
+                {% crispy name_form %}
+            </form>
+        </div>
+        
+        <div class="password-form">
+            <form method="post" id="password_form">
+                {% csrf_token %}
+                {% crispy password_form %}
+            </form>
+        </div>
     </div>
-</div>
+{% endblock content %}
