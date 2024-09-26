@@ -4,7 +4,23 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+asgiref = "==3.8.1"
+beautifulsoup4 = "==4.12.3"
+certifi = "==2024.8.30"
+crispy-bootstrap5 = "==2024.2"
+distlib = "==0.3.8"
+django = "==5.1.1"
+django-bootstrap5 = "==24.2"
+django-browser-reload = "==1.15.0"
+django-crispy-forms = "==2.3"
+filelock = "==3.16.1"
+packaging = "==24.1"
+pillow = "==10.4.0"
+pipenv = "==2024.0.3"
+platformdirs = "==4.3.6"
+soupsieve = "==2.5"
+sqlparse = "==0.5.1"
+virtualenv = "==20.26.5"
 
 [dev-packages]
 
