@@ -32,11 +32,11 @@ class ProfilePicForm(forms.ModelForm):
 class NameForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name']
-        widgets = {
-            'first_name': forms.TextInput(attrs={'id': 'id_first_name'}),
-            'last_name': forms.TextInput(attrs={'id': 'id_last_name'}),
-        }
+        fields = ('first_name', 'last_name')
+        # widgets = {
+        #     'first_name': forms.TextInput(attrs={'id': 'id_first_name'}),
+        #     'last_name': forms.TextInput(attrs={'id': 'id_last_name'}),
+        # }
     
     def __init__(self, *args, **kwargs):
         super(NameForm, self).__init__(*args, **kwargs)
@@ -45,11 +45,11 @@ class NameForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML("<div class='name-form mb-3 mt-4'>"),
                 HTML("<div class='mb-3'>"),
-                    FloatingField('first_name', css_class='form-control', id="id_first_name"),
+                    FloatingField('first_name', css_class='form-control', id="id_first_name", initial=self.instance.first_name),
                 HTML("</div>"),
                 
                 HTML("<div class='mb-3'>"),
-                    FloatingField('last_name', css_class='form-control', id="id_last_name"),
+                    FloatingField('last_name', css_class='form-control', id="id_last_name", initial=self.instance.last_name),
                 HTML("</div>"),
             HTML("</div>"),
             

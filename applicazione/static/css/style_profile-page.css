@@ -73,7 +73,26 @@
     gap: 1rem;
 }
 
+.settings-div{
+    width: 98vw;
+    height: auto;
+    position: absolute;
+    top: 15vh;
+    right: -99vw;
+    transform: translateX(99vw);
+    transition: transform 0.8s ease;
+}
+
+.settings-div.show{
+    transform: translateX(-100vw);
+}
+
+#settings-page{
+    margin: 1.5rem auto !important;
+}
+
 @media(orientation: portrait){
+    
     .top-profile > *{
         font-size: .9rem;
     }
@@ -94,7 +113,7 @@
         right: 1vw;
     }
     
-    .settings{
+    .settings-show{
         order: 2;
     }
 }

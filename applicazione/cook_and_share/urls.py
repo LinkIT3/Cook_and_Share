@@ -13,7 +13,7 @@ urlpatterns = [
     path('#profile', load_page, name="profile"),
     path('signup/', include("app.user.urls")),
     path('logout/', log_out, name='logout'),
-    path('settings/', settings_page, name='settings'),
+    # path('settings/', settings_page, name='settings'),
     # re_path(r"^$|^/$|^home/$", home_page, name="homepage")    
     path('set_admin/', set_admin, name='set_admin'),
 ]
