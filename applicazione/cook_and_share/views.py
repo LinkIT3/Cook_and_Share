@@ -62,7 +62,7 @@ def load_page(request):
             pic_path = request.user.profile_pic.url
         
         if request.method == 'POST':
-            profile_pic_form = ProfilePicForm(request.POST, request.FILES)
+            profile_pic_form = ProfilePicForm(request.POST, request.FILES, instance=request.user)
             name_form = NameForm(request.POST, instance=request.user)
             password_form = PasswordForm(data=request.POST, user=request.user)
             
@@ -105,69 +105,69 @@ def log_out(request):
     return redirect('home')
 
 
-def profile_pic_form(request):
-    # user = get_user(request)
-    if request.method == 'POST':
-        if "profile-pic-form" in request.POST:
-            form = ProfilePicForm(request.POST, instance=request.user)
+# def profile_pic_form(request):
+#     # user = get_user(request)
+#     if request.method == 'POST':
+#         if "profile-pic-form" in request.POST:
+#             form = ProfilePicForm(request.POST, instance=request.user)
             
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Your profile picture is updated!')
+#             if form.is_valid():
+#                 form.save()
+#                 messages.success(request, 'Your profile picture is updated!')
             
-            return form
+#             return form
     
-    return ProfilePicForm(instance=request.user)
+#     return ProfilePicForm(instance=request.user)
 
 
-def name_form(request):
-    # user = get_user(request)
-    if request.method == 'POST':
-        if "name-form" in request.POST:
-            form = NameForm(request.POST, instance=request.user)
+# def name_form(request):
+#     # user = get_user(request)
+#     if request.method == 'POST':
+#         if "name-form" in request.POST:
+#             form = NameForm(request.POST, instance=request.user)
             
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Your name is updated!')
+#             if form.is_valid():
+#                 form.save()
+#                 messages.success(request, 'Your name is updated!')
             
-            return form
+#             return form
     
-    return NameForm(instance=request.user)
+#     return NameForm(instance=request.user)
 
 
-#@login_required
-def settings_page(request):
-    if request.method == 'POST':
-        profile_pic_form = ProfilePicForm(request.POST, request.FILES, instance=request.user)
-        name_form = NameForm(request.POST, instance=request.user)
-        password_form = PasswordForm(data=request.POST, user=request.user)
+# #@login_required
+# def settings_page(request):
+#     if request.method == 'POST':
+#         profile_pic_form = ProfilePicForm(request.POST, request.FILES, instance=request.user)
+#         name_form = NameForm(request.POST, instance=request.user)
+#         password_form = PasswordForm(data=request.POST, user=request.user)
         
-        if "profile-pic-form" in request.POST and profile_pic_form.is_valid():
-            profile_pic_form.save()
-            messages.success(request, 'Your profile picture is updated!')
+#         if "profile-pic-form" in request.POST and profile_pic_form.is_valid():
+#             profile_pic_form.save()
+#             messages.success(request, 'Your profile picture is updated!')
         
-        if "name-form" in request.POST and name_form.is_valid():
-            name_form.save()
-            messages.success(request, 'Your name is updated!')
+#         if "name-form" in request.POST and name_form.is_valid():
+#             name_form.save()
+#             messages.success(request, 'Your name is updated!')
         
-        if "password-form" in request.POST and password_form.is_valid():
-            password_form.save()
-            messages.success(request, 'Your password is updated!')
-            return redirect("profile")
+#         if "password-form" in request.POST and password_form.is_valid():
+#             password_form.save()
+#             messages.success(request, 'Your password is updated!')
+#             return redirect("profile")
         
-    else:
-        profile_pic_form = ProfilePicForm()
-        name_form = NameForm()
-        password_form = PasswordForm(user=request.user)
+#     else:
+#         profile_pic_form = ProfilePicForm()
+#         name_form = NameForm()
+#         password_form = PasswordForm(user=request.user)
     
     
-    context = {
-        "profile_pic_form": profile_pic_form,
-        "name_form": name_form,
-        "password_form": password_form,
-    }
+#     context = {
+#         "profile_pic_form": profile_pic_form,
+#         "name_form": name_form,
+#         "password_form": password_form,
+#     }
     
-    return context
+#     return context
 
 
 def set_admin(request):

@@ -38,11 +38,11 @@ class SignUpForm(forms.ModelForm):
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
-            FloatingField('password', css_class='form-control', id="id_password1"),
+            FloatingField('password', css_class='form-control password-input', id="id_password1"),
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
-            FloatingField('password_confirm', css_class='form-control', id="id_password2"),
+            FloatingField('password_confirm', css_class='form-control password-input', id="id_password2"),
             Div(id='password-feedback', css_class='invalid-feedback'),
             HTML("</div>"),
             
