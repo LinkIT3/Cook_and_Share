@@ -42,4 +42,30 @@ $(document).ready(function() {
             $('#submit-btn-paswd').prop('disabled', true);
         }
     });
+    
+    $('.password-input').each(function() {
+        var input = $(this);
+        var toggle = $('<a class="password-toggle"></a>');
+        toggle.insertAfter(input);
+
+        var password_show = $('<i class="fa-regular fa-eye fa-xl password-show"></i>');
+        var password_hide = $('<i class="fa-regular fa-eye-slash fa-xl password-hide"></i>');
+        
+        toggle.append(password_show);
+        password_hide.insertAfter(password_show)
+        password_hide.hide();
+
+
+        toggle.click(function() {
+            if (input.attr('type') === 'password') {
+                input.attr('type', 'text');
+                password_show.hide();
+                password_hide.show();
+            } else {
+                input.attr('type', 'password');
+                password_hide.hide();
+                password_show.show();
+            }
+        });
+    });
 });
