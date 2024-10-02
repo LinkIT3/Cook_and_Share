@@ -41,7 +41,9 @@
     
     {% block saved_page %}{% endblock saved_page %}
     
-    {% block new_page %}{% endblock new_page %}
+    {% block new_recipe_page %}
+        {% include "recipe/new_recipe.html" %}
+    {% endblock new_recipe_page %}
     
     {% block profile_page %}
         {% include "./profile-page/profile.html" %}

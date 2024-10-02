@@ -1,13 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
 import logging
-
 
 from app.user.models import CustomUser
 
@@ -18,7 +18,7 @@ from .forms.settings_forms import *
 logger = logging.getLogger(__name__)
 
 
-def login_view(request):
+def login_page(request):
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
         
@@ -69,6 +69,7 @@ def load_page(request):
             if "profile-pic-form" in request.POST and profile_pic_form.is_valid():
                 profile_pic_form.save()
                 messages.success(request, 'Your profile picture is updated!')
+                return redirect("reload")
             
             if "name-form" in request.POST and name_form.is_valid():
                 name_form.save()
@@ -96,13 +97,25 @@ def load_page(request):
         
         return render(request, 'index.html', context)
     
-    return login_view(request)
+    return login_page(request)
 
 
 
 def log_out(request):
     logout(request)
     return redirect('home')
+
+
+def set_admin(request):
+    # user = get_user(request)
+    request.user.is_staff = True
+    request.user.save()
+    
+    return redirect("home")
+
+
+def reload(request):
+    return redirect("home")
 
 
 # def profile_pic_form(request):
@@ -169,10 +182,3 @@ def log_out(request):
     
 #     return context
 
-
-def set_admin(request):
-    # user = get_user(request)
-    request.user.is_staff = True
-    request.user.save()
-    
-    return redirect("home")
