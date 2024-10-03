@@ -11,6 +11,7 @@ class Recipe(models.Model):
     original_recipe = models.ForeignKey("self", null=True, blank=True, verbose_name="Original Recipe", 
                                             on_delete=models.SET_NULL, related_name="reimx", db_index=True)
     ingredient = models.ManyToManyField("ingredient.Ingredient", related_name="recipes", editable=True, blank=False, db_index=True)
+    ingredient_quantity = models.JSONField(default=dict) # {Ingredient: "str"}
     title = models.TextField(null=False, blank=False, validators=[MinLengthValidator(2)], max_length=100, db_index=True)
     description = models.TextField(null=False, blank=False, validators=[MinLengthValidator(10)], max_length=300)
     text = models.TextField(null=False, blank=False, validators=[MinLengthValidator(100)], max_length=50000)

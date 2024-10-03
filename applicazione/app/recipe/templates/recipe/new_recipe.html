@@ -1,2 +1,14 @@
+{% load crispy_forms_tags %}
+
+
 <div id="new-recipe-page" class="page new-recipe" style="display: none;">
+    {% comment %} {% csrf_token %}
+    {% crispy profile_pic_form %} {% endcomment %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% crispy new_recipe_form %}
+        
+        <input type="submit" value="Submit">
+    </form>
 </div>

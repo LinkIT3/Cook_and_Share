@@ -21,6 +21,7 @@ platformdirs = "==4.3.6"
 soupsieve = "==2.5"
 sqlparse = "==0.5.1"
 virtualenv = "==20.26.5"
+django-select2 = "==8.2.1"
 
 [dev-packages]
 

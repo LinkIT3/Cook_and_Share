@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django_browser_reload',
+    'django_select2',
     'crispy_forms',
     'crispy_bootstrap5',
     'app.user',
@@ -75,7 +76,6 @@ TEMPLATES = [
     },
 ]
 
-print(TEMPLATES)
 WSGI_APPLICATION = 'cook_and_share.wsgi.application'
 
 

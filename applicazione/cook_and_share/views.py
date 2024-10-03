@@ -13,6 +13,7 @@ from app.user.models import CustomUser
 
 from .forms.login_form import LoginForm
 from .forms.settings_forms import *
+from app.recipe.forms.new_recipe import NewRecipeForm
 
 
 logger = logging.getLogger(__name__)
@@ -62,9 +63,13 @@ def load_page(request):
             pic_path = request.user.profile_pic.url
         
         if request.method == 'POST':
+            # Settings
             profile_pic_form = ProfilePicForm(request.POST, request.FILES, instance=request.user)
             name_form = NameForm(request.POST, instance=request.user)
             password_form = PasswordForm(data=request.POST, user=request.user)
+            
+            # New Recipe
+            new_recipe_form = NewRecipeForm(request.POST, original_recipe=None)
             
             if "profile-pic-form" in request.POST and profile_pic_form.is_valid():
                 profile_pic_form.save()
@@ -74,15 +79,22 @@ def load_page(request):
             if "name-form" in request.POST and name_form.is_valid():
                 name_form.save()
                 messages.success(request, 'Your name is updated!')
+                return redirect("reload")
             
             if "password-form" in request.POST and password_form.is_valid():
                 password_form.save()
                 messages.success(request, 'Your password is updateds!')
                 return redirect("profile")
+            
+            if "new-recipe-form" in request.POST and new_recipe_form.is_valid():
+                recipe = new_recipe_form.save(commit=True)
+                messages.success(request, 'Your recipe is created!' + recipe.get_absolute_url())
+
         else:
             profile_pic_form = ProfilePicForm()
             name_form = NameForm(instance=request.user)
             password_form = PasswordForm(user=request.user)    
+            new_recipe_form = NewRecipeForm()
         
         context = {
             "homepage": homepage,
@@ -93,6 +105,7 @@ def load_page(request):
             "profile_pic_form": profile_pic_form,
             "name_form": name_form,
             "password_form": password_form,
+            "new_recipe_form": new_recipe_form,
         }
         
         return render(request, 'index.html', context)
