@@ -19,6 +19,7 @@ urlpatterns = [
     # re_path(r"^$|^/$|^home/$", home_page, name="homepage")    
     path('set_admin/', set_admin, name='set_admin'),
     path('select2/', include('django_select2.urls')),
+    path('new_ingredient/', new_ingredient, name='new_ingredient'),
 ]
 
 if settings.DEBUG:

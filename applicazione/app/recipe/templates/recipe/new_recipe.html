@@ -5,10 +5,77 @@
     {% comment %} {% csrf_token %}
     {% crispy profile_pic_form %} {% endcomment %}
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data" id="recipe-form">
         {% csrf_token %}
-        {% crispy new_recipe_form %}
-        
-        <input type="submit" value="Submit">
+        <div>
+            {{ form.title.label_tag }} {{ form.title }}
+        </div>
+        <div>
+            {{ form.description.label_tag }} {{ form.description }}
+        </div>
+        <div>
+            {{ form.text.label_tag }} {{ form.text }}
+        </div>
+    
+        <div id="ingredient-list">
+            <div class="ingredient-field">
+                <select name="ingredients" class="ingredient-select" required>
+                    <option value="">Select Ingredient</option>
+                    {% for ingredient in ingredients %}
+                        <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" name="quantities" placeholder="Quantity" required />
+            </div>
+        </div>
+    
+        <button type="button" id="add-ingredient">Add Ingredient</button>
+        <button type="submit">Submit</button>
     </form>
+
+    <script>
+        $(document).ready(function() {
+            // Inizializza Select2 sugli ingredienti esistenti
+            $('.ingredient-select').select2({
+                tags: true, // Abilita la creazione di nuovi elementi
+                placeholder: "Select Ingredient",
+                allowClear: true,
+            });
+    
+            // Gestisci l'aggiunta di nuovi ingredienti
+            $('#add-ingredient').on('click', function() {
+                let ingredientList = $('#ingredient-list');
+                let newIngredientField = $('<div class="ingredient-field"></div>');
+    
+                newIngredientField.append(`
+                    <select name="ingredients" class="ingredient-select" required>
+                        <option value="">Select Ingredient</option>
+                        {% for ingredient in ingredients %}
+                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" name="quantities" placeholder="Quantity" required />
+                `);
+    
+                ingredientList.append(newIngredientField);
+                $('.ingredient-select').select2({ 
+                    tags: true, 
+                    placeholder: "Select Ingredient", 
+                    allowClear: true 
+                });  // Inizializza Select2 sui nuovi campi
+            });
+    
+            // Aggiungi un listener per il cambio di valore, in modo da non perdere il valore inserito
+            $(document).on('change', '.ingredient-select', function() {
+                let value = $(this).val();
+                if (value && value.indexOf('new') !== -1) {
+                    let newIngredient = value.split('new:')[1].trim();
+                    $(this).append(new Option(newIngredient, newIngredient, true, true)); // Aggiungi come nuova opzione
+                    $(this).val(newIngredient).trigger('change'); // Seleziona la nuova opzione
+                }
+            });
+        });
+    </script>
+
 </div>
+
