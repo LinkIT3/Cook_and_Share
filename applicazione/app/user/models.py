@@ -56,7 +56,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     followed = models.ManyToManyField("self", editable=False, symmetrical=False, blank=True, related_name="followers")
     liked_recipes = models.ManyToManyField("recipe.Recipe", editable=False, symmetrical=False, blank=True, related_name="likes")
-    recipes_created = models.ForeignKey("recipe.Recipe", on_delete=models.CASCADE, null=True, blank=True, 
+    recipes_created = models.ManyToManyField("recipe.Recipe", null=True, blank=True, 
                                         related_name="author", verbose_name="Recipes created", db_index=True)
     
     is_staff = models.BooleanField(default=False)

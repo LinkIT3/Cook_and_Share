@@ -57,7 +57,7 @@ def load_page(request):
         homepage = "home" 
         pic_path = "/media/default_profile_pic/default-profile-pic.webp"
         profile_pic_setted = False
-        ingredients = Ingredient.objects.all()
+        ingredients = Ingredient.objects.all().order_by('name')
         
         number_of_recipes_created = CustomUser.objects.filter(pk=request.user.id).annotate(number_of_recipes=Count('recipes_created')).first()
         
@@ -91,13 +91,16 @@ def load_page(request):
                 return redirect("profile")
             
             if "new-recipe-form" in request.POST and new_recipe_form.is_valid():
-                # recipe = new_recipe_form.save(commit=True)
+                recipe = new_recipe_form.save(commit=True)
+                print(recipe.id)
+                request.user.recipes_created.add(recipe)
                 # messages.success(request, 'Your recipe is created!' + recipe.get_absolute_url())
                 
                 
-                recipe = new_recipe_form.save(commit=False)
-                recipe.ingredient_quantity = new_recipe_form.cleaned_data['ingredient_quantity']
-                recipe.save()
+                # recipe = new_recipe_form.save(commit=False)
+                # recipe.ingredient_quantity = new_recipe_form.cleaned_data['ingredient_quantity']
+                # print(recipe.ingredient_quantity)
+                # recipe.save()
                 
 
         else:
@@ -116,7 +119,7 @@ def load_page(request):
             "name_form": name_form,
             "password_form": password_form,
             "new_recipe_form": new_recipe_form,
-            'ingredients': ingredients,
+            "ingredients": ingredients,
         }
         
         return render(request, 'index.html', context)

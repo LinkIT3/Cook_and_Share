@@ -1,69 +1,70 @@
 {% load crispy_forms_tags %}
 
 
-<div id="new-recipe-page" class="page new-recipe" style="display: none;">
+<div id="new-recipe-page" class="page new-recipe container" style="display: none;">
     {% comment %} {% csrf_token %}
     {% crispy profile_pic_form %} {% endcomment %}
 
+    <h2 class="mt-4"> New Recipe </h2>
+
     <form method="post" enctype="multipart/form-data" id="recipe-form">
         {% csrf_token %}
-        <div>
-            {{ form.title.label_tag }} {{ form.title }}
-        </div>
-        <div>
-            {{ form.description.label_tag }} {{ form.description }}
-        </div>
-        <div>
-            {{ form.text.label_tag }} {{ form.text }}
-        </div>
-    
-        <div id="ingredient-list">
-            <div class="ingredient-field">
-                <select name="ingredients" class="ingredient-select" required>
-                    <option value="">Select Ingredient</option>
-                    {% for ingredient in ingredients %}
-                        <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
-                    {% endfor %}
-                </select>
-                <input type="text" name="quantities" placeholder="Quantity" required />
-            </div>
-        </div>
-    
-        <button type="button" id="add-ingredient">Add Ingredient</button>
-        <button type="submit">Submit</button>
+        {% crispy new_recipe_form %}
     </form>
 
     <script>
-        $(document).ready(function() {
-            // Inizializza Select2 sugli ingredienti esistenti
-            $('.ingredient-select').select2({
-                tags: true, // Abilita la creazione di nuovi elementi
-                placeholder: "Select Ingredient",
-                allowClear: true,
-            });
-    
-            // Gestisci l'aggiunta di nuovi ingredienti
-            $('#add-ingredient').on('click', function() {
-                let ingredientList = $('#ingredient-list');
-                let newIngredientField = $('<div class="ingredient-field"></div>');
-    
-                newIngredientField.append(`
-                    <select name="ingredients" class="ingredient-select" required>
+        function new_ingedient_selector(val){
+            return $(`
+                <div class="ingredient-field mb-3" id="id_ingredient_field_` + val + `">
+                    <select name="ingredients_` + val + `" class="ingredient-select_` + val + ` form-select" aria-label="Ingredient selector" required>
                         <option value="">Select Ingredient</option>
                         {% for ingredient in ingredients %}
                             <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
                         {% endfor %}
                     </select>
-                    <input type="text" name="quantities" placeholder="Quantity" required />
-                `);
-    
-                ingredientList.append(newIngredientField);
-                $('.ingredient-select').select2({ 
-                    tags: true, 
-                    placeholder: "Select Ingredient", 
-                    allowClear: true 
-                });  // Inizializza Select2 sui nuovi campi
+                    <input type="text" class="form-control" name="quantities_` + val + `" placeholder="Quantity" required />
+                </div>`
+            );
+        }
+
+        function add_select2(val){
+            $('.ingredient-select_' + val).select2({
+                tags: true,
+                placeholder: "Select Ingredient",
+                allowClear: true,
             });
+        }
+
+        $(document).ready(function() {
+            var val = 0;
+            
+            $('#ingredient-list').append(
+                $(`<div id="div_id_ingredients" class="mb-3">
+                        <label for="id_ingredient_field" class="form-label requiredField">
+                            Ingredients
+                            <span class="asteriskField">*</span>
+                        </label>
+                    </div>`
+            ));
+
+            $('#div_id_ingredients').append(new_ingedient_selector(val));
+            add_select2(val);
+            val ++;
+            
+            const newIngredientField = $('#div_id_ingredients');
+
+            $('#add-ingredient').on('click', function() {
+                newIngredientField.append(new_ingedient_selector(val));
+                add_select2(val);
+                val ++;
+            });
+
+            $('#remove-ingredient').on('click', function() {
+                if (val > 1){
+                    val --;
+                    $('#id_ingredient_field_'+ val).remove()
+                }
+            })
     
             // Aggiungi un listener per il cambio di valore, in modo da non perdere il valore inserito
             $(document).on('change', '.ingredient-select', function() {
@@ -79,3 +80,20 @@
 
 </div>
 
+{% comment %} 
+    TODO
+        - Testare il form
+        - Aggiustare css
+    
+
+
+
+Prima ricetta
+
+
+Test della ricetta
+
+
+Questo è un test per verificare che l'inserimento della ricetta funzioni correttamente, ma per testarlo devo arrivare almeno a 100 caratteri.
+
+{% endcomment %}
