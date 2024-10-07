@@ -8,7 +8,7 @@ from app.user.views import *
 
 urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
-    path('admin/', admin.site.urls, name="admin"),
+    path('admin/', admin.site.urls, name="admin_page"),
     path('', load_page, name="home"),
     path('#profile', load_page, name="profile"),
     path('signup/', include("app.user.urls")),

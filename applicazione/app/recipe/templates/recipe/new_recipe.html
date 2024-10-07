@@ -2,87 +2,33 @@
 
 
 <div id="new-recipe-page" class="page new-recipe container" style="display: none;">
-    {% comment %} {% csrf_token %}
-    {% crispy profile_pic_form %} {% endcomment %}
-
     <h2 class="mt-4"> New Recipe </h2>
 
     <form method="post" enctype="multipart/form-data" id="recipe-form">
         {% csrf_token %}
         {% crispy new_recipe_form %}
     </form>
-
-    <script>
-        function new_ingedient_selector(val){
-            return $(`
-                <div class="ingredient-field mb-3" id="id_ingredient_field_` + val + `">
-                    <select name="ingredients_` + val + `" class="ingredient-select_` + val + ` form-select" aria-label="Ingredient selector" required>
-                        <option value="">Select Ingredient</option>
-                        {% for ingredient in ingredients %}
-                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="text" class="form-control" name="quantities_` + val + `" placeholder="Quantity" required />
-                </div>`
-            );
-        }
-
-        function add_select2(val){
-            $('.ingredient-select_' + val).select2({
-                tags: true,
-                placeholder: "Select Ingredient",
-                allowClear: true,
-            });
-        }
-
-        $(document).ready(function() {
-            var val = 0;
-            
-            $('#ingredient-list').append(
-                $(`<div id="div_id_ingredients" class="mb-3">
-                        <label for="id_ingredient_field" class="form-label requiredField">
-                            Ingredients
-                            <span class="asteriskField">*</span>
-                        </label>
-                    </div>`
-            ));
-
-            $('#div_id_ingredients').append(new_ingedient_selector(val));
-            add_select2(val);
-            val ++;
-            
-            const newIngredientField = $('#div_id_ingredients');
-
-            $('#add-ingredient').on('click', function() {
-                newIngredientField.append(new_ingedient_selector(val));
-                add_select2(val);
-                val ++;
-            });
-
-            $('#remove-ingredient').on('click', function() {
-                if (val > 1){
-                    val --;
-                    $('#id_ingredient_field_'+ val).remove()
-                }
-            })
-    
-            // Aggiungi un listener per il cambio di valore, in modo da non perdere il valore inserito
-            $(document).on('change', '.ingredient-select', function() {
-                let value = $(this).val();
-                if (value && value.indexOf('new') !== -1) {
-                    let newIngredient = value.split('new:')[1].trim();
-                    $(this).append(new Option(newIngredient, newIngredient, true, true)); // Aggiungi come nuova opzione
-                    $(this).val(newIngredient).trigger('change'); // Seleziona la nuova opzione
-                }
-            });
-        });
-    </script>
-
 </div>
+
+<script>
+    function new_ingedient_selector(val){
+        return $(`
+            <div class="ingredient-field mb-3" id="id_ingredient_field_` + val + `">
+                <select name="ingredients_` + val + `" class="ingredient-select_` + val + ` form-select" aria-label="Ingredient selector" required="True">
+                    <option value="">Select Ingredient</option>
+                    {% for ingredient in ingredients %}
+                        <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" class="form-control quantity-input" name="quantities_` + val + `" placeholder="Quantity" required="True" />
+            </div>`
+        );
+    }
+</script>
 
 {% comment %} 
     TODO
-        - Testare il form
+        - Testare il form con più ingredienti
         - Aggiustare css
     
 

@@ -33,10 +33,6 @@ class NameForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ('first_name', 'last_name')
-        # widgets = {
-        #     'first_name': forms.TextInput(attrs={'id': 'id_first_name'}),
-        #     'last_name': forms.TextInput(attrs={'id': 'id_last_name'}),
-        # }
     
     def __init__(self, *args, **kwargs):
         super(NameForm, self).__init__(*args, **kwargs)

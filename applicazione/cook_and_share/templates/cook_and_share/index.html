@@ -13,20 +13,22 @@
             <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
             
         <!-- #region custom css -->
-            {% include "navbar/navbar-css.html" %}
-            {% include "profile-page/profile-css.html" %}
+            {% include "navbar/navbar-css.html" %}          <!-- style navbar -->
+            {% include "recipe/new_recipe-css.html" %}      <!-- style new recipe page -->
+            {% include "profile-page/profile-css.html" %}   <!-- style profile page -->
         <!-- #endregion -->
     <!-- #endregion -->
     
     <!-- #region js import -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         <!-- #region custom js -->
-            {% include "navbar/navbar-js.html" %}
+            {% include "navbar/navbar-js.html" %}           <!-- script nasvbar -->
             
             <!-- change page script -->
             <script src="{% static 'js/script_change_page.js' %}"></script> 
             
-            {% include "profile-page/profile-js.html" %}
+            {% include "recipe/new_recipe-js.html"%}        <!-- script new recipe page -->
+            {% include "profile-page/profile-js.html" %}    <!-- script profile page -->
         <!-- #endregion -->
     <!-- #endregion -->
 {% endblock head %}
@@ -35,7 +37,7 @@
 
 {% block content %}
     {% include "navbar/navbar.html" %}
-    
+
     {% block home_page %}{% endblock home_page %}
     
     {% block trending_page %}{% endblock trending_page %}
@@ -44,10 +46,12 @@
     
     {% block saved_page %}{% endblock saved_page %}
     
-    {% block new_recipe_page %}
-        {% include "recipe/new_recipe.html" %}
-    {% endblock new_recipe_page %}
-    
+    {% if user.is_authenticated %}
+        {% block new_recipe_page %}
+            {% include "recipe/new_recipe.html" %}
+        {% endblock new_recipe_page %}
+    {% endif %}
+
     {% block profile_page %}
         {% include "./profile-page/profile.html" %}
     {% endblock profile_page %}

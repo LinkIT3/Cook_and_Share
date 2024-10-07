@@ -33,7 +33,10 @@ def login_page(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Welcome {user.nickname}!") # type: ignore
-                #request.session['request'] = request
+                
+                if user.is_staff:
+                    return redirect('/admin/')
+                
                 return redirect('home')
             else:
                 messages.error(request, "Incorrect username or password")
@@ -48,8 +51,6 @@ def login_page(request):
     }
     
     return render(request, 'index.html', context)
-    #return redirect('home')
-
 
 def load_page(request):
     user = get_user(request)
@@ -91,17 +92,15 @@ def load_page(request):
                 return redirect("profile")
             
             if "new-recipe-form" in request.POST and new_recipe_form.is_valid():
-                recipe = new_recipe_form.save(commit=True)
-                print(recipe.id)
-                request.user.recipes_created.add(recipe)
-                # messages.success(request, 'Your recipe is created!' + recipe.get_absolute_url())
-                
-                
-                # recipe = new_recipe_form.save(commit=False)
-                # recipe.ingredient_quantity = new_recipe_form.cleaned_data['ingredient_quantity']
-                # print(recipe.ingredient_quantity)
-                # recipe.save()
-                
+                recipe = new_recipe_form.save(commit=False)
+                recipe.ingredient_quantity = new_recipe_form.cleaned_data['ingredient_quantity']
+                ingredients_list = new_recipe_form.cleaned_data['ingredients']
+                recipe.save()
+                for ingredient in ingredients_list:
+                    recipe.ingredient.add(Ingredient.objects.get(pk=ingredient.id))
+                    
+                request.user.recipes_created.add(Recipe.objects.get(pk=recipe.id))
+                messages.success(request, 'Your recipe is created!')
 
         else:
             profile_pic_form = ProfilePicForm()
@@ -134,7 +133,6 @@ def log_out(request):
 
 
 def set_admin(request):
-    # user = get_user(request)
     request.user.is_staff = True
     request.user.save()
     
@@ -148,6 +146,9 @@ def new_ingredient(request):
     nome = request.GET.get('nome')
     Ingredient.objects.create(name=nome)
     return redirect("home")
+
+
+
 # def profile_pic_form(request):
 #     # user = get_user(request)
 #     if request.method == 'POST':

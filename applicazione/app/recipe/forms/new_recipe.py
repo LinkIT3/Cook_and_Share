@@ -10,9 +10,12 @@ from app.recipe.models import Recipe
 from app.ingredient.models import Ingredient
 
 class NewRecipeForm(forms.ModelForm):
+    dish_pic = forms.ImageField(label='Dish Picture', required=True)
+    
     class Meta:
         model = Recipe
-        fields = ['title', 'description', 'text']
+        fields = ['title', 'dish_pic','description', 'text']
+        widgets = {'dish_pic': forms.FileInput(attrs={'id': 'id_dish_pic'})}
     
     def __init__(self, *args, **kwargs):
         super(NewRecipeForm, self).__init__(*args, **kwargs)
@@ -32,6 +35,10 @@ class NewRecipeForm(forms.ModelForm):
                     Field('title', css_class='title-field'),
                 HTML("</div>"),
                 
+                HTML("<div class='dish-pic-form mb-3'>"),
+                    Field('dish_pic', css_class='form-control', id="formFile", accept=".jpg, .jpeg, .png, .webp"),
+                HTML("</div>"),
+                
                 HTML("<div class='mb-3 description-div'>"),
                     Field('description', css_class='description-field'),
                 HTML("</div>"),
@@ -43,49 +50,42 @@ class NewRecipeForm(forms.ModelForm):
                 HTML("<div class='mb-3 ingredients-quantities-div' id='ingredient-list'>"),
                 HTML("</div>"),
                 
-                HTML("<div class='mb-3 button-ingredient-container'>"),
+                HTML("<div class='mb-5 button-ingredient-container'>"),
                     HTML('<button type="button" id="add-ingredient" class="btn btn-outline-primary">Add Ingredient</button>'),                
                     HTML('<button type="button" id="remove-ingredient" class="btn btn-outline-danger">Remove Ingredient</button>'), 
                 HTML("</div>"),
                 
-                HTML("<div class='mb-3'></div>"),
-                
                 FormActions(
-                    Submit("new-recipe-form", 'Submit', css_class='btn btn-primary', id="submit-btn"),
+                    Submit("new-recipe-form", 'Submit', css_class='btn btn-primary btn-lg', id="submit-btn"),
                 ),
                 
             HTML("</div>"),
-            
-            
         )
     
     def clean(self):
         cleaned_data = super().clean()
         ingredient_quantity = {}
+        ingredients = []
         
         data = self.data
-        print(data.items())
         non_declared_fields = {key: value for key, value in data.items() if key not in self.fields}
-        print(non_declared_fields)
         for field_name in non_declared_fields.keys():
             
             if field_name.startswith('ingredients_'):
                 quantity = non_declared_fields.get(f'quantities_{field_name.split("_")[1]}')
-
                 value = non_declared_fields.get(field_name)
+                
                 if value and quantity:
-                    print(value)
-                    print(quantity)
                     try:
                         ingredient = Ingredient.objects.get(name=value)
+                        
                     except Ingredient.DoesNotExist:
                         ingredient = Ingredient.objects.create(name=value)
-                        
-                    ingredient_quantity[ingredient.name] = quantity
                     
-        cleaned_data['ingredient_quantity'] = ingredient_quantity
-
-            
+                    ingredients.append(ingredient)
+                    ingredient_quantity[ingredient.name] = quantity
+        
+        cleaned_data['ingredients'] = ingredients
+        cleaned_data['ingredient_quantity'] = ingredient_quantity    
+        
         return cleaned_data
-
-    
