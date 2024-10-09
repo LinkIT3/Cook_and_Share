@@ -61,11 +61,11 @@ li.nav-item{
 }
 
 .moving-bg{
-    position:absolute;
+    position: fixed;
     background-color: var(--selected-color);
     border-radius: 10px;
     transition: all 0.5s ease;
-    z-index: 0;
+    z-index: 5;
 }
 
 img.profile_pic_navbar{
@@ -106,3 +106,7 @@ img.profile_pic_navbar{
     }
 }
 
+.top-page-space{
+    height: 58px;
+    padding: 0.5rem 0;
+}

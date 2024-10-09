@@ -1,61 +1,91 @@
 from django import forms
 from django.core.validators import MinLengthValidator
-from django.forms import formset_factory
-from django_select2 import forms as s2forms
+from django.forms import ModelChoiceField, formset_factory
+from django_select2.forms import Select2Widget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML
 from crispy_forms.bootstrap import FormActions
 from crispy_bootstrap5.bootstrap5 import FloatingField
 from app.recipe.models import Recipe
-from app.user.models import CustomUser
 from app.ingredient.models import Ingredient
 
-class IngredientSelect2Widget(s2forms.ModelSelect2MultipleWidget):
-    search_fields = [
-        "name__icontains",
-    ]
-
-    def create_value(self, value):
-        return self.get_queryset().get_or_create(name=value)[0]
-
-
-class IngredientQuantityForm(forms.Form):
-    ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all(), empty_label=None)
-    quantity = forms.CharField(required=True, label="Quantity")
-
-IngredientQuantityFormSet = formset_factory(IngredientQuantityForm, extra=1)
-
 class NewRecipeForm(forms.ModelForm):
-    title = forms.CharField(required=True, label="Dish Name", validators=[MinLengthValidator(2)], max_length=100)
-    description = forms.CharField(required=True, label="Brief Description", validators=[MinLengthValidator(2)], max_length=300)
-    text = forms.CharField(required=True, label="Recipe", validators=[MinLengthValidator(2)], max_length=50000, widget=forms.Textarea)
-    ingredient_quantity = forms.CharField(widget=forms.HiddenInput())
-    ingredient_formset = IngredientQuantityFormSet()
-    ingredient = forms.ModelMultipleChoiceField(
-        queryset=Ingredient.objects.all(),
-        widget=IngredientSelect2Widget
-    )
+    dish_pic = forms.ImageField(label='Dish Picture', required=True)
     
     class Meta:
         model = Recipe
-        fields = ['title', 'description', 'text']
-        
+        fields = ['title', 'dish_pic','description', 'text']
+        widgets = {'dish_pic': forms.FileInput(attrs={'id': 'id_dish_pic'})}
     
     def __init__(self, *args, **kwargs):
         super(NewRecipeForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = "post"
-        self.helper.layout = Layout(
-            
-        )
         
         if kwargs.get('original_recipe'):
-            original_recipe = kwargs.pop('original_recipe')
+            self.field['original_recipe'].initial = kwargs.pop('original_recipe')
+        
+        self.fields['title'].widget = forms.TextInput(attrs={'style': 'resize: none;'})
+        self.fields['text'].label = 'Recipe'
+        
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        
+        self.helper.layout = Layout(
+            HTML("<div class='name-form mb-3 mt-4'>"),
+                HTML("<div class='mb-3 title-div'>"),
+                    Field('title', css_class='title-field'),
+                HTML("</div>"),
+                
+                HTML("<div class='dish-pic-form mb-3'>"),
+                    Field('dish_pic', css_class='form-control', id="formFile", accept=".jpg, .jpeg, .png, .webp"),
+                HTML("</div>"),
+                
+                HTML("<div class='mb-3 description-div'>"),
+                    Field('description', css_class='description-field'),
+                HTML("</div>"),
+                
+                HTML("<div class='mb-3 text-div'>"),
+                    Field('text', css_class='text-field'),
+                HTML("</div>"),
+                
+                HTML("<div class='mb-3 ingredients-quantities-div' id='ingredient-list'>"),
+                HTML("</div>"),
+                
+                HTML("<div class='mb-5 button-ingredient-container'>"),
+                    HTML('<button type="button" id="add-ingredient" class="btn btn-outline-primary">Add Ingredient</button>'),                
+                    HTML('<button type="button" id="remove-ingredient" class="btn btn-outline-danger">Remove Ingredient</button>'), 
+                HTML("</div>"),
+                
+                FormActions(
+                    Submit("new-recipe-form", 'Submit', css_class='btn btn-primary btn-lg', id="submit-btn"),
+                ),
+                
+            HTML("</div>"),
+        )
     
     def clean(self):
+        cleaned_data = super().clean()
         ingredient_quantity = {}
+        ingredients = []
         
-        for form in self.cleaned_data['ingredient_formset']:
-            ingredient_quantity[form.cleaned_data['ingredient']] = form.cleaned_data['quantity']
+        data = self.data
+        non_declared_fields = {key: value for key, value in data.items() if key not in self.fields}
+        for field_name in non_declared_fields.keys():
+            
+            if field_name.startswith('ingredients_'):
+                quantity = non_declared_fields.get(f'quantities_{field_name.split("_")[1]}')
+                value = non_declared_fields.get(field_name)
+                
+                if value and quantity:
+                    try:
+                        ingredient = Ingredient.objects.get(name=value)
+                        
+                    except Ingredient.DoesNotExist:
+                        ingredient = Ingredient.objects.create(name=value)
+                    
+                    ingredients.append(ingredient)
+                    ingredient_quantity[ingredient.name] = quantity
         
-        self.cleaned_data['ingredient_quantity'] = ingredient_quantity
+        cleaned_data['ingredients'] = ingredients
+        cleaned_data['ingredient_quantity'] = ingredient_quantity    
+        
+        return cleaned_data

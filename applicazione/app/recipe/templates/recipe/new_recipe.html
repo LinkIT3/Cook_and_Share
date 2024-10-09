@@ -1,14 +1,45 @@
 {% load crispy_forms_tags %}
 
 
-<div id="new-recipe-page" class="page new-recipe" style="display: none;">
-    {% comment %} {% csrf_token %}
-    {% crispy profile_pic_form %} {% endcomment %}
+<div id="new-recipe-page" class="page new-recipe container" style="display: none;">
+    <h2 class="mt-4"> New Recipe </h2>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data" id="recipe-form">
         {% csrf_token %}
         {% crispy new_recipe_form %}
-        
-        <input type="submit" value="Submit">
     </form>
 </div>
+
+<script>
+    function new_ingedient_selector(val){
+        return $(`
+            <div class="ingredient-field mb-3" id="id_ingredient_field_` + val + `">
+                <select name="ingredients_` + val + `" class="ingredient-select_` + val + ` form-select" aria-label="Ingredient selector" required="True">
+                    <option value="">Select Ingredient</option>
+                    {% for ingredient in ingredients %}
+                        <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" class="form-control quantity-input" name="quantities_` + val + `" placeholder="Quantity" required="True" />
+            </div>`
+        );
+    }
+</script>
+
+{% comment %} 
+    TODO
+        - Testare il form con più ingredienti
+        - Aggiustare css
+    
+
+
+
+Prima ricetta
+
+
+Test della ricetta
+
+
+Questo è un test per verificare che l'inserimento della ricetta funzioni correttamente, ma per testarlo devo arrivare almeno a 100 caratteri.
+
+{% endcomment %}
