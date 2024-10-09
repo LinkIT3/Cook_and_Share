@@ -18,26 +18,26 @@ $(document).ready(function() {
                 </label>
             </div>`
     ));
-
+    
     $('#div_id_ingredients').append(new_ingedient_selector(val));
     add_select2(val);
     val ++;
     
     const newIngredientField = $('#div_id_ingredients');
-
+    
     $('#add-ingredient').on('click', function() {
         newIngredientField.append(new_ingedient_selector(val));
         add_select2(val);
         val ++;
     });
-
+    
     $('#remove-ingredient').on('click', function() {
         if (val > 1){
             val --;
             $('#id_ingredient_field_'+ val).remove()
         }
     })
-
+    
     $(document).on('change', '.ingredient-select', function() {
         let value = $(this).val();
         if (value && value.indexOf('new') !== -1) {

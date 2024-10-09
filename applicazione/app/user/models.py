@@ -28,6 +28,7 @@ class CustomUserManager(BaseUserManager):
         try:
             user.full_clean()
             user.save(using=self._db)
+            
         except ValidationError as e:
             raise e
         
@@ -56,7 +57,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     followed = models.ManyToManyField("self", editable=False, symmetrical=False, blank=True, related_name="followers")
     liked_recipes = models.ManyToManyField("recipe.Recipe", editable=False, symmetrical=False, blank=True, related_name="likes")
-    recipes_created = models.ManyToManyField("recipe.Recipe", null=True, blank=True, 
+    recipes_created = models.ManyToManyField("recipe.Recipe", blank=True, 
                                         related_name="author", verbose_name="Recipes created", db_index=True)
     
     is_staff = models.BooleanField(default=False)

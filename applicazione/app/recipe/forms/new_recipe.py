@@ -1,20 +1,19 @@
 from django import forms
-from django.core.validators import MinLengthValidator
-from django.forms import ModelChoiceField, formset_factory
-from django_select2.forms import Select2Widget
+
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, HTML
+from crispy_forms.layout import Layout, Field, Submit, HTML
 from crispy_forms.bootstrap import FormActions
-from crispy_bootstrap5.bootstrap5 import FloatingField
+
 from app.recipe.models import Recipe
 from app.ingredient.models import Ingredient
+
 
 class NewRecipeForm(forms.ModelForm):
     dish_pic = forms.ImageField(label='Dish Picture', required=True)
     
     class Meta:
         model = Recipe
-        fields = ['title', 'dish_pic','description', 'text']
+        fields = ['title','description', 'text', 'dish_pic']
         widgets = {'dish_pic': forms.FileInput(attrs={'id': 'id_dish_pic'})}
     
     def __init__(self, *args, **kwargs):
@@ -62,6 +61,7 @@ class NewRecipeForm(forms.ModelForm):
             HTML("</div>"),
         )
     
+    
     def clean(self):
         cleaned_data = super().clean()
         ingredient_quantity = {}
@@ -69,8 +69,8 @@ class NewRecipeForm(forms.ModelForm):
         
         data = self.data
         non_declared_fields = {key: value for key, value in data.items() if key not in self.fields}
+        
         for field_name in non_declared_fields.keys():
-            
             if field_name.startswith('ingredients_'):
                 quantity = non_declared_fields.get(f'quantities_{field_name.split("_")[1]}')
                 value = non_declared_fields.get(field_name)

@@ -91,7 +91,7 @@ class PasswordForm(forms.ModelForm):
             HTML("</div>"),
             
             FormActions(
-                Submit('password-form', 'Sign Up', css_class='btn btn-primary', id="submit-btn-paswd"),
+                Submit('password-form', 'Submit', css_class='btn btn-primary', id="submit-btn-paswd"),
             ),
         )
     

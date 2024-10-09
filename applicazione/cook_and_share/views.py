@@ -1,11 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user
-from django.contrib.auth.decorators import login_required
-from django.core.cache import cache
 from django.db.models import Count
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse
 
 import logging
 
@@ -23,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 def login_page(request):
     if request.method == 'POST':
-        form = LoginForm(request, data=request.POST)
+        form = LoginForm(request, request.POST, request.FILES)
         
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -52,6 +48,7 @@ def login_page(request):
     
     return render(request, 'index.html', context)
 
+
 def load_page(request):
     user = get_user(request)
     if user.is_authenticated:
@@ -73,8 +70,7 @@ def load_page(request):
             password_form = PasswordForm(data=request.POST, user=request.user)
             
             # New Recipe
-            # new_recipe_form = NewRecipeForm(request.POST, original_recipe=None)
-            new_recipe_form = NewRecipeForm(request.POST)
+            new_recipe_form = NewRecipeForm(request.POST, request.FILES, original_recipe=None)
             
             if "profile-pic-form" in request.POST and profile_pic_form.is_valid():
                 profile_pic_form.save()
@@ -96,9 +92,10 @@ def load_page(request):
                 recipe.ingredient_quantity = new_recipe_form.cleaned_data['ingredient_quantity']
                 ingredients_list = new_recipe_form.cleaned_data['ingredients']
                 recipe.save()
+                
                 for ingredient in ingredients_list:
                     recipe.ingredient.add(Ingredient.objects.get(pk=ingredient.id))
-                    
+                
                 request.user.recipes_created.add(Recipe.objects.get(pk=recipe.id))
                 messages.success(request, 'Your recipe is created!')
 
@@ -126,7 +123,6 @@ def load_page(request):
     return login_page(request)
 
 
-
 def log_out(request):
     logout(request)
     return redirect('home')
@@ -142,74 +138,8 @@ def set_admin(request):
 def reload(request):
     return redirect("home")
 
+
 def new_ingredient(request):
     nome = request.GET.get('nome')
     Ingredient.objects.create(name=nome)
     return redirect("home")
-
-
-
-# def profile_pic_form(request):
-#     # user = get_user(request)
-#     if request.method == 'POST':
-#         if "profile-pic-form" in request.POST:
-#             form = ProfilePicForm(request.POST, instance=request.user)
-            
-#             if form.is_valid():
-#                 form.save()
-#                 messages.success(request, 'Your profile picture is updated!')
-            
-#             return form
-    
-#     return ProfilePicForm(instance=request.user)
-
-
-# def name_form(request):
-#     # user = get_user(request)
-#     if request.method == 'POST':
-#         if "name-form" in request.POST:
-#             form = NameForm(request.POST, instance=request.user)
-            
-#             if form.is_valid():
-#                 form.save()
-#                 messages.success(request, 'Your name is updated!')
-            
-#             return form
-    
-#     return NameForm(instance=request.user)
-
-
-# #@login_required
-# def settings_page(request):
-#     if request.method == 'POST':
-#         profile_pic_form = ProfilePicForm(request.POST, request.FILES, instance=request.user)
-#         name_form = NameForm(request.POST, instance=request.user)
-#         password_form = PasswordForm(data=request.POST, user=request.user)
-        
-#         if "profile-pic-form" in request.POST and profile_pic_form.is_valid():
-#             profile_pic_form.save()
-#             messages.success(request, 'Your profile picture is updated!')
-        
-#         if "name-form" in request.POST and name_form.is_valid():
-#             name_form.save()
-#             messages.success(request, 'Your name is updated!')
-        
-#         if "password-form" in request.POST and password_form.is_valid():
-#             password_form.save()
-#             messages.success(request, 'Your password is updated!')
-#             return redirect("profile")
-        
-#     else:
-#         profile_pic_form = ProfilePicForm()
-#         name_form = NameForm()
-#         password_form = PasswordForm(user=request.user)
-    
-    
-#     context = {
-#         "profile_pic_form": profile_pic_form,
-#         "name_form": name_form,
-#         "password_form": password_form,
-#     }
-    
-#     return context
-
