@@ -1,0 +1,50 @@
+[class$="-button"]{
+    text-decoration: none;
+    color: rgba(33, 37, 41, 0.75) !important;
+}
+
+[class$="-button"]:not(.card-button){
+    cursor: pointer;
+}
+
+a.profile-link{
+    text-decoration: none;
+    color: inherit !important;
+}
+
+[id$="Filler"]{
+    fill: var(--bs-primary) !important;
+}
+
+.card-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+[class$="-button"] > svg{
+    width: 2rem;
+    height: 2rem;
+} 
+
+[class$="-button"] > i.fa-regular{
+    width: 2rem !important;
+    height: 2rem !important;
+}
+
+.author-pic{
+    width: 1.5em;
+    height: 1.5em;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: .1rem;
+    margin-right: .3rem;
+}
+
+svg.icon{
+    color: #595c5f;
+}
+
+a.redirect-recipe{
+    text-decoration: none;
+}

@@ -76,7 +76,7 @@
 .settings-div{
     width: 98vw;
     height: auto;
-    position: absolute;
+    position: fixed;
     top: 15vh;
     right: -99vw;
     transform: translateX(99vw);
@@ -87,9 +87,6 @@
     transform: translateX(-100vw);
 }
 
-#settings-page{
-    margin: 1.5rem auto !important;
-}
 
 @media(orientation: portrait){
     

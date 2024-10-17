@@ -1,11 +1,14 @@
 window.onload = function() {
     const nav_items = document.querySelectorAll('.nav-item');
-    const hash = window.location.hash;
+    var hash = window.location.hash;
+    
+    if (!hash)
+        hash = '#home';
     
     if (nav_items.length == 3) { document.querySelector(".navbar-brand").style.marginRight = "30vw"; }  
     
     nav_items.forEach(item => {
-        if(item == document.querySelector(hash+"-page"))
+        if(item == document.querySelector(hash))
             set_active(item)
         
         item.addEventListener('click', () => {
@@ -19,6 +22,7 @@ window.onload = function() {
 
 
 window.onresize = function() { bg_animation(); }
+window.onhashchange = function() { bg_animation(); }
 
 function set_active(item){
     document.querySelector(".nav-item.active").classList.remove("active")

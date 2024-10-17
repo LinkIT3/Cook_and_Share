@@ -17,10 +17,12 @@ class NewRecipeForm(forms.ModelForm):
         widgets = {'dish_pic': forms.FileInput(attrs={'id': 'id_dish_pic'})}
     
     def __init__(self, *args, **kwargs):
-        super(NewRecipeForm, self).__init__(*args, **kwargs)
+        original_recipe = kwargs.pop('original_recipe', None)
         
-        if kwargs.get('original_recipe'):
-            self.field['original_recipe'].initial = kwargs.pop('original_recipe')
+        if original_recipe and original_recipe != None:
+                self.field['original_recipe'].initial = original_recipe
+        
+        super(NewRecipeForm, self).__init__(*args, **kwargs)
         
         self.fields['title'].widget = forms.TextInput(attrs={'style': 'resize: none;'})
         self.fields['text'].label = 'Recipe'
@@ -35,7 +37,7 @@ class NewRecipeForm(forms.ModelForm):
                 HTML("</div>"),
                 
                 HTML("<div class='dish-pic-form mb-3'>"),
-                    Field('dish_pic', css_class='form-control', id="formFile", accept=".jpg, .jpeg, .png, .webp"),
+                    Field('dish_pic', css_class='form-control', id="formFile", accept=".avif, .jpg, .jpeg, .png, .webp"),
                 HTML("</div>"),
                 
                 HTML("<div class='mb-3 description-div'>"),

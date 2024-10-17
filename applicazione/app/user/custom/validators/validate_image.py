@@ -1,4 +1,5 @@
 from PIL import Image
+import pillow_avif
 from django.core.exceptions import ValidationError
 
 MAX_PROFILE_PIC_SIZE_KB = 500
@@ -26,7 +27,7 @@ def validate_image_size(image, max_size_kb) -> None:
 #             raise ValidationError('Invalid extension. Allowed extensions are: ' + ', '.join(valid_format))
 
 def validate_image_extension(image) -> None:
-    valid_format = ["JPEG", "PNG", "WEBP"]
+    valid_format = ["AVIF", "GIF", "JPEG", "JPG", "PNG", "WEBP"]
     
     try:
         img = Image.open(image)

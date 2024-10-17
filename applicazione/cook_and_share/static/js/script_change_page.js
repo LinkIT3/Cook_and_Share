@@ -1,15 +1,21 @@
 $(document).ready(function() {
-    var hash = window.location.hash;
-
-    change_page($(hash+"-page"));
+    var hash = window.location.hash.replace('#', '');
+    
+    if (!hash) {
+        window.location.href = "/#home";
+        hash = "home";
+    }
+    
+    change_page(hash);
     
     $(".nav-item").on('click', function() {
-        change_page($(this));
+        change_page(this.id);
     });
 });
 
 function change_page(item){
-    var page_id = item.attr("id");
+    window.location.href = "/#" + item;
+    
     $(".page").filter(":visible").hide();
-    $(".page"+ "#" + page_id).show();
+    $(".page"+ "#" + item + '-page').show();
 }

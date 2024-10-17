@@ -20,7 +20,7 @@ class ProfilePicForm(forms.ModelForm):
         self.helper.form_method = "post"
         self.helper.layout = Layout(
             HTML("<div class='profile-pic-form mb-3 mt-4'>"),
-                Field('profile_pic', css_class='form-control', id="formFile", accept=".jpg, .jpeg, .png, .webp"),
+                Field('profile_pic', css_class='form-control', id="formFile", accept=".avif, .jpg, .jpeg, .png, .webp"),
             HTML("</div>"),
             
             FormActions(

@@ -15,16 +15,16 @@
 }
 
 .navbar-custom{
+    z-index: 1;
     background-color: var(--navbar-color);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
 }
 
-.navbar-brand{
+.navbar-brand, .navbar-brand:hover{
     /* margin-right: 20vw; */
     color: var(--brand-color);
-}
-
-.navbar-brand:hover{
-    color: var(--brand-color);
+    
 }
 
 .navbar-brand-font{
@@ -49,23 +49,27 @@
 
 /* colore elemento navbar selezionato */
 .navbar-nav .nav-link.active{
-    color: black !important;
+    color: white !important;
 }
+
 
 li.nav-item{
     padding: 8px;
-    z-index: 1;
+    z-index: 4;
     display: flex;
     justify-content: center; 
     align-items: center; 
 }
 
+
 .moving-bg{
     position: fixed;
-    background-color: var(--selected-color);
+    background-color: rgba(var(--custom-navbar-color-rgb), 0.8);
+    filter: blur(1px);
     border-radius: 10px;
     transition: all 0.5s ease;
-    z-index: 5;
+    z-index: 2;
+    /* border: 1px solid rgb(17, 17, 107); */
 }
 
 img.profile_pic_navbar{
@@ -82,6 +86,11 @@ img.profile_pic_navbar{
 @media(orientation: portrait) {
     .navbar-custom .nav-item a {
         font-size: 0;
+    }
+
+    .nav-item{
+        width: 3.5rem;
+        height: 3.5rem;
     }
     
     .nav-item i, .nav-item img{
@@ -107,6 +116,6 @@ img.profile_pic_navbar{
 }
 
 .top-page-space{
-    height: 58px;
+    height: 5rem;
     padding: 0.5rem 0;
 }

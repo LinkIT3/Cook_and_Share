@@ -56,7 +56,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     food_critic = models.BooleanField(default=False, db_index=True)
     
     followed = models.ManyToManyField("self", editable=False, symmetrical=False, blank=True, related_name="followers")
-    liked_recipes = models.ManyToManyField("recipe.Recipe", editable=False, symmetrical=False, blank=True, related_name="likes")
+    liked_recipes = models.ManyToManyField("recipe.Recipe", editable=False, symmetrical=False, blank=True, related_name="liked")
+    saved_recipes = models.ManyToManyField("recipe.Recipe", editable=False, symmetrical=False, blank=True, related_name="saved")
     recipes_created = models.ManyToManyField("recipe.Recipe", blank=True, 
                                         related_name="author", verbose_name="Recipes created", db_index=True)
     

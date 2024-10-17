@@ -18,6 +18,7 @@ class SignUpForm(forms.ModelForm):
         widgets = {
             'nickname': forms.TextInput(attrs={'id': 'id_nickname'}),
             'email': forms.EmailInput(attrs={'id': 'id_email'}),
+            'profile_pic': forms.FileInput(attrs={'id': 'id_profile_pic'}),
         }
 
     
@@ -47,7 +48,7 @@ class SignUpForm(forms.ModelForm):
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
-            Field('profile_pic', css_class='form-control', id="formFile", accept=".jpg, .jpeg, .png, .webp"),
+            Field('profile_pic', css_class='form-control', id="formFile", accept=".avif, .jpg, .jpeg, .png, .webp"),
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
@@ -91,6 +92,7 @@ class SignUpForm(forms.ModelForm):
             user = super().save(commit=False)
             user.set_password(self.cleaned_data["password"])
             user.full_clean()
+            user.profile_pic = self.cleaned_data["profile_pic"]
             
             if commit:
                 user.save()

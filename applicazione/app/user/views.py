@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import login
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -13,13 +14,15 @@ logger = logging.getLogger(__name__)
 
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = SignUpForm(request.POST, request.FILES)
         
         if form.is_valid():
             user = form.save()
             
             if user:
                 messages.success(request, 'Registration completed')
+                login(request, user)
+                messages.success(request, f"Welcome {user.nickname}!")
                 return redirect('home')
             else:
                 messages.error(request, 'Error during registration')

@@ -10,27 +10,44 @@
             <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
         <!-- #endregion -->
         
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />  <!-- style select2  -->
             
         <!-- #region custom css -->
-            {% include "navbar/navbar-css.html" %}          <!-- style navbar -->
-            {% include "recipe/new_recipe-css.html" %}      <!-- style new recipe page -->
-            {% include "profile-page/profile-css.html" %}   <!-- style profile page -->
+            <link rel="stylesheet" href="{% static 'css/style_navbar.css' %}">              <!-- style navbar -->
+            
+            <link rel="stylesheet" href="{% static 'css/style_recipe_page.css' %}">
+            
+            {% if user.is_authenticated %}
+                <link rel="stylesheet" href="{% static 'recipe/css/style_new_recipe.css' %}">   <!-- style new recipe page -->
+            {% endif %}
+
+            <link rel="stylesheet" href="{% static 'css/style_profile_page.css' %}">        <!-- style profile page -->
+            <link rel="stylesheet" href="{% static 'css/style_settings_page.css' %}">       <!-- style settings -->
+
+            <link rel="stylesheet" href="{% static 'recipe/css/style_card.css' %}">         <!-- stylr recipe card -->
         <!-- #endregion -->
     <!-- #endregion -->
     
     <!-- #region js import -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> <!-- script select2 -->
+        
         <!-- #region custom js -->
-            {% include "navbar/navbar-js.html" %}           <!-- script nasvbar -->
+            <script src="{% static 'js/script_navbar.js' %}"></script>              <!-- script navbar -->
+            <script src="{% static 'js/script_change_page.js' %}"></script>         <!-- script change page -->
             
-            <!-- change page script -->
-            <script src="{% static 'js/script_change_page.js' %}"></script> 
+            <script src="{% static 'js/script_recipe_page.js' %}"></script>         <!-- script show srecipe -->
+
+            {% if user.is_authenticated %}
+                <script src="{% static 'recipe/js/script_new_recipe.js' %}"></script>   <!-- script new recipe page -->
+            {% endif %}
+
+            <script src="{% static 'js/script_profile_page.js' %}"></script>        <!-- script profile page -->
+            <script src="{% static 'js/script_settings_page.js' %}"></script>       <!-- script settings -->
             
-            {% include "recipe/new_recipe-js.html"%}        <!-- script new recipe page -->
-            {% include "profile-page/profile-js.html" %}    <!-- script profile page -->
+            <script src="{% static 'recipe/js/script_card.js' %}"></script>       <!-- script recipe card -->
         <!-- #endregion -->
     <!-- #endregion -->
+
 {% endblock head %}
 
 {% block title %} Cook & Share {% endblock title %} 
@@ -38,17 +55,19 @@
 {% block content %}
     {% include "navbar/navbar.html" %}
 
-    {% block home_page %}{% endblock home_page %}
+    {% block home_page %}
+        {% include "recipe/test_recipe_homepage.html" %}
+    {% endblock home_page %}
     
     {% block trending_page %}{% endblock trending_page %}
     
     {% block last_page %}{% endblock last_page %}
     
-    {% block saved_page %}{% endblock saved_page %}
-    
     {% if user.is_authenticated %}
+        {% block saved_page %}{% endblock saved_page %}
+    
         {% block new_recipe_page %}
-            {% include "recipe/new_recipe.html" %}
+            {% include "recipe/new_recipe/new_recipe.html" %}
         {% endblock new_recipe_page %}
     {% endif %}
 
