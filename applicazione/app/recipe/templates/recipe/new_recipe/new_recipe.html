@@ -1,26 +1,38 @@
 {% load crispy_forms_tags %}
 
 <div id="new-recipe-page" class="page new-recipe container" style="display: none;">
-    <h2 class="mt-4"> New Recipe </h2>
+    <h2 class="mt-4"> 
+        {% if remix_id %}
+            Remix
+        {% elif edit_id %}
+            Edit
+        {% else %}
+            New
+        {% endif %}  
+
+        Recipe 
+    </h2>
     
+    {% if remix_id %}
+        <div class="mt-4">
+            <a href="remix_recipe/0">
+                <button type="button" class="btn btn-danger">
+                    Cancel
+                </button>
+            </a>
+        </div>
+    {% elif edit_id %}
+        <div class="mt-4">
+            <a href="edit_recipe/0">
+                <button type="button" class="btn btn-danger">
+                    Cancel
+                </button>
+            </a>
+        </div>
+    {% endif %}
+
     <form method="post" enctype="multipart/form-data" id="recipe-form">
         {% csrf_token %}
         {% crispy new_recipe_form %}
     </form>
 </div>
-
-<script>
-    function new_ingedient_selector(val){
-        return $(`
-            <div class="ingredient-field mb-3" id="id_ingredient_field_` + val + `">
-                <select name="ingredients_` + val + `" class="ingredient-select_` + val + ` form-select" aria-label="Ingredient selector" required="True">
-                    <option value="">Select Ingredient</option>
-                    {% for ingredient in ingredients %}
-                        <option value="{{ ingredient.name }}">{{ ingredient.name }}</option>
-                    {% endfor %}
-                </select>
-                <input type="text" class="form-control quantity-input" name="quantities_` + val + `" placeholder="Quantity" required="True" />
-            </div>`
-        );
-    }
-</script>

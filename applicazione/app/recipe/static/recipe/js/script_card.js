@@ -10,10 +10,14 @@ $('.card').ready(function() {
     $('.page').on('click', '.share-button', function() {
         copyLink($(this));
     });
+
+    $('.page').on('click', '.remix-button', function() {
+        remixRecipe($(this));
+    });
 });
 
 function toggleLike(item){
-$.ajax({
+    $.ajax({
         url: 'toggle_liked/',
         type: 'post',
         data: JSON.stringify({id: item.closest('.card').attr('id')}),
@@ -95,4 +99,10 @@ function copyLink(item){
             </div>
         </div>
     `));
+}
+
+function remixRecipe(item){
+    const url = 'remix_recipe/' + item.closest('.card').attr('id') +'/';
+    
+    window.location.href = url;
 }

@@ -36,6 +36,28 @@
                         console.log('Service Worker registration failed:', error);
                     });
                 }
+
+                $(document).ready(function() {
+                    let hash = window.location.hash.replace('#', '');
+                    const page_to_show = "{{ page_to_show }}";
+                    
+                    if (!hash) {
+                        hash = page_to_show;
+                    }
+                
+                    change_page(hash);
+                    
+                    $('body').on('click', '.nav-item', function() {
+                        change_page(this.id);
+                    });
+                });
+                
+                function change_page(item){
+                    window.location.href = "/#" + item;
+                    
+                    $(".page").filter(":visible").hide();
+                    $(".page"+ "#" + item + '-page').show();
+                }
             </script>
         
         {% block head %} {% endblock head %}
