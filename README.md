@@ -13,8 +13,7 @@ Progetto per il corso di Tecnologie Web
 <br>
 
 #### Card Ricetta
-- aggiungere le funzionalità del bottone per il remix della ricetta
-- aggiungere le funzionalità del bottone per il download della ricetta
+- tramite js impostare gli ingredienti della ricetta da modificare / remixare
 
 <br>
 

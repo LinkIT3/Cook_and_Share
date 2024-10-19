@@ -14,6 +14,8 @@ urlpatterns = [
     path('#profile', load_page, name="profile"),
     path('#new-recipe', load_page, name="new_recipe"),
     path('get_ingredients/', get_ingredients, name="get_ingredients"),
+    path('<path:extra_path>/get_ingredients/', get_ingredients, name="get_ingredients_extra_path"),
+
     path('signup/', include("app.user.urls")),
     path('logout/', log_out, name='logout'),
     path('reload/', reload, name='reload'),
@@ -25,12 +27,12 @@ urlpatterns = [
     path('new_ingredient/', new_ingredient, name='new_ingredient'),
     
     path("recipes-page/", getRecipes, name='recipes_page'),
-    path("<path:extra_path>/recipes-page/", getRecipes, name='recipes_page_exta_path'),
-    path('load-recipe-template/', load_recipe_template, name='load_recipe_template'),
-    path('<path:extra_path>/load-recipe-template/', load_recipe_template, name='load_recipe_template_extra_path'),
+    path('<path:extra_path>/recipes-page/', getRecipes, name='recipes_page_exta_path'),
+    path('load-recipe-card/', load_recipe_card, name='load_recipe_card'),
+    path('<path:extra_path>/load-recipe-card/', load_recipe_card, name='load_recipe_card_extra_path'),
     path('toggle_liked/', update_liked, name='toggle_liked'),
     path('toggle_saved/', update_saved, name='toggle_saved'),
-    path('remix_recipe/<int:remix_id>/', load_page, name="remix-recipe"),
+    path('remix_edit_recipe/<int:recipe_id>/', load_page, name="remix-edit-recipe"),
 ]
 
 if settings.DEBUG:

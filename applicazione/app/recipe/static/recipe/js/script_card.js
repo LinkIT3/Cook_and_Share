@@ -11,8 +11,8 @@ $('.card').ready(function() {
         copyLink($(this));
     });
 
-    $('.page').on('click', '.remix-button', function() {
-        remixRecipe($(this));
+    $('.page').on('click', '.remix-edit-button', function() {
+        remix_editRecipe($(this));
     });
 });
 
@@ -101,8 +101,8 @@ function copyLink(item){
     `));
 }
 
-function remixRecipe(item){
-    const url = 'remix_recipe/' + item.closest('.card').attr('id') +'/';
+function remix_editRecipe(item){
+    const url = 'remix_edit_recipe/' + item.closest('.card').attr('id') +'/';
     
     window.location.href = url;
 }

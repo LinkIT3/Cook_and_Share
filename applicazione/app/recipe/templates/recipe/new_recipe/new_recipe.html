@@ -2,9 +2,9 @@
 
 <div id="new-recipe-page" class="page new-recipe container" style="display: none;">
     <h2 class="mt-4"> 
-        {% if remix_id %}
+        {% if remix %}
             Remix
-        {% elif edit_id %}
+        {% elif edit %}
             Edit
         {% else %}
             New
@@ -13,17 +13,9 @@
         Recipe 
     </h2>
     
-    {% if remix_id %}
+    {% if remix or edit %}
         <div class="mt-4">
-            <a href="remix_recipe/0">
-                <button type="button" class="btn btn-danger">
-                    Cancel
-                </button>
-            </a>
-        </div>
-    {% elif edit_id %}
-        <div class="mt-4">
-            <a href="edit_recipe/0">
+            <a href="remix_edit_recipe/0">
                 <button type="button" class="btn btn-danger">
                     Cancel
                 </button>

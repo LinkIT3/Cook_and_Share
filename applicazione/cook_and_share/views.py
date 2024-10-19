@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 def login_page(request):
     if request.method == 'POST':
-        form = LoginForm(request, request.POST, request.FILES)
+        form = LoginForm(request, request.POST or None, request.FILES or None)
         
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -52,17 +52,23 @@ def login_page(request):
     return render(request, 'index.html', context)
 
 
-def load_page(request, remix_id=None):
+def load_page(request, recipe_id=None):
     remix = False
+    edit = False
     
     user = get_user(request)
     
-    if remix_id != None:
-        request.session['remix_id'] = remix_id
+    if recipe_id != None:
+        request.session['recipe_id'] = recipe_id
         request.session.save()
 
-    if request.session.get('remix_id') and request.session.get('remix_id') > 0:
-        remix = True
+    if request.session.get('recipe_id') != None and request.session.get('recipe_id') > 0:
+        if user.recipes_created.filter(id=request.session.get('recipe_id')).exists():
+            edit = True
+        else:
+            remix = True
+        
+        recipe = Recipe.objects.get(pk=request.session.get('recipe_id')) 
     
     if user.is_authenticated:
         homepage = "home" 
@@ -76,51 +82,46 @@ def load_page(request, remix_id=None):
             profile_pic_setted = True
             pic_path = request.user.profile_pic.url
         
-        if request.method == 'POST':
-            # Settings
-            profile_pic_form = ProfilePicForm(request.POST, request.FILES, instance=request.user)
-            name_form = NameForm(request.POST, instance=request.user)
-            password_form = PasswordForm(data=request.POST, user=request.user)
-            
-            # New Recipe
-            if remix:
-                new_recipe_form = NewRecipeForm(request.POST, request.FILES, original_recipe=Recipe.objects.get(pk=remix_id))
-            else:
-                new_recipe_form = NewRecipeForm(request.POST, request.FILES, original_recipe=None)
-            
-            if "profile-pic-form" in request.POST and profile_pic_form.is_valid():
-                profile_pic_form.save()
-                messages.success(request, 'Your profile picture is updated!')
-                return redirect("reload")
-            
-            if "name-form" in request.POST and name_form.is_valid():
-                name_form.save()
-                messages.success(request, 'Your name is updated!')
-                return redirect("reload")
-            
-            if "password-form" in request.POST and password_form.is_valid():
-                password_form.save()
-                messages.success(request, 'Your password is updateds!')
-                return redirect("profile")
-            
-            if "new-recipe-form" in request.POST and new_recipe_form.is_valid():
-                recipe = new_recipe_form.save(commit=False)
-                recipe.ingredient_quantity = new_recipe_form.cleaned_data['ingredient_quantity']
-                ingredients_list = new_recipe_form.cleaned_data['ingredients']
-                recipe.save()
-                
-                for ingredient in ingredients_list:
-                    recipe.ingredient.add(Ingredient.objects.get(pk=ingredient.id))
-                
-                request.user.recipes_created.add(Recipe.objects.get(pk=recipe.id))
-                messages.success(request, 'Your recipe is created!')
-
-        else:
-            profile_pic_form = ProfilePicForm()
-            name_form = NameForm(instance=request.user)
-            password_form = PasswordForm(user=request.user)    
-            new_recipe_form = NewRecipeForm()
+        # Settings
+        profile_pic_form = ProfilePicForm(request.POST or None, request.FILES or None, instance=request.user)
+        name_form = NameForm(request.POST or None or None, instance=request.user)
+        password_form = PasswordForm(data=request.POST or None, user=request.user)
         
+        # New Recipe
+        if remix:
+            new_recipe_form = NewRecipeForm(request.POST or None, request.FILES or None, original_recipe=recipe)
+        elif edit:
+            new_recipe_form = NewRecipeForm(request.POST or None, request.FILES or None, instance=recipe)
+        else:
+            new_recipe_form = NewRecipeForm(request.POST or None, request.FILES or None, original_recipe=None)
+        
+        if "profile-pic-form" in request.POST and profile_pic_form.is_valid():
+            profile_pic_form.save()
+            messages.success(request, 'Your profile picture is updated!')
+            return redirect("reload")
+        
+        if "name-form" in request.POST and name_form.is_valid():
+            name_form.save()
+            messages.success(request, 'Your name is updated!')
+            return redirect("reload")
+        
+        if "password-form" in request.POST and password_form.is_valid():
+            password_form.save()
+            messages.success(request, 'Your password is updateds!')
+            return redirect("profile")
+        
+        if "new-recipe-form" in request.POST and new_recipe_form.is_valid():
+            new_recipe = new_recipe_form.save(commit=False)
+            new_recipe.ingredient_quantity = new_recipe_form.cleaned_data['ingredient_quantity']
+            ingredients_list = new_recipe_form.cleaned_data['ingredients']
+            new_recipe.save()
+            
+            for ingredient in ingredients_list:
+                new_recipe.ingredient.add(Ingredient.objects.get(pk=ingredient.id))
+            
+            request.user.recipes_created.add(Recipe.objects.get(pk=new_recipe.id))
+            messages.success(request, 'Your recipe is created!')
+
         context = {
             "homepage": homepage,
             "page_to_show": homepage,
@@ -135,15 +136,19 @@ def load_page(request, remix_id=None):
             "ingredients": ingredients,
         }
         
-        if request.session.get('remix_id') and request.session.get('remix_id') > 0:
+        if edit or remix:
             context['page_to_show'] = 'new-recipe'
-            context["remix_id"] = True
+            
+            if edit:
+                context["edit"] = True
+            if remix:
+                context["remix"] = True
         
         return render(request, 'index.html', context)
     
     return login_page(request)
 
-def get_ingredients(request):
+def get_ingredients(request, extra_path=None):
     if request.method == 'POST':
         try:
             ingredients = Ingredient.objects.all().order_by('name')
@@ -176,7 +181,7 @@ def new_ingredient(request):
 
 ########################## 
 
-def load_recipe_template(request, extra_path=None):
+def load_recipe_card(request, extra_path=None):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -197,12 +202,17 @@ def load_recipe_template(request, extra_path=None):
         liked = request.user.liked_recipes.filter(id=recipe_id).exists()
         saved = request.user.saved_recipes.filter(id=recipe_id).exists()
         link_recipe = "http://127.0.0.1:8000/recipe/" + str(recipe_id) + "/" + recipe.title.lower().replace(" ", "-")
+        remix = True
         
+        if request.user.recipes_created.filter(id=recipe_id).exists():
+            remix = False
+            
         html = render(request, 'recipe/card/card.html', {   'recipe': recipe, 
                                                             'author': author,
                                                             'liked': liked,
                                                             'saved': saved,
-                                                            'link_recipe': link_recipe
+                                                            'link_recipe': link_recipe,
+                                                            'remix': remix
                                                         }).content.decode('utf-8')
         
         return JsonResponse({'html': html}, status=200)

@@ -13,19 +13,26 @@ class NewRecipeForm(forms.ModelForm):
     
     class Meta:
         model = Recipe
-        fields = ['title','description', 'text', 'dish_pic']
+        fields = ['title','description', 'text', 'dish_pic', 'original_recipe']
         widgets = {'dish_pic': forms.FileInput(attrs={'id': 'id_dish_pic'})}
     
     def __init__(self, *args, **kwargs):
         original_recipe = kwargs.pop('original_recipe', None)
-        
-        if original_recipe and original_recipe != None:
-                self.field['original_recipe'].initial = original_recipe
-        
+
         super(NewRecipeForm, self).__init__(*args, **kwargs)
         
         self.fields['title'].widget = forms.TextInput(attrs={'style': 'resize: none;'})
         self.fields['text'].label = 'Recipe'
+        
+        if original_recipe and original_recipe != None:
+            self.fields['original_recipe'].initial = original_recipe.id
+            self.fields['title'].initial = original_recipe.title
+            self.fields['description'].initial = original_recipe.description
+            self.fields['text'].initial = original_recipe.text
+            self.fields['dish_pic'].initial = original_recipe.dish_pic
+        else:
+            self.fields['original_recipe'].initial = None
+        
         
         self.helper = FormHelper()
         self.helper.form_method = "post"

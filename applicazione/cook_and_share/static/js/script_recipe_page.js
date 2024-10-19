@@ -15,7 +15,7 @@ class Pagination {
 
         this.results.forEach(result => {
             $.ajax({
-                url: 'load-recipe-template/',
+                url: 'load-recipe-card/',
                 type: 'post',
                 data: JSON.stringify({id: result.id}),
                 contentType: "application/json",
