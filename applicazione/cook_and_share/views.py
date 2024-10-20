@@ -133,11 +133,11 @@ def load_page(request, recipe_id=None):
             "name_form": name_form,
             "password_form": password_form,
             "new_recipe_form": new_recipe_form,
-            "ingredients": ingredients,
         }
         
         if edit or remix:
             context['page_to_show'] = 'new-recipe'
+            context['id_recipe_to_edit_remix'] = recipe.id
             
             if edit:
                 context["edit"] = True
@@ -150,7 +150,22 @@ def load_page(request, recipe_id=None):
 
 def get_ingredients(request, extra_path=None):
     if request.method == 'POST':
+        
         try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        
+        try:
+            recipe_id = data.get('id')
+        except KeyError:
+            return JsonResponse({'error': 'Recipe ID not provided'}, status=400)
+        
+        try:
+            if recipe_id != 0:
+                ingredients = Recipe.objects.get(pk=recipe_id).ingredient_quantity
+                return JsonResponse(ingredients)
+            
             ingredients = Ingredient.objects.all().order_by('name')
         except Exception:
             return JsonResponse({'error': 'Unable to get ingredients'}, status=404)

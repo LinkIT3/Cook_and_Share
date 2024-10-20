@@ -13,7 +13,7 @@ Progetto per il corso di Tecnologie Web
 <br>
 
 #### Card Ricetta
-- tramite js impostare gli ingredienti della ricetta da modificare / remixare
+- funzione pulsante di download
 
 <br>
 
@@ -25,6 +25,7 @@ Progetto per il corso di Tecnologie Web
 
 #### Navbar
 - aggiungere la ricerca delle ricette
+- 
 ##### Home
 - modificare la query per la visualizzazione delle ricette nella home (ultimo mese)
   - ricette di seguiti

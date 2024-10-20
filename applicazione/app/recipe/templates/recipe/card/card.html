@@ -29,7 +29,7 @@
         <div class="card-button">
             
             <!-- Like button -->
-            <a class="like-button">
+            <a class="like-button" title="Like">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 912.8 992.84" class="icon" aria-hidden="true" focusable="false" style="vertical-align: -0.125em;">
                     <g id="michelinLogoFiller" {% if not liked %} style="display: none;" {% endif %}>
                         <path 
@@ -49,7 +49,7 @@
             </a>
             
             <!-- Save button -->
-            <a class="bookmark-button">
+            <a class="bookmark-button" title="Save">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 511.95" class="icon" aria-hidden="true" focusable="false" style="vertical-align: -0.125em;">
                     <g id="bookmarkFiller" {% if not saved %} style="display: none;" {% endif %}>
                         <path 
@@ -69,26 +69,28 @@
             </a>
 
             <!-- Share button -->
-            <a class="share-button" link="{{ link_recipe }}">
+            <a class="share-button" link="{{ link_recipe }}" title="Share">
                 <i class="fa-regular fa-2x fa-share-from-square"></i>
             </a>
 
             <!-- Modify button -->
-            <a class="remix-edit-button">
+            <a class="remix-edit-button"
                 {% if remix %}
+                title="Remix">
                     <i class="fa-regular fa-2x fa-pen-to-square"></i>
                 {% else %}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384">
+                title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 383.98 383.98">
                         <path 
                             id="editRecipe" 
                             fill="currentColor"
-                            d="M16.46,384A16.47,16.47,0,0,1,0,367.54V275.78a16.58,16.58,0,0,1,4.83-11.63L251.53,17.5a59.69,59.69,0,0,1,84.41,0l0,0L366.5,48a59.7,59.7,0,0,1,0,84.42l0,0L119.87,379.17A16.38,16.38,0,0,1,108.22,384ZM32.92,282.59v68.49h68.47L275,177.49,206.51,109Z" 
-                        />
+                            d="M16.46,384A16.47,16.47,0,0,1,0,367.52V275.77a16.58,16.58,0,0,1,4.83-11.63L251.51,17.5a59.7,59.7,0,0,1,84.42,0l0,0L366.48,48a59.7,59.7,0,0,1,0,84.42l0,0L119.86,379.15A16.38,16.38,0,0,1,108.21,384ZM32.92,282.57v68.49h68.47L275,177.48,206.5,109ZM298.26,154.22l45-45a26.85,26.85,0,0,0,0-37.9L312.7,40.72a26.81,26.81,0,0,0-37.9,0l-45,45Z" 
+                            />
                     </svg>
                 {% endif %}
             </a>
 
-            <a class="download-button">
+            <a class="download-button" title="Download">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 635.75 800.75" class="icon" aria-hidden="true" focusable="false" style="vertical-align: -0.125em;">
                     <g id="fileDownload">
                         <path 
