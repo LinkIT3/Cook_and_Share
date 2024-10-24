@@ -2,53 +2,55 @@
 
 {% load static %}
 
-{% block head %}
+{% block style %}
     <!-- #region css import -->
-        <!-- #region Logo font -->
+            <!-- #region Logo font -->
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap">
         <!-- #endregion -->
         
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />  <!-- style select2  -->
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'recipe/css/select2.min.css' %}"/>  <!-- style select2  -->
             
         <!-- #region custom css -->
-            <link rel="stylesheet" href="{% static 'css/style_navbar.css' %}">              <!-- style navbar -->
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_navbar.css' %}">              <!-- style navbar -->
             
-            <link rel="stylesheet" href="{% static 'css/style_recipe_page.css' %}">
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_recipe_page.css' %}">
             
             {% if user.is_authenticated %}
-                <link rel="stylesheet" href="{% static 'recipe/css/style_new_recipe.css' %}">   <!-- style new recipe page -->
+                <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'recipe/css/style_new_recipe.css' %}">   <!-- style new recipe page -->
             {% endif %}
 
-            <link rel="stylesheet" href="{% static 'css/style_profile_page.css' %}">        <!-- style profile page -->
-            <link rel="stylesheet" href="{% static 'css/style_settings_page.css' %}">       <!-- style settings -->
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_profile_page.css' %}">        <!-- style profile page -->
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_settings_page.css' %}">       <!-- style settings -->
 
-            <link rel="stylesheet" href="{% static 'recipe/css/style_card.css' %}">         <!-- stylr recipe card -->
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'recipe/css/style_card.css' %}">         <!-- stylr recipe card -->
         <!-- #endregion -->
     <!-- #endregion -->
-    
-    <!-- #region js import -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> <!-- script select2 -->
-        
+{% endblock style %}
+
+{% block important_script %}
+    <script src="{% static 'recipe/js/select2.min.js' %}"></script> <!-- script select2 -->
+{% endblock important_script %}
+
+{% block script %}
+    <!-- #region js import -->        
         <!-- #region custom js -->
-            <script src="{% static 'js/script_navbar.js' %}"></script>              <!-- script navbar -->
-            {% comment %} <script src="{% static 'js/script_change_page.js' %}"></script>         <!-- script change page --> {% endcomment %}
+            <script async src="{% static 'js/script_navbar.js' %}"></script>              <!-- script navbar -->
             
-            <script src="{% static 'js/script_recipe_page.js' %}"></script>         <!-- script show srecipe -->
+            <script async src="{% static 'js/script_recipe_page.js' %}"></script>               <!-- script show srecipe -->
 
             {% if user.is_authenticated %}
-                <script src="{% static 'recipe/js/script_new_recipe.js' %}"></script>   <!-- script new recipe page -->
+                <script async src="{% static 'recipe/js/script_new_recipe.js' %}"></script>     <!-- script new recipe page -->
             {% endif %}
 
-            <script src="{% static 'js/script_profile_page.js' %}"></script>        <!-- script profile page -->
-            <script src="{% static 'js/script_settings_page.js' %}"></script>       <!-- script settings -->
+            <script async src="{% static 'js/script_profile_page.js' %}"></script>              <!-- script profile page -->
+            <script async src="{% static 'js/script_settings_page.js' %}"></script>             <!-- script settings -->
             
-            <script src="{% static 'recipe/js/script_card.js' %}"></script>       <!-- script recipe card -->
+            <script async src="{% static 'recipe/js/script_recipe_button.js' %}"></script>       <!-- script recipe card -->
         <!-- #endregion -->
     <!-- #endregion -->
-
-{% endblock head %}
+{% endblock script%}
 
 {% block title %} Cook & Share {% endblock title %} 
 

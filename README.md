@@ -4,18 +4,17 @@ Progetto per il corso di Tecnologie Web
 
 ### Funzionalità da aggiungere
 - [creazione diagramma del database](https://www.youtube.com/watch?v=yvf_J225iM8)
+
 ---
+
 ### TODO
 
 #### Pagine
-- creare la pagina della ricetta
-
+- creare la pagina dell'utente
 <br>
 
-#### Card Ricetta
-- funzione pulsante di download
-
-<br>
+#### Creazione ricetta
+- (opzionale) alla pressione della selezione dell'ingrediente impostare il focus sul campo di scrittura
 
 #### Profilo
 - muovere le ricette salvate nel profilo

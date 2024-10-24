@@ -119,8 +119,16 @@ def load_page(request, recipe_id=None):
             for ingredient in ingredients_list:
                 new_recipe.ingredient.add(Ingredient.objects.get(pk=ingredient.id))
             
+            if remix:
+                new_recipe.original_recipe = recipe
+                messages.success(request, 'Your remix is created!')
+            elif edit:
+                messages.success(request, 'Your recipe is updated!')
+            else:
+                messages.success(request, 'Your recipe is created!')
+
             request.user.recipes_created.add(Recipe.objects.get(pk=new_recipe.id))
-            messages.success(request, 'Your recipe is created!')
+
 
         context = {
             "homepage": homepage,
@@ -219,6 +227,8 @@ def load_recipe_card(request, extra_path=None):
         link_recipe = "http://127.0.0.1:8000/recipe/" + str(recipe_id) + "/" + recipe.title.lower().replace(" ", "-")
         remix = True
         
+        pdf_name = recipe.title.lower().replace(" ", "-") + "_by_" + author.nickname + ".pdf"
+        
         if request.user.recipes_created.filter(id=recipe_id).exists():
             remix = False
             
@@ -227,7 +237,8 @@ def load_recipe_card(request, extra_path=None):
                                                             'liked': liked,
                                                             'saved': saved,
                                                             'link_recipe': link_recipe,
-                                                            'remix': remix
+                                                            'remix': remix,
+                                                            'pdf_name': pdf_name
                                                         }).content.decode('utf-8')
         
         return JsonResponse({'html': html}, status=200)
@@ -320,3 +331,53 @@ def update_saved(request):
             return JsonResponse({'error': 'Unable to update save'}, status=404)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+def load_recipe_page(request, recipe_id, extra_path=None):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        
+        try:
+            recipe_id = data.get('id')
+        except KeyError:
+            return JsonResponse({'error': 'Recipe ID not provided'}, status=400)
+        
+        try:
+            recipe = Recipe.objects.get(id=recipe_id)
+        except Recipe.DoesNotExist:
+            return JsonResponse({'error': 'Recipe not found'}, status=404)
+        
+        try:
+            author = recipe.author.all()[0]
+        except Exception:
+            return JsonResponse({'error': 'Author not found'}, status=404)
+
+        html = render(request, 'recipe/page/page.html', {   'recipe': recipe,
+                                                            'author': author,
+                                                            'pdf': True
+                                                        }).content.decode('utf-8')
+
+        return JsonResponse({'html': html}, status=200)
+    
+    recipe = Recipe.objects.get(id=recipe_id)
+    author = recipe.author.all()[0]
+    original_recipe = None
+    original_recipe_link = None
+    original_author = None
+    
+    if recipe.original_recipe != None:
+        original_recipe = Recipe.objects.get(id=recipe.original_recipe.id)
+        original_recipe_link = '/recipe/' + str(original_recipe.id) + '/' + original_recipe.title.lower().replace(" ", "-")
+        original_author = original_recipe.author.all()[0]
+    
+    context = { 'recipe': recipe,
+                'author': author,
+                'original_recipe': original_recipe,
+                'original_recipe_link': original_recipe_link,
+                'original_author': original_author
+                }
+    return render(request, 'recipe/page/page.html', context)
+

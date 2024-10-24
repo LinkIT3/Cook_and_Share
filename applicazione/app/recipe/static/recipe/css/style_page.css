@@ -1,0 +1,83 @@
+/* .ingredient-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 40vw;
+} */
+
+a{
+    text-decoration: none;
+    color: inherit !important;
+}
+
+.food-critic-icon{
+    color: rgba(16, 16, 214, 0.7) !important;
+    margin-left: .5vw;
+}
+
+.author-pic{
+    width: 1.5em;
+    height: 1.5em;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: .1rem;
+    margin-right: .3rem;
+}
+
+.original{
+    margin-bottom: 2rem;
+}
+
+img.dish_pic{
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    will-change: border-radius;
+}
+
+td:first-child{
+    padding-right: 2rem !important;
+}
+
+td:last-child{
+    text-align: right;
+}
+
+div.button{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+[class$="-button"]{
+    text-decoration: none;
+    color: rgba(33, 37, 41, 0.75) !important;
+    cursor: pointer;
+}
+
+[id$="Filler"]{
+    fill: var(--bs-primary) !important;
+}
+
+[class$="-button"] > svg{
+    width: 2rem;
+    height: 2rem;
+} 
+
+[class$="-button"] > i.fa-regular{
+    width: 2rem !important;
+    height: 2rem !important;
+}
+
+svg.icon{
+    color: #595c5f;
+}
+
+
+.description, .ingredients, .text{
+    page-break-inside: avoid;
+}

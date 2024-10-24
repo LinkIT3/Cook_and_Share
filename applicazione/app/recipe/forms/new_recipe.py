@@ -95,6 +95,6 @@ class NewRecipeForm(forms.ModelForm):
                     ingredient_quantity[ingredient.name] = quantity
         
         cleaned_data['ingredients'] = ingredients
-        cleaned_data['ingredient_quantity'] = ingredient_quantity    
+        cleaned_data['ingredient_quantity'] = ingredient_quantity
         
         return cleaned_data

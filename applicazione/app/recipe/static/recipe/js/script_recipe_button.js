@@ -1,18 +1,22 @@
-$('.card').ready(function() {
-    $('.page').on('click', '.like-button', function() {
+$(document).ready(function() {
+    $('body').on('click', '.like-button', function() {
         toggleLike($(this));
     });
 
-    $('.page').on('click', '.bookmark-button', function() {
+    $('body').on('click', '.bookmark-button', function() {
         toggleSave($(this));
     });
 
-    $('.page').on('click', '.share-button', function() {
+    $('body').on('click', '.share-button', function() {
         copyLink($(this));
     });
 
-    $('.page').on('click', '.remix-edit-button', function() {
+    $('body').on('click', '.remix-edit-button', function() {
         remix_editRecipe($(this));
+    });
+
+    $('body').on('click', '.download-button', function() {
+        downloadRecipe($(this));
     });
 });
 
@@ -20,7 +24,7 @@ function toggleLike(item){
     $.ajax({
         url: 'toggle_liked/',
         type: 'post',
-        data: JSON.stringify({id: item.closest('.card').attr('id')}),
+        data: JSON.stringify({id: item.closest('.recipe').attr('id')}),
         contentType: "application/json",
         headers: {
             "X-CSRFToken": getCookie('csrftoken')
@@ -48,7 +52,7 @@ function toggleSave(item){
     $.ajax({
         url: 'toggle_saved/',
         type: 'post',
-        data: JSON.stringify({id: item.closest('.card').attr('id')}),
+        data: JSON.stringify({id: item.closest('.recipe').attr('id')}),
         contentType: "application/json",
         headers: {
             "X-CSRFToken": getCookie('csrftoken')
@@ -102,7 +106,34 @@ function copyLink(item){
 }
 
 function remix_editRecipe(item){
-    const url = 'remix_edit_recipe/' + item.closest('.card').attr('id') +'/';
+    const url = window.location.origin + '/remix_edit_recipe/' + item.closest('.recipe').attr('id') +'/';
     
     window.location.href = url;
+}
+
+function downloadRecipe(item){
+    const regex = /\/recipe\/\d+\/(.*)$/;
+    filename = item.attr("pdf-name");
+
+    $.ajax({
+        url: 'recipe/' + item.closest('.recipe').attr('id') + '/',
+        type: 'post',
+        data: JSON.stringify({id: item.closest('.recipe').attr('id')}),
+        contentType: "application/json",
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')
+        },
+
+        success: function (data) {
+            var opt = {
+                margin:       0.5,
+                filename:     filename,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 3, useCORS: true},
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().from(data.html).set(opt).save();
+        }
+    });
 }

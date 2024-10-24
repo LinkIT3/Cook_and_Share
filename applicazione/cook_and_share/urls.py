@@ -26,13 +26,16 @@ urlpatterns = [
     path('select2/', include('django_select2.urls')),
     path('new_ingredient/', new_ingredient, name='new_ingredient'),
     
-    path("recipes-page/", getRecipes, name='recipes_page'),
-    path('<path:extra_path>/recipes-page/', getRecipes, name='recipes_page_exta_path'),
+    path("get-recipes/", getRecipes, name='get-recipes'),
+    path('<path:extra_path>/get-recipes/', getRecipes, name='get-recipes_exta_path'),
     path('load-recipe-card/', load_recipe_card, name='load_recipe_card'),
     path('<path:extra_path>/load-recipe-card/', load_recipe_card, name='load_recipe_card_extra_path'),
     path('toggle_liked/', update_liked, name='toggle_liked'),
     path('toggle_saved/', update_saved, name='toggle_saved'),
     path('remix_edit_recipe/<int:recipe_id>/', load_page, name="remix-edit-recipe"),
+    
+    path('recipe/<int:recipe_id>/', load_recipe_page, name="recipe_page"),
+    path('recipe/<int:recipe_id>/<path:extra_path>', load_recipe_page, name="recipe_page_extra_path"),
 ]
 
 if settings.DEBUG:

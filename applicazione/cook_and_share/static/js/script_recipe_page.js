@@ -80,7 +80,7 @@ class Pagination {
 function loadPage(page) {
     let pag = new Pagination()
     $.ajax({
-        url: 'recipes-page/',
+        url: 'get-recipes/',
         type: 'post',
         data: JSON.stringify({page: page}),
         contentType: "application/json", 
@@ -103,7 +103,7 @@ function loadPage(page) {
     });
 }
 
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function() {
     loadPage(1);
 });
 

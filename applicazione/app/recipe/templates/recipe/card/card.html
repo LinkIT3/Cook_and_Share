@@ -1,4 +1,4 @@
-<div class="card mb-3" id="{{ recipe.id }}">
+<div class="card mb-3 recipe" id="{{ recipe.id }}">
     <a href="{{ link_recipe }}" class="redirect-recipe">
         <img src="{{ recipe.dish_pic.url }}" class="card-img-top" alt="{{ recipe.title }} pic">
     </a>
@@ -90,7 +90,8 @@
                 {% endif %}
             </a>
 
-            <a class="download-button" title="Download">
+            <!-- Download button -->
+            <a class="download-button" pdf-name="{{ pdf_name }}" title="Download">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 635.75 800.75" class="icon" aria-hidden="true" focusable="false" style="vertical-align: -0.125em;">
                     <g id="fileDownload">
                         <path 
