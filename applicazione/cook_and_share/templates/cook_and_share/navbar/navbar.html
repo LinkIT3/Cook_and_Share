@@ -18,14 +18,15 @@
                             </a>
                         </li>
                         
-                        <li class="nav-item trending" id="trending">
-                            <a href="#trending" class="nav-link">
-                                <i class="fa-solid fa-arrow-trend-up"></i>
-                                Trending
-                            </a>
-                        </li>
-                        
                         {% if user.is_authenticated %}
+                            <li class="nav-item trending" id="trending">
+                                <a href="#trending" class="nav-link">
+                                    <i class="fa-solid fa-arrow-trend-up"></i>
+                                    Trending
+                                </a>
+                            </li>
+                        {% endif %}
+                        
                             <li class="nav-item last" id="last">
                                 <a href="#last" class="nav-link">
                                     <i class="fa-solid fa-newspaper"></i>
@@ -33,13 +34,14 @@
                                 </a>
                             </li>
                             
-                            <li class="nav-item saved" id="saved">
-                                <a href="#saved" class="nav-link">
-                                    <i class="fa-solid fa-book-bookmark"></i>
-                                    Saved
+                            <li class="nav-item search" id="search">
+                                <a href="#search" class="nav-link">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Search
                                 </a>
                             </li>
-                            
+                        
+                        {% if user.is_authenticated %}
                             <li class="nav-item new-recipe" id="new-recipe">
                                 <a href="#new-recipe" class="nav-link">
                                     <i class="fa-solid fa-plus"></i>
@@ -51,7 +53,7 @@
                         <li class="nav-item profile" id="profile">
                             <a href="#profile" class="nav-link profile">        
                                 <!-- If authenticated show the profile picture -->
-                                {% if user.is_authenticated and profile_pic_setted %}
+                                {% if user.is_authenticated %}
                                     <img src="{{ profile_pic_path }}" alt="profile picture" class="profile_pic_navbar"/>
                                 {% else %}
                                     <i class="fa-solid fa-user"></i>

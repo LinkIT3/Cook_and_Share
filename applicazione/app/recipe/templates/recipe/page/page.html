@@ -3,22 +3,18 @@
 {% load static %}
 
 {% block style %}
-    <!-- #region Logo font -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap">
-    <!-- #endregion -->    
-
-    {% if not pdf %}
-        <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_navbar.css' %}">       <!-- style navbar -->
-    {% endif %}
+    {% if pdf %}
+        <style>
+            header, .top-page-spacer{
+                display: none;
+            }
+        </style>
+    {% endif %}    
     
     <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'recipe/css/style_page.css' %}">
 {% endblock style %}
 
 {% block script %}
-    <script async src="{% static 'js/script_navbar.js' %}" ></script>
-    
     {% if not pdf %}
         <script async src="{% static 'recipe/js/script_recipe_button.js'%}"></script>
     {% endif %}
@@ -27,10 +23,6 @@
 {% block title %} Cook & Share {% endblock title %} 
 
 {% block content %}
-    {% if not pdf %}
-        {% include "navbar/navbar.html" %}
-    {% endif %}
-
     <div class="container mt-3 recipe" id="{{ recipe.id }}">
         <h1 class="title mb-3">{{ recipe.title }}</h1>
         
@@ -184,3 +176,4 @@
         {% endif %}
     </div>
 {% endblock content %}
+

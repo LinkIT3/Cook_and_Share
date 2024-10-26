@@ -26,8 +26,9 @@ urlpatterns = [
     path('select2/', include('django_select2.urls')),
     path('new_ingredient/', new_ingredient, name='new_ingredient'),
     
-    path("get-recipes/", getRecipes, name='get-recipes'),
+    path('get-recipes/', getRecipes, name='get-recipes'),
     path('<path:extra_path>/get-recipes/', getRecipes, name='get-recipes_exta_path'),
+    
     path('load-recipe-card/', load_recipe_card, name='load_recipe_card'),
     path('<path:extra_path>/load-recipe-card/', load_recipe_card, name='load_recipe_card_extra_path'),
     path('toggle_liked/', update_liked, name='toggle_liked'),
@@ -36,7 +37,10 @@ urlpatterns = [
     
     path('recipe/<int:recipe_id>/', load_recipe_page, name="recipe_page"),
     path('recipe/<int:recipe_id>/<path:extra_path>', load_recipe_page, name="recipe_page_extra_path"),
-]
+
+    path('user/<str:nickname>/', user_page, name="user_page"),
+    path('<path:extra_path>/user/<str:nickname>/', user_page, name="user_page_extra_path"),
+]   
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

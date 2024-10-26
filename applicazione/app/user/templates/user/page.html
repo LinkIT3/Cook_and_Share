@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% csrf_token %}
+
+{% block script %}
+    {% include "user/user_page.html" with script=True %}
+{% endblock script%}
+
+{% block title %}
+    Cook & Share - {{ user.nickname }}'s profile
+{% endblock title %}
+
+
+{% block content %}
+    {% include "user/user_page.html" with content=True %}
+{% endblock content %}

@@ -34,7 +34,10 @@ window.addEventListener("popstate", function() {
 });
 
 function remove_hash(){
-    if(window.location.pathname.includes('/recipe/')){
+    if( window.location.pathname.includes('/signup/') ||
+        window.location.pathname.includes('/recipe/') || 
+        window.location.pathname.includes('/user/')){
+        
         const new_url = window.location.href.replace(/#.*$/, '');
         window.history.replaceState(null, null, new_url);
     }
@@ -50,7 +53,10 @@ function set_active(item){
 }
 
 function bg_animation(){
-    if(window.location.pathname.includes('/recipe/'))
+    if( window.location.pathname.includes('/signup/') ||
+        window.location.pathname.includes('/recipe/') || 
+        window.location.pathname.includes('/user/'))
+        
         return;
 
     const movingBg = document.querySelector('.moving-bg');

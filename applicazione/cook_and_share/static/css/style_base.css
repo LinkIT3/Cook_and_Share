@@ -2,6 +2,10 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 
+a{
+    text-decoration: none !important;
+}
+
 .messages{
     position: fixed;
     bottom: 0;

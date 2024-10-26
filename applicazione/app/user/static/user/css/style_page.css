@@ -87,6 +87,53 @@
     transform: translateX(-100vw);
 }
 
+[class^="container-recipes-"]{
+    max-width: 95vw !important;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: flex-start;
+    align-items: stretch;
+    gap: 1rem;
+}
+
+div.card{
+    min-width: 20rem;
+    max-width: 25rem;
+}
+
+.change-category{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4rem;
+
+    margin-bottom: 3rem;
+}
+
+.category-button, .liked-button > svg{
+    width: 2rem !important;
+    height: 2rem !important;   
+}
+
+.active{
+    color: var(--bs-blue) !important;
+}
+
+[id^="pagination-container-"]{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+}
+
+button.follow{
+    margin-top: 1rem;
+    margin-left: 2vw;
+}
 
 @media(orientation: portrait){
     
@@ -104,7 +151,7 @@
     .profile-info{
         gap: 3vw;
     }
-    
+
     .interactive{
         flex-direction: column;
         right: 1vw;

@@ -3,26 +3,16 @@
 {% load static %}
 
 {% block style %}
-    <!-- #region css import -->
-            <!-- #region Logo font -->
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap">
-        <!-- #endregion -->
-        
+    <!-- #region css import -->        
             <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'recipe/css/select2.min.css' %}"/>  <!-- style select2  -->
             
-        <!-- #region custom css -->
-            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_navbar.css' %}">              <!-- style navbar -->
-            
-            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_recipe_page.css' %}">
-            
+        <!-- #region custom css -->                        
             {% if user.is_authenticated %}
                 <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'recipe/css/style_new_recipe.css' %}">   <!-- style new recipe page -->
             {% endif %}
 
-            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_profile_page.css' %}">        <!-- style profile page -->
-            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_settings_page.css' %}">       <!-- style settings -->
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'user/css/style_page.css' %}">        <!-- style profile page -->
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'user/css/style_settings_page.css' %}">       <!-- style settings -->
 
             <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'recipe/css/style_card.css' %}">         <!-- stylr recipe card -->
         <!-- #endregion -->
@@ -35,17 +25,12 @@
 
 {% block script %}
     <!-- #region js import -->        
-        <!-- #region custom js -->
-            <script async src="{% static 'js/script_navbar.js' %}"></script>              <!-- script navbar -->
-            
-            <script async src="{% static 'js/script_recipe_page.js' %}"></script>               <!-- script show srecipe -->
+        <!-- #region custom js -->            
+            {% comment %} <script async src="{% static 'js/script_recipe_page.js' %}"></script>               <!-- script show srecipe --> {% endcomment %}
 
             {% if user.is_authenticated %}
                 <script async src="{% static 'recipe/js/script_new_recipe.js' %}"></script>     <!-- script new recipe page -->
             {% endif %}
-
-            <script async src="{% static 'js/script_profile_page.js' %}"></script>              <!-- script profile page -->
-            <script async src="{% static 'js/script_settings_page.js' %}"></script>             <!-- script settings -->
             
             <script async src="{% static 'recipe/js/script_recipe_button.js' %}"></script>       <!-- script recipe card -->
         <!-- #endregion -->
@@ -55,26 +40,65 @@
 {% block title %} Cook & Share {% endblock title %} 
 
 {% block content %}
-    {% include "navbar/navbar.html" %}
-
     {% block home_page %}
-        {% include "recipe/test_recipe_homepage.html" %}
+        {% comment %} {% include "recipe/test_recipe_homepage.html" %} {% endcomment %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                loadPage(1, 'home', "home");
+            });
+        </script>
+
+        <div class="home page container" id="home-page" style="display: none;">
+            <div class="container-recipes-home container mt-3 mb-5"></div>
+            
+            <div id="pagination-container-home"></div>
+        </div>
     {% endblock home_page %}
     
-    {% block trending_page %}{% endblock trending_page %}
+    {% block trending_page %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                loadPage(1, 'trending', "trending");
+            });
+        </script>
+
+        <div class="trending page container" id="trending-page" style="display: none;">
+            <div class="container-recipes-trending container mt-3 mb-5"></div>
+            
+            <div id="pagination-container-trending"></div>
+        </div>
+    {% endblock trending_page %}
     
-    {% block last_page %}{% endblock last_page %}
+    {% block last_page %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                loadPage(1, 'last', "last");
+            });
+        </script>
+
+        <div class="last page container" id="last-page" style="display: none;">
+            <div class="container-recipes-last container mt-3 mb-5"></div>
+            
+            <div id="pagination-container-last"></div>
+        </div>
+    {% endblock last_page %}
+    
+    {% block saved_page %}{% endblock saved_page %}
     
     {% if user.is_authenticated %}
-        {% block saved_page %}{% endblock saved_page %}
-    
         {% block new_recipe_page %}
             {% include "recipe/new_recipe/new_recipe.html" %}
         {% endblock new_recipe_page %}
     {% endif %}
 
     {% block profile_page %}
-        {% include "./profile-page/profile.html" %}
+        {% if user.is_authenticated %}
+            <div class="page profile" id="profile-page" style="display: none;">
+                {% include "user/user_page.html" with all=True %}
+            </div>
+        {% else %}
+            {% include "./login-signup.html" %}
+        {% endif %}
     {% endblock profile_page %}
     
 {% endblock content %}

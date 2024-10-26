@@ -5,7 +5,7 @@
     width: 40vw;
 } */
 
-a{
+a.original-recipe-link{
     text-decoration: none;
     color: inherit !important;
 }
@@ -80,4 +80,6 @@ svg.icon{
 
 .description, .ingredients, .text{
     page-break-inside: avoid;
+    page-break-after: auto;
+    
 }

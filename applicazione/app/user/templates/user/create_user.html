@@ -4,12 +4,13 @@
 {% load crispy_forms_tags %}
 
 {% block head %}
-    <link rel="stylesheet" href="{% static 'user/css/style.css' %}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{% static 'user/css/style_create_user.css' %}">
+
     <script>
         const checkUsernameUrl = "{% url 'check_nickname' %}";
         const checkEmailUrl = "{% url 'check_email' %}";
     </script>
+
     <script src="{% static 'user/js/check.js' %}"></script>
 {% endblock head %}
 

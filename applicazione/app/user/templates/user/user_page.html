@@ -1,0 +1,170 @@
+{% load static %}
+
+{% if all or script %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            loadPage(1, 'user', "profile", "{{ user.id }}");
+            loadPage(1, 'saved', "saved", "{{ user.id }}");
+            loadPage(1, 'liked', "liked", "{{ user.id }}");
+        });
+
+        $('body').on('click', '.created-button', function() {
+            $('.profile-group .group').filter(":visible").hide();
+            $('.change-category .category-button').filter(".active").removeClass('active');
+            $('.profile-recipes').show();
+            $('.created-button').addClass('active');
+        });
+
+        $('body').on('click', '.saved-button', function() {
+            $('.profile-group .group').filter(":visible").hide();
+            $('.change-category .category-button').filter(".active").removeClass('active');
+            $('.profile-saved').show();
+            $('.saved-button').addClass('active');
+        });
+
+        $('body').on('click', '.liked-button', function() {
+            $('.profile-group .group').filter(":visible").hide();
+            $('.change-category .category-button').filter(".active").removeClass('active');
+            $('.profile-liked').show();
+            $('.liked-button').addClass('active');
+        });
+
+
+    </script>
+
+    {% if same_user %}
+        <script async src="{% static 'user/js/script_profile_page.js' %}"></script>              <!-- script profile page -->
+        <script async src="{% static 'user/js/script_settings_page.js' %}"></script>             <!-- script settings -->
+    {% endif %}
+{% endif %}
+
+{% if all or content%}
+    {% load crispy_forms_tags %}
+
+    <div class="top-profile">        
+        <div class="container mt-3 mb-5 container-profile">
+            <div class="profile-info">
+                <div class="nick-pic profile-item">
+                    <img src="{{ profile_pic_path }}" alt="profile picture" class="profile-pic"></img>
+                </div>
+                
+                <div class="following profile-item">
+                    <div class="following-number">{{ user.followed.count }}</div>
+                    <div class="following-text">followed</div> 
+                </div>
+                
+                <div class="followers profile-item">
+                    <div class="followers-number">{{ user.followers.count }}</div>
+                    <div class="followers-text">followers</div> 
+                </div>
+                
+                
+                <div class="recipes profile-item">
+                    <div class="recipes-number">{{ number_of_recipes }}</div>
+                    <div class="recipes-text">recipes</div> 
+                </div>
+            </div>
+            
+            <div class="nickname">
+                {{ user.nickname }}
+                {% if user.food_critic %}
+                    <i class="fa-solid fa-utensils food-critic-icon"></i>
+                {% endif %}
+            </div>
+
+            {% if not same_user %}
+                <button class="btn btn-primary follow">
+                    {% if follow %}
+                        Unfollow
+                    {% else %}
+                        Follow
+                    {% endif %}
+                </button>
+            {% endif %}
+        </div>
+        
+        {% if same_user %}
+            <!-- Button for loggout and settings -->
+            <div class="interactive">
+                <a class="settings-show">
+                    <i class="fa-solid fa-gear fa-xl"></i>
+                </a>
+                <a href ="{% url 'logout' %}" class="btn btn-primary logout">Log out</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="content-profile">
+        <hr>
+        <div class="change-category">
+            <a class="created-button category-button active" title="Created">
+                <i class="fa-solid fa-2x fa-table-cells-large"></i>
+            </a>
+
+            <a class="saved-button category-button" title="Saved">
+                <i class="fa-solid fa-2x fa-book-bookmark"></i>
+            </a>
+
+            <a class="liked-button category-button" title="Liked">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 912.8 992.8" style="vertical-align: -0.125em;">
+                    <g>
+                        <path
+                            fill="currentColor"
+                            d="M456.4,992.8c-51.1,0-94-17.2-127.6-51.2s-50.6-77.9-50.6-130.8v-5.9c-34.1,20.4-68.9,30.7-103.9,30.7-47.5,0-89-18.8-123.3-56-33.9-36.7-51-80-51-128.9C0,588.2,33.8,536.6,100.4,497c-29.2-16.1-52.3-35.3-68.8-57.2C10.6,412,0,379.4,0,343c0-23.5,5-47.2,14.9-70.5,13.4-33.1,34.6-60.4,62.9-80.9,30.1-22.2,62.2-33.4,95.7-33.4,32.2,0,67.3,10.9,104.8,32.5.1-56.6,16-102.8,47-137.4C357,17.9,401.2,0,456.4,0c51.1,0,94.1,17.4,127.7,51.7s50.5,78,50.5,130.2v6.6c31.4-20.2,66.7-30.4,105.3-30.4,48.1,0,89.5,19.6,123.2,58.3,33,37.9,49.7,80.5,49.7,126.5,0,62-33.7,113.3-100.4,152.8q44,24.3,68.8,57.4c21,28,31.6,60.8,31.6,97.5,0,48.1-17,91.2-50.4,128.2-34,37.6-75,56.6-122,56.6-32.2,0-67.7-11.3-105.8-33.6v.3c0,55.6-15.6,101.5-46.4,136.6C556.7,974.7,512.4,992.8,456.4,992.8Z"
+                        />
+                    </g>
+                </svg>
+            </a>
+        </div>
+
+        <div class="profile-group">
+            <div class="profile-recipes group">
+                <div class="container-recipes-profile container mt-3 mb-3"></div>
+                
+                <div id="pagination-container-profile"></div>
+            </div>
+
+            <div class="profile-saved group" style="display: none;">
+                <div class="container-recipes-saved container mt-3 mb-3"></div>
+                
+                <div id="pagination-container-saved"></div>
+            </div>
+
+            <div class="profile-liked group" style="display: none;">
+                <div class="container-recipes-liked container mt-3 mb-3"></div>
+                
+                <div id="pagination-container-liked"></div>
+            </div>
+        </div>
+    </div>
+
+    {% if same_user %}
+        <!-- Settings -->
+        <div class="settings-div border border-2 rounded border-primary bg-secondary-subtle sticky"> 
+            <div class="settings-page container mt-3 mb-5" id="settings-page">
+                    <a class="settings-hide"><i class="fa-solid fa-x fa-xl"></i></a>
+                
+                <div class="profile-pic-form">
+                    <form method="post" enctype="multipart/form-data" id="profile_pic_form">
+                        {% csrf_token %}
+                        {% crispy profile_pic_form %}
+                    </form>
+                </div>
+                
+                <div class="name-form">
+                    <form method="post" id="name_form">
+                        {% csrf_token %}
+                        {% crispy name_form %}
+                    </form>
+                </div>
+                
+                <div class="password-form">
+                    <form method="post" id="password_form">
+                        {% csrf_token %}
+                        {% crispy password_form %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

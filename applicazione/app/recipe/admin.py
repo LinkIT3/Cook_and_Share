@@ -27,7 +27,7 @@ class RecipeAdmin(admin.ModelAdmin):
     
     readonly_fields = ('author_link',)
     list_display = ['id', 'title', 'author_link', 'creation_date', 'last_edit_date']
-    list_display_links = ('id', 'author_link',)
+    list_display_links = ('id', 'title', 'author_link',)
     ordering = ['id', 'title', 'creation_date', 'last_edit_date']
     
     
