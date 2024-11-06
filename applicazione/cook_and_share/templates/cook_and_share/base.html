@@ -32,16 +32,49 @@
             <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'recipe/css/style_card.css' %}">  <!-- style recipe card -->
 
             <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'user/css/style_page.css' %}">    <!-- style user page -->
+
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'css/style_search.css' %}">
+
+            <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'user/css/style_card.css' %}">
             
             {% block style %}{% endblock style %}
         <!-- #endregion -->
 
         <!-- #region script -->
+            <script>
+                {% if user.is_authenticated %}
+                    const authenticated = true;
+                {% else %}
+                    const authenticated = false;
+                {% endif %}
+            </script>
+
             <!-- #region jquery-->
                 <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
             <!-- #endregion -->
 
+            <script>
+                function getCookie(name) {
+                    var cookieValue = null;
+                    
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+
+                        for (var i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                } 
+            </script>
+
             <script src="{% static 'recipe/js/pagination.js' %}"></script>                                    <!-- script recipe pagination -->
+            <script src="{% static 'recipe/js/script_recipe_button.js' %}"></script>
             
             <script 
                 async 
@@ -55,9 +88,9 @@
                 async 
                 src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>     <!-- html2pdf script-->    
 
-            <script async src="{% static 'js/script_navbar.js' %}" ></script>                                       <!-- script navbar -->
+            <script async src="{% static 'js/script_navbar.js' %}"></script>                                        <!-- script navbar -->
             
-            
+            <script async src="{% static 'js/script_search.js' %}"></script>                                        <!-- script search page -->
 
             <script defer>
                 //service worker
@@ -85,7 +118,11 @@
                 // Script for change page
                 $(document).ready(function(){
                     let hash = window.location.hash.replace('#', '');
-                    const page_to_show = "{{ page_to_show }}";
+                    {% if new_recipe_page %}
+                        const page_to_show = "new-recipe"
+                    {% else %}
+                        const page_to_show = "home";
+                    {% endif %}
                     
                     if (!hash) {
                         hash = page_to_show;
@@ -96,9 +133,13 @@
                         !window.location.pathname.includes('/user/'))
                         change_page(hash);
                     
-                    $('body').on('click', '.nav-item', function() {
+                    $(document).on('click', '.nav-item', function() {
                         change_page(this.id);
                     });
+
+                    $(window).on('hashchange', function(){
+                        change_page(window.location.hash.replace('#', ''));
+                    })
                 });
                 
                 function change_page(item){

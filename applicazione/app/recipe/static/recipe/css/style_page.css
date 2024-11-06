@@ -81,5 +81,4 @@ svg.icon{
 .description, .ingredients, .text{
     page-break-inside: avoid;
     page-break-after: auto;
-    
 }

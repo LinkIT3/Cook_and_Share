@@ -21,15 +21,23 @@
                 <i class="fa-solid fa-utensils food-critic-icon"></i>
             {% endif %}
         </a>
-
-        <p class="card-text"><small class="text-body-secondary">Last update: {{ recipe.last_edit_date }}</small></p>
+        
+        {% load tz %}
+        <p class="card-text"><small class="text-body-secondary">Last update: {{ recipe.last_edit_date | localtime }}</small></p>
         
         <br>
         
         <div class="card-button">
             
             <!-- Like button -->
-            <a class="like-button" title="Like">
+            <a 
+                {% if not user.is_authenticated %}
+                    href="#profile"
+                {% endif %}    
+
+                class="like-button" 
+                title="Like"
+            >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 912.8 992.84" class="icon" aria-hidden="true" focusable="false" style="vertical-align: -0.125em;">
                     <g id="michelinLogoFiller" {% if not liked %} style="display: none;" {% endif %}>
                         <path 
@@ -49,7 +57,14 @@
             </a>
             
             <!-- Save button -->
-            <a class="bookmark-button" title="Save">
+            <a 
+                {% if not user.is_authenticated %}
+                    href="#profile"
+                {% endif %}   
+                
+                class="bookmark-button" 
+                title="Save"
+            >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 511.95" class="icon" aria-hidden="true" focusable="false" style="vertical-align: -0.125em;">
                     <g id="bookmarkFiller" {% if not saved %} style="display: none;" {% endif %}>
                         <path 
@@ -74,19 +89,25 @@
             </a>
 
             <!-- Modify button -->
-            <a class="remix-edit-button"
+            <a 
+                {% if not user.is_authenticated %}
+                    href="#profile"
+                {% endif %}   
+                
+                class="remix-edit-button"
+                
                 {% if remix %}
-                title="Remix">
-                    <i class="fa-regular fa-2x fa-pen-to-square"></i>
+                    title="Remix">
+                        <i class="fa-regular fa-2x fa-pen-to-square"></i>
                 {% else %}
-                title="Edit">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 383.98 383.98">
-                        <path 
-                            id="editRecipe" 
-                            fill="currentColor"
-                            d="M16.46,384A16.47,16.47,0,0,1,0,367.52V275.77a16.58,16.58,0,0,1,4.83-11.63L251.51,17.5a59.7,59.7,0,0,1,84.42,0l0,0L366.48,48a59.7,59.7,0,0,1,0,84.42l0,0L119.86,379.15A16.38,16.38,0,0,1,108.21,384ZM32.92,282.57v68.49h68.47L275,177.48,206.5,109ZM298.26,154.22l45-45a26.85,26.85,0,0,0,0-37.9L312.7,40.72a26.81,26.81,0,0,0-37.9,0l-45,45Z" 
-                            />
-                    </svg>
+                    title="Edit">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 383.98 383.98">
+                            <path 
+                                id="editRecipe" 
+                                fill="currentColor"
+                                d="M16.46,384A16.47,16.47,0,0,1,0,367.52V275.77a16.58,16.58,0,0,1,4.83-11.63L251.51,17.5a59.7,59.7,0,0,1,84.42,0l0,0L366.48,48a59.7,59.7,0,0,1,0,84.42l0,0L119.86,379.15A16.38,16.38,0,0,1,108.21,384ZM32.92,282.57v68.49h68.47L275,177.48,206.5,109ZM298.26,154.22l45-45a26.85,26.85,0,0,0,0-37.9L312.7,40.72a26.81,26.81,0,0,0-37.9,0l-45,45Z" 
+                                />
+                        </svg>
                 {% endif %}
             </a>
 

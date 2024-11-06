@@ -42,7 +42,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     nickname = models.CharField(verbose_name="Nickname", unique=True, null=False, blank=False, validators=[MinLengthValidator(2), valid_char_nickname], 
-                                max_length=30, db_index=True, error_messages={"unique": "This nickname is already used"})
+                                max_length=20, db_index=True, error_messages={"unique": "This nickname is already used"})
     
     email = models.EmailField(verbose_name="Email", unique=True, null=False, blank=False, db_index=True,
                                 error_messages={"unique": "This email is already used"})
@@ -61,6 +61,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     recipes_created = models.ManyToManyField("recipe.Recipe", blank=True, 
                                         related_name="author", verbose_name="Recipes created", db_index=True)
     
+    # For the recommendation system
+    favorite_ingredients = models.JSONField(default=dict)
+    
     is_staff = models.BooleanField(default=False)
     
     objects = CustomUserManager()
@@ -71,5 +74,27 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return str(self.nickname)
     
+    
     class Meta():
         verbose_name_plural = "Users"    
+    
+    
+    def update_profile_add(self, ingredients):
+        for ingredient in ingredients:
+            if ingredient in self.favorite_ingredients:
+                self.favorite_ingredients[ingredient] += 1
+            else:
+                self.favorite_ingredients[ingredient] = 1
+        
+        self.save()
+
+
+    def update_profile_remove(self, ingredients):
+        for ingredient in ingredients:
+            if ingredient in self.favorite_ingredients:
+                if self.favorite_ingredients[ingredient] == 1:
+                    self.favorite_ingredients.pop(ingredient)
+                else:
+                    self.favorite_ingredients[ingredient] -= 1
+        
+        self.save()

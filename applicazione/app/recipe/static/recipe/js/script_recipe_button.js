@@ -1,21 +1,23 @@
 $(document).ready(function() {
-    $('body').on('click', '.like-button', function() {
-        toggleLike($(this));
-    });
+    if(authenticated) {
+        $(document).on('click', '.like-button', function() {
+            toggleLike($(this));
+        });
 
-    $('body').on('click', '.bookmark-button', function() {
-        toggleSave($(this));
-    });
+        $(document).on('click', '.bookmark-button', function() {
+            toggleSave($(this));
+        });
 
-    $('body').on('click', '.share-button', function() {
+        $(document).on('click', '.remix-edit-button', function() {
+            remix_editRecipe($(this));
+        });
+    }
+
+    $(document).on('click', '.share-button', function() {
         copyLink($(this));
     });
 
-    $('body').on('click', '.remix-edit-button', function() {
-        remix_editRecipe($(this));
-    });
-
-    $('body').on('click', '.download-button', function() {
+    $(document).on('click', '.download-button', function() {
         downloadRecipe($(this));
     });
 });
@@ -76,33 +78,21 @@ function toggleSave(item){
     })
 }
 
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-
-function copyLink(item){
-    navigator.clipboard.writeText(item.attr('link'));
-    $('body').append($(`
-        <div class="messages">
-            <div id="alert" class="alert alert-success alert-dismissible fade show" role="alert">
-                Link copied to clipboard!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+async function copyLink(item){
+    try{
+        await navigator.clipboard.writeText(item.attr('link'));
+        $('body').append($(`
+            <div class="messages">
+                <div id="alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    Link copied to clipboard!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
-        </div>
-    `));
+        `));
+    }
+    catch(error){
+        console.error("Error while coping in clipboard:", error);
+    }
 }
 
 function remix_editRecipe(item){

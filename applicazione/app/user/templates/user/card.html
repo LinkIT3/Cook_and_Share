@@ -1,0 +1,27 @@
+<div class="user-card mb-3">
+    <div class="user-info">
+        <a href="/user/{{ name }}" class="profile-link">
+            <img src="{{ profile_pic_path }}" alt="user profile picture" class="user-pic"/>
+
+            <b class="name">{{ name }}</b>
+
+            {% if food_critic %}
+                <i class="fa-solid fa-utensils food-critic-icon"></i>
+            {% endif %}
+        </a>
+    </div>
+
+    
+    {% if not same_user and user.is_authenticated %}
+        <div class="button-follow-container">
+            <button class="btn btn-primary follow-card" id="{{ user_id }}">
+                {% if follow %}
+                    Unfollow
+                {% else %}
+                    Follow
+                {% endif %}
+            </button>
+        </div>
+    {% endif %}
+    
+</div>

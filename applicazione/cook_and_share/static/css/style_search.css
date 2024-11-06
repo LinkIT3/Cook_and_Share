@@ -1,0 +1,14 @@
+.change-search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+}
+
+a[class^="set-search-"]{
+    text-decoration: none;
+    color: rgba(33, 37, 41, 0.75);
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+}

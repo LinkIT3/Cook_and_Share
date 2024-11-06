@@ -10,18 +10,18 @@ class Pagination {
         this.name_container = name_container;
     }
     
-    async renderResults() {
-        const resultsContainer = $('.container-recipes-' + this.name_container);
+    async renderResults(resultsContainer, url) {
         resultsContainer.empty();
+
         try{
             const requests = this.results.map(result => {
                 return $.ajax({
-                    url: 'load-recipe-card/',
+                    url: url,
                     type: 'post',
                     data: JSON.stringify({id: result.id}),
                     contentType: "application/json",
                     headers: {
-                        "X-CSRFToken": this.getCookie('csrftoken')
+                        "X-CSRFToken": getCookie('csrftoken')
                     },
                 }).then(data => {
                     return data;
@@ -51,22 +51,17 @@ class Pagination {
         }
     }
 
+    renderResultsRecipes(){
+        const resultsContainer = $('.container-recipes-' + this.name_container);
+        const url = 'load-recipe-card/';
+        this.renderResults(resultsContainer, url);
+    }
 
-    getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-
-        return cookieValue;
-    }  
+    renderResultsUsers(){
+        const resultsContainer = $('.container-' + this.name_container);
+        const url = 'load-user-card/';
+        this.renderResults(resultsContainer, url);
+    }
     
     renderPagination() {
         const paginationContainer = $('#pagination-container-' +  this.name_container);
@@ -93,19 +88,28 @@ class Pagination {
         }
     }
     
-    renderAll() {
-        this.renderResults();
+    renderRecipes() {
+        this.renderResultsRecipes();
+        this.renderPagination();
+    }
+
+    renderProfiles(){
+        this.renderResultsUsers();
         this.renderPagination();
     }
 }
 
-function loadPage(page, type, name_container, user_id=null) {
-    var pag = new Pagination()
-    
-    data = {page: page, type: type}
+function loadPage(page, name, name_container, user_id=null, search_string=null) {
+    var pag = new Pagination();
+
+    data = {page: page, type: name};
 
     if (user_id != null) {
-        data['user_id'] = user_id
+        data['user_id'] = user_id;
+    }
+
+    if (search_string != null) {
+        data['search_string'] = search_string;
     }
 
     $.ajax({
@@ -114,7 +118,7 @@ function loadPage(page, type, name_container, user_id=null) {
         data: JSON.stringify(data),
         contentType: "application/json", 
         headers: {
-            "X-CSRFToken": pag.getCookie('csrftoken')
+            "X-CSRFToken": getCookie('csrftoken')
         },
         
         success: function (data) {
@@ -128,7 +132,11 @@ function loadPage(page, type, name_container, user_id=null) {
                 data.previous_page_number,
                 name_container
             );
-            pagination.renderAll();
+            
+            if(name == "search-users")
+                pagination.renderProfiles();
+            else
+                pagination.renderRecipes();
         }
     });
 }

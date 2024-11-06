@@ -31,8 +31,6 @@
             {% if user.is_authenticated %}
                 <script async src="{% static 'recipe/js/script_new_recipe.js' %}"></script>     <!-- script new recipe page -->
             {% endif %}
-            
-            <script async src="{% static 'recipe/js/script_recipe_button.js' %}"></script>       <!-- script recipe card -->
         <!-- #endregion -->
     <!-- #endregion -->
 {% endblock script%}
@@ -44,7 +42,13 @@
         {% comment %} {% include "recipe/test_recipe_homepage.html" %} {% endcomment %}
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                loadPage(1, 'home', "home");
+                loadPage(1,
+                    {% if user.is_authenticated %}
+                        'home'
+                    {% else %}
+                        'trending'
+                    {% endif %}
+                    , "home");
             });
         </script>
 
@@ -83,7 +87,11 @@
         </div>
     {% endblock last_page %}
     
-    {% block saved_page %}{% endblock saved_page %}
+    {% block search_page %}
+        <div class="search page" id="search-page" style="display: none;">
+            {% include "search/search.html" with all=True %}
+        </div>
+    {% endblock search_page %}
     
     {% if user.is_authenticated %}
         {% block new_recipe_page %}

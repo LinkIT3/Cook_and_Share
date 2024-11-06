@@ -14,12 +14,6 @@
     <link rel="preload" as="style" onload="this.rel='stylesheet'" href="{% static 'recipe/css/style_page.css' %}">
 {% endblock style %}
 
-{% block script %}
-    {% if not pdf %}
-        <script async src="{% static 'recipe/js/script_recipe_button.js'%}"></script>
-    {% endif %}
-{% endblock script%}
-
 {% block title %} Cook & Share {% endblock title %} 
 
 {% block content %}

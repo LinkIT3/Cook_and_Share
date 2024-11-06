@@ -1,0 +1,33 @@
+<div class="container mt-3">
+    <div class="search-field">
+        <form class="d-flex" id="form-search">
+            {% csrf_token %}
+            <input type="text" name="search" class="form-control me-2" id="input-search" placeholder="Search recipes or users" aria-label="Search">
+            <button type="submit" class="btn btn-primary search">Search</button>
+        </form>
+    </div>
+
+    <div class="change-search mt-5">
+        <a class="set-search-recipes active">
+            <i class="fa-solid fa-2x fa-scroll"></i>
+        </a>
+        
+        <a class="set-search-users">
+            <i class="fa-solid fa-2x fa-user"></i>
+        </a>
+    </div>
+
+    <div class="results mt-5">
+        <div class="results-recipes">
+            <div class="container-recipes-search-recipes container mt-3 mb-3"></div>
+            
+            <div id="pagination-container-search-recipes"></div>
+        </div>
+        
+        <div class="results-profiles group" style="display: none;">
+            <div class="container-search-users container mt-3 mb-3"></div>
+            
+            <div id="pagination-container-search-users"></div>
+        </div>
+    </div>
+</div>

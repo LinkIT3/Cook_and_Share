@@ -15,14 +15,18 @@ django-browser-reload = "==1.15.0"
 django-crispy-forms = "==2.3"
 django-select2 = "==8.2.1"
 filelock = "==3.16.1"
+fuzzywuzzy = "==0.18.0"
+levenshtein = "==0.26.1"
 packaging = "==24.1"
 pillow = "==10.4.0"
 pillow-avif-plugin = "==1.4.6"
 pipenv = "==2024.0.3"
 platformdirs = "==4.3.6"
+rapidfuzz = "==3.10.1"
 soupsieve = "==2.5"
 sqlparse = "==0.5.1"
 virtualenv = "==20.26.5"
+pytz = "*"
 
 [dev-packages]
 
