@@ -20,11 +20,21 @@ class ProfilePicForm(forms.ModelForm):
         self.helper.form_method = "post"
         self.helper.layout = Layout(
             HTML("<div class='profile-pic-form mb-3 mt-4'>"),
-                Field('profile_pic', css_class='form-control', id="formFile", accept=".avif, .jpg, .jpeg, .png, .webp"),
+                Field(
+                    'profile_pic', 
+                    css_class='form-control', 
+                    id="formFile", 
+                    accept=".avif, .jpg, .jpeg, .png, .webp"
+                ),
             HTML("</div>"),
             
             FormActions(
-                Submit('profile-pic-form', 'Submit', css_class='btn btn-primary', id="submit-btn"),
+                Submit(
+                    'profile-pic-form', 
+                    'Submit', 
+                    css_class='btn btn-primary', 
+                    id="submit-btn"
+                ),
             ),
         )
 
@@ -41,32 +51,73 @@ class NameForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML("<div class='name-form mb-3 mt-4'>"),
                 HTML("<div class='mb-3'>"),
-                    FloatingField('first_name', css_class='form-control', id="id_first_name", initial=self.instance.first_name),
+                    FloatingField(
+                        'first_name', 
+                        css_class='form-control', 
+                        id="id_first_name", 
+                        initial=self.instance.first_name
+                    ),
                 HTML("</div>"),
                 
                 HTML("<div class='mb-3'>"),
-                    FloatingField('last_name', css_class='form-control', id="id_last_name", initial=self.instance.last_name),
+                    FloatingField(
+                        'last_name', 
+                        css_class='form-control', 
+                        id="id_last_name", 
+                        initial=self.instance.last_name
+                    ),
                 HTML("</div>"),
             HTML("</div>"),
             
             FormActions(
-                Submit("name-form", 'Submit', css_class='btn btn-primary', id="submit-btn"),
+                Submit(
+                    "name-form", 
+                    'Submit', 
+                    css_class='btn btn-primary', 
+                    id="submit-btn"
+                ),
             ),
         )
 
 
 class PasswordForm(forms.ModelForm):
-    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'id_old_password'}), label="Current Password")
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'id_password_new_1'}), label="Password")
-    password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'id_password_new_2'}), label="Confirm Password")
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'id': 'id_old_password'}), 
+        label="Current Password"
+    )
+    
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'id': 'id_password_new_1'}), 
+        label="Password"
+    )
+    
+    password_confirm = forms.CharField(
+        widget=forms.PasswordInput(attrs={'id': 'id_password_new_2'}), 
+        label="Confirm Password"
+    )
     
     class Meta:
         model = CustomUser
         fields = ["password", "password_confirm"]
         widgets = {
-            'old_password': forms.PasswordInput(attrs={'id': 'id_old_password', 'data-toggle': 'password'}),
-            'password': forms.PasswordInput(attrs={'id': 'id_password', 'data-toggle': 'password'}),
-            'password_confirm': forms.PasswordInput(attrs={'id': 'id_password_confirm', 'data-toggle': 'password'}),
+            'old_password': forms.PasswordInput(
+                attrs={
+                    'id': 'id_old_password', 
+                    'data-toggle': 'password'
+                }
+            ),
+            'password': forms.PasswordInput(
+                attrs={
+                    'id': 'id_password', 
+                    'data-toggle': 'password'
+                }
+            ),
+            'password_confirm': forms.PasswordInput(
+                attrs={
+                    'id': 'id_password_confirm', 
+                    'data-toggle': 'password'
+                }
+            ),
         }
     
     def __init__(self, user, *args, **kwargs):
@@ -77,21 +128,38 @@ class PasswordForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML("<div class='name-form mb-3 mt-4'>"),
                 HTML("<div class='mb-3'>"),
-                    FloatingField('old_password', css_class='form-control password-input', id="id_old_password"),
+                    FloatingField(
+                        'old_password', 
+                        css_class='form-control password-input', 
+                        id="id_old_password"
+                    ),
                 HTML("</div>"),
                 
                 HTML("<div class='mb-3'>"),
-                    FloatingField('password', css_class='form-control password-input', id="id_password_new_1"),
+                    FloatingField(
+                        'password', 
+                        css_class='form-control password-input', 
+                        id="id_password_new_1"
+                    ),
                 HTML("</div>"),
                 
                 HTML("<div class='mb-3'>"),
-                    FloatingField('password_confirm', css_class='form-control password-input', id="id_password_new_2"),
+                    FloatingField(
+                        'password_confirm', 
+                        css_class='form-control password-input', 
+                        id="id_password_new_2"
+                    ),
                     Div(id='password-feedback', css_class='invalid-feedback'),
                 HTML("</div>"),    
             HTML("</div>"),
             
             FormActions(
-                Submit('password-form', 'Submit', css_class='btn btn-primary', id="submit-btn-paswd"),
+                Submit(
+                    'password-form', 
+                    'Submit', 
+                    css_class='btn btn-primary', 
+                    id="submit-btn-paswd"
+                ),
             ),
         )
     

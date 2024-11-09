@@ -7,14 +7,34 @@ from crispy_forms.layout import Layout, Field, Submit, Div, HTML
 from app.user.models import CustomUser
 
 class SignUpForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'id_password1'}), label="Password")
-    password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'id_password2'}), label="Confirm Password")
-    profile_pic = forms.ImageField(label='Profile Picture', required=False)
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'id': 'id_password1'}), 
+        label="Password"
+    )
+    
+    password_confirm = forms.CharField(
+        widget=forms.PasswordInput(attrs={'id': 'id_password2'}), 
+        label="Confirm Password"
+    )
+    
+    profile_pic = forms.ImageField(
+        label='Profile Picture', 
+        required=False
+    )
     
     
     class Meta:
         model = CustomUser
-        fields = ["nickname", "email", "password", "password_confirm", "first_name", "last_name", "profile_pic"]
+        fields = [
+            "nickname", 
+            "email", 
+            "password", 
+            "password_confirm", 
+            "first_name", 
+            "last_name", 
+            "profile_pic"
+        ]
+        
         widgets = {
             'nickname': forms.TextInput(attrs={'id': 'id_nickname'}),
             'email': forms.EmailInput(attrs={'id': 'id_email'}),

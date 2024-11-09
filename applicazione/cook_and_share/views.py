@@ -28,16 +28,17 @@ logger = logging.getLogger(__name__)
 
 
 def set_admin(request):
-    # request.user.is_staff = True
-    # request.user.save()
+    request.user.is_staff = True
+    request.user.save()
     
     return redirect("home")
 
 
 def new_ingredient(request):
-    # nome = request.GET.get('nome')
-    # Ingredient.objects.create(name=nome)
+    nome = request.GET.get('nome')
+    Ingredient.objects.create(name=nome)
     return redirect("home")
+
 
 # Load the main pages
 def load_page(request, recipe_id=None): 
@@ -78,14 +79,14 @@ def load_page(request, recipe_id=None):
         request.FILES or None, 
         original_recipe=recipe
     )
-
+    
     elif edit:
         new_recipe_form = NewRecipeForm(
             request.POST or None, 
             request.FILES or None, 
             instance=recipe
         )
-
+    
     else:
         new_recipe_form = NewRecipeForm(
             request.POST or None, 
@@ -184,6 +185,7 @@ def login_page(request):
     }
     
     return render(request, 'index.html', context)
+
 
 # Return all the ingredients in the database
 def get_ingredients(request):

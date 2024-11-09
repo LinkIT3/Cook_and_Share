@@ -18,7 +18,7 @@ class NewRecipeForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         original_recipe = kwargs.pop('original_recipe', None)
-
+        
         super(NewRecipeForm, self).__init__(*args, **kwargs)
         
         self.fields['title'].widget = forms.TextInput(attrs={'style': 'resize: none;'})

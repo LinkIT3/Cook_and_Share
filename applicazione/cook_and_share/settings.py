@@ -142,3 +142,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "cook_and_share", 'media')
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
