@@ -7,7 +7,7 @@ from .custom.validators import validate_image as vi
 
 # Validators
 valid_char_nickname = RegexValidator(r'^[0-9a-z._-]*$', "Only alphanumeric characters and the characters . - _ are allowed")
-profile_pic_validators = [vi.validate_profile_image_size, vi.validate_image_extension, vi.validate_profile_image_dimension]
+profile_pic_validators = [vi.validate_profile_image]
 
 
 class CustomUserManager(BaseUserManager):
@@ -28,7 +28,6 @@ class CustomUserManager(BaseUserManager):
         try:
             user.full_clean()
             user.save(using=self._db)
-            
         except ValidationError as e:
             raise e
         
@@ -38,31 +37,92 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, nickname, password, is_staff=True)
 
 
-
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     
-    nickname = models.CharField(verbose_name="Nickname", unique=True, null=False, blank=False, validators=[MinLengthValidator(2), valid_char_nickname], 
-                                max_length=20, db_index=True, error_messages={"unique": "This nickname is already used"})
+    nickname = models.CharField( 
+        null=False, 
+        blank=False, 
+        unique=True, 
+        db_index=True,
+        validators=[
+            MinLengthValidator(2), 
+            valid_char_nickname
+        ],
+        max_length=20, 
+        verbose_name="Nickname",
+        error_messages={"unique": "This nickname is already used"}
+    )
     
-    email = models.EmailField(verbose_name="Email", unique=True, null=False, blank=False, db_index=True,
-                                error_messages={"unique": "This email is already used"})
+    email = models.EmailField(
+        null=False, 
+        blank=False, 
+        unique=True, 
+        db_index=True,
+        verbose_name="Email", 
+        error_messages={"unique": "This email is already used"}
+    )
     
-    first_name = models.CharField(verbose_name="First Name", null= True, blank=True, validators=[MinLengthValidator(2)], max_length=30)
-    last_name = models.CharField(verbose_name="Last Name", null=True, blank=True, validators=[MinLengthValidator(2)], max_length=30)
+    first_name = models.CharField(
+        null= True, 
+        blank=True, 
+        validators=[MinLengthValidator(2)], 
+        max_length=30,
+        verbose_name="First Name"
+    )
     
-    profile_pic = models.ImageField(verbose_name="Profile Picture", null=True, blank=True, upload_to="profile_pics/", validators=profile_pic_validators, 
-                                    help_text="Picture used for the profile")
+    last_name = models.CharField(
+        null=True, 
+        blank=True, 
+        validators=[MinLengthValidator(2)], 
+        max_length=30,
+        verbose_name="Last Name"
+    )
+    
+    profile_pic = models.ImageField(
+        null=True, 
+        blank=True, 
+        upload_to="profile_pics/", 
+        validators=profile_pic_validators, 
+        verbose_name="Profile Picture", 
+        help_text="Picture used for the profile"
+    )
     
     food_critic = models.BooleanField(default=False, db_index=True)
     
-    followed = models.ManyToManyField("self", editable=False, symmetrical=False, blank=True, related_name="followers")
-    liked_recipes = models.ManyToManyField("recipe.Recipe", editable=False, symmetrical=False, blank=True, related_name="liked")
-    saved_recipes = models.ManyToManyField("recipe.Recipe", editable=False, symmetrical=False, blank=True, related_name="saved")
-    recipes_created = models.ManyToManyField("recipe.Recipe", blank=True, 
-                                        related_name="author", verbose_name="Recipes created", db_index=True)
+    followed = models.ManyToManyField(
+        "self", 
+        blank=True, 
+        editable=False, 
+        symmetrical=False, 
+        related_name="followers"
+    )
+    
+    liked_recipes = models.ManyToManyField(
+        "recipe.Recipe", 
+        blank=True, 
+        editable=False, 
+        symmetrical=False, 
+        related_name="liked"
+    )
+    
+    saved_recipes = models.ManyToManyField(
+        "recipe.Recipe", 
+        blank=True, 
+        editable=False, 
+        symmetrical=False, 
+        related_name="saved"
+    )
+    
+    recipes_created = models.ManyToManyField(
+        "recipe.Recipe", 
+        blank=True,
+        db_index=True,
+        related_name="author", 
+        verbose_name="Recipes created"
+    )
     
     # For the recommendation system
-    favorite_ingredients = models.JSONField(default=dict)
+    favorite_ingredients = models.JSONField(default=dict, blank=True)
     
     is_staff = models.BooleanField(default=False)
     
@@ -70,14 +130,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["nickname", "password"]
-    
-    def __str__(self) -> str:
-        return str(self.nickname)
-    
-    
-    class Meta():
-        verbose_name_plural = "Users"    
-    
     
     def update_profile_add(self, ingredients):
         for ingredient in ingredients:
@@ -87,8 +139,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                 self.favorite_ingredients[ingredient] = 1
         
         self.save()
-
-
+    
+    
     def update_profile_remove(self, ingredients):
         for ingredient in ingredients:
             if ingredient in self.favorite_ingredients:
@@ -98,3 +150,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                     self.favorite_ingredients[ingredient] -= 1
         
         self.save()
+    
+    
+    def __str__(self) -> str:
+        return str(self.nickname)
+    
+    
+    class Meta():
+        verbose_name_plural = "Users"

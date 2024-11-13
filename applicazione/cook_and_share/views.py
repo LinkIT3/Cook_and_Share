@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user
 from django.core.paginator import Paginator
@@ -26,18 +27,19 @@ from .forms.settings_forms import *
 
 logger = logging.getLogger(__name__)
 
+if settings.DEBUG:
+    def set_admin(request):
+        request.user.is_staff = True
+        request.user.save()
+        
+        return redirect("home")
 
-def set_admin(request):
-    # request.user.is_staff = True
-    # request.user.save()
-    
-    return redirect("home")
 
+    def new_ingredient(request):
+        nome = request.GET.get('nome')
+        Ingredient.objects.create(name=nome)
+        return redirect("home")
 
-def new_ingredient(request):
-    # nome = request.GET.get('nome')
-    # Ingredient.objects.create(name=nome)
-    return redirect("home")
 
 # Load the main pages
 def load_page(request, recipe_id=None): 
@@ -78,14 +80,14 @@ def load_page(request, recipe_id=None):
         request.FILES or None, 
         original_recipe=recipe
     )
-
+    
     elif edit:
         new_recipe_form = NewRecipeForm(
             request.POST or None, 
             request.FILES or None, 
             instance=recipe
         )
-
+    
     else:
         new_recipe_form = NewRecipeForm(
             request.POST or None, 
@@ -185,31 +187,51 @@ def login_page(request):
     
     return render(request, 'index.html', context)
 
+
 # Return all the ingredients in the database
 def get_ingredients(request):
     if request.method == 'POST':        
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse(
+                {'error': 'Invalid JSON'}, 
+                status=400
+            )
         
-        try:
-            recipe_id = data.get('id')
-        except KeyError:
-            return JsonResponse({'error': 'Recipe ID not provided'}, status=400)
+        
+        if data.get('id') == None:
+            return JsonResponse(
+                {'error': 'Recipe ID not provided'}, 
+                status=400
+            )
+        
+        recipe_id = data.get('id')
         
         try:
             if recipe_id != 0:
-                ingredients = Recipe.objects.get(pk=recipe_id).ingredient_quantity
+                ingredients = Recipe.objects\
+                    .get(pk=recipe_id)\
+                    .ingredient_quantity
                 return JsonResponse(ingredients)
             
-            ingredients = Ingredient.objects.all().order_by('name')
+            ingredients = Ingredient.objects.all()\
+                .order_by('name')
         except Exception:
-            return JsonResponse({'error': 'Unable to get ingredients'}, status=404)
+            return JsonResponse(
+                {'error': 'Unable to get ingredients'}, 
+                status=404
+            )
         
-        return JsonResponse([ingredient.name for ingredient in ingredients], safe=False)
+        return JsonResponse(
+            [ingredient.name for ingredient in ingredients], 
+            safe=False
+        )
     
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return JsonResponse(
+        {'error': 'Invalid request method'}, 
+        status=405
+    )
 
 
 def log_out(request):
@@ -226,17 +248,27 @@ def load_user_card(request):
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse(
+                {'error': 'Invalid JSON'}, 
+                status=400
+            )
         
-        try:
-            user_id = data.get('id')
-        except KeyError:
-            return JsonResponse({'error': 'User ID not provided'}, status=400)
+        
+        if data.get('id') == None:
+            return JsonResponse(
+                {'error': 'User ID not provided'}, 
+                status=400
+            )
+        
+        user_id = data.get('id')
         
         try:
             user = CustomUser.objects.get(id=user_id)
-        except Recipe.DoesNotExist:
-            return JsonResponse({'error': 'User not found'}, status=404)
+        except Exception:
+            return JsonResponse(
+                {'error': 'User not found'}, 
+                status=404
+            )
         
         food_critic = False
         follow = False
@@ -246,10 +278,12 @@ def load_user_card(request):
         if user.food_critic:
             food_critic = True
         
-        if user.profile_pic != None and user.profile_pic != "":
+        if  user.profile_pic != None and \
+            user.profile_pic != "":
+            
             profile_pic_path = user.profile_pic.url
         
-        if request.user.is_authenticated and \
+        if  request.user.is_authenticated and \
             request.user != user:
             
             same_user = False
@@ -260,18 +294,27 @@ def load_user_card(request):
             follow = True
         
         
-        html = render(request, 'user/card.html', { 
-            'name': user.nickname,
-            'user_id': user.id,
-            'same_user': same_user,
-            'food_critic': food_critic,
-            'follow': follow,
-            'profile_pic_path': profile_pic_path
-        }).content.decode('utf-8')
+        html = render(
+            request, 
+            'user/card.html', { 
+                'name': user.nickname,
+                'user_id': user.id,
+                'same_user': same_user,
+                'food_critic': food_critic,
+                'follow': follow,
+                'profile_pic_path': profile_pic_path
+            }
+        ).content.decode('utf-8')
         
-        return JsonResponse({'html': html}, status=200)
+        return JsonResponse(
+            {'html': html}, 
+            status=200
+        )
     
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return JsonResponse(
+        {'error': 'Invalid request method'}, 
+        status=405
+    )
 
 
 def load_recipe_card(request):
@@ -279,17 +322,26 @@ def load_recipe_card(request):
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse(
+                {'error': 'Invalid JSON'}, 
+                status=400
+            )
         
-        try:
-            recipe_id = data.get('id')
-        except KeyError:
-            return JsonResponse({'error': 'Recipe ID not provided'}, status=400)
+        if data.get('id') == None:
+            return JsonResponse(
+                {'error': 'Recipe ID not provided'}, 
+                status=400
+            )
+        
+        recipe_id = data.get('id')
         
         try:
             recipe = Recipe.objects.get(id=recipe_id)
-        except Recipe.DoesNotExist:
-            return JsonResponse({'error': 'Recipe not found'}, status=404)
+        except Exception:
+            return JsonResponse(
+                {'error': 'Recipe not found'}, 
+                status=404
+            )
         
         author = recipe.author.all()[0]
         
@@ -299,10 +351,16 @@ def load_recipe_card(request):
         
         if request.user.is_authenticated:
             
-            liked = request.user.liked_recipes.filter(id=recipe_id).exists()
-            saved = request.user.saved_recipes.filter(id=recipe_id).exists()
+            liked = request.user.liked_recipes\
+                .filter(id=recipe_id)\
+                .exists()
+            
+            saved = request.user.saved_recipes\
+                .filter(id=recipe_id).exists()
         
-            if request.user.recipes_created.filter(id=recipe_id).exists():
+            if request.user.recipes_created\
+                .filter(id=recipe_id).exists():
+                
                 remix = False
         
         
@@ -310,22 +368,31 @@ def load_recipe_card(request):
             str(recipe_id) + "/" + \
             recipe.title.lower().replace(" ", "-")
         
-        pdf_name = recipe.title.lower().replace(" ", "-") + "_by_" + \
-            author.nickname + ".pdf"
+        pdf_name = recipe.title.lower().replace(" ", "-") + \
+            "_by_" + author.nickname + ".pdf"
         
-        html = render(request, 'recipe/card/card.html', {   
-            'recipe': recipe, 
-            'author': author,
-            'liked': liked,
-            'saved': saved,
-            'link_recipe': link_recipe,
-            'remix': remix,
-            'pdf_name': pdf_name
-        }).content.decode('utf-8')
+        html = render(
+            request, 
+            'recipe/card/card.html', {   
+                'recipe': recipe, 
+                'author': author,
+                'liked': liked,
+                'saved': saved,
+                'link_recipe': link_recipe,
+                'remix': remix,
+                'pdf_name': pdf_name
+            }
+        ).content.decode('utf-8')
         
-        return JsonResponse({'html': html}, status=200)
+        return JsonResponse(
+            {'html': html}, 
+            status=200
+        )
     
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return JsonResponse(
+        {'error': 'Invalid request method'}, 
+        status=405
+    )
 
 
 def getRecipes(request):
@@ -336,32 +403,50 @@ def getRecipes(request):
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse(
+                {'error': 'Invalid JSON'}, 
+                status=400
+            )
         
-        try:
-            page_number = data.get('page')
-        except KeyError:
-            return JsonResponse({'error': 'Page number not provided'}, status=400)
+        if data.get('page') == None:
+            return JsonResponse(
+                {'error': 'Page number not provided'}, 
+                status=400
+            )
         
-        try:
-            page_type = data.get('type')
-        except KeyError:
-            return JsonResponse({'error': 'Page type not provided'}, status=400)
+        page_number = data.get('page')
+        
+        if data.get('type') == None:
+            return JsonResponse(
+                {'error': 'Page type not provided'}, 
+                status=400
+            )
+        
+        page_type = data.get('type')
         
         match page_type:
             case 'home':
-                # results = Recipe.objects.all().order_by('-last_edit_date')
-                
                 user_ingredients = set(request.user.favorite_ingredients.keys())
                 
                 recommended_recipes = []
                 
-                for recipe in Recipe.objects.exclude(author=request.user) \
-                    .exclude(id__in=request.user.liked_recipes.all().values_list('id', flat=True)) \
-                    .exclude(id__in=request.user.saved_recipes.all().values_list('id', flat=True)) \
+                for recipe in Recipe.objects\
+                    .exclude(author=request.user) \
+                    .exclude(
+                        id__in=request.user.liked_recipes.all()\
+                        .values_list('id', flat=True)
+                    ) \
+                    .exclude(
+                        id__in=request.user.saved_recipes.all()\
+                        .values_list('id', flat=True)
+                    ) \
                     .distinct():
                     
-                    common_ingredients = user_ingredients.intersection(recipe.ingredient.all().values_list('name', flat=True))
+                    common_ingredients = user_ingredients\
+                        .intersection(
+                            recipe.ingredient.all()\
+                                .values_list('name', flat=True)
+                        )
                     
                     similarity_score = 0
                     
@@ -370,17 +455,23 @@ def getRecipes(request):
                     
                     if similarity_score > 0:
                         recommended_recipes.append((recipe, similarity_score))
-
+                
                 recommended_recipes.sort(key=lambda x: x[1], reverse=True)
                 
                 results = [recipe for recipe, _ in recommended_recipes[:500]]
-            
+                
                 if len(results) < 500:
                     other_recipes = Recipe.objects \
                         .all() \
                         .exclude(author=request.user) \
-                        .exclude(id__in=request.user.liked_recipes.all().values_list('id', flat=True)) \
-                        .exclude(id__in=request.user.saved_recipes.all().values_list('id', flat=True)) \
+                        .exclude(
+                            id__in=request.user.liked_recipes.all()\
+                            .values_list('id', flat=True)
+                        ) \
+                        .exclude(
+                            id__in=request.user.saved_recipes.all()\
+                            .values_list('id', flat=True)
+                        ) \
                         .annotate(num_likes=Count('liked')) \
                         .order_by('-num_likes', '-last_edit_date')
                     
@@ -395,8 +486,14 @@ def getRecipes(request):
                 
                 results = Recipe.objects.filter(id__in=set(recipe.id for recipe in results))
             
+            
             case 'trending':
-                results = Recipe.objects.filter(last_edit_date__gte=(timezone.now() - timedelta(days=7))) \
+                results = Recipe.objects\
+                    .filter(
+                        last_edit_date__gte=(
+                            timezone.now() - timedelta(days=7)
+                        )
+                    ) \
                     .annotate(
                         num_likes=Count('liked'), 
                         is_food_critic=Count(
@@ -404,53 +501,65 @@ def getRecipes(request):
                             filter=Q(author__food_critic=True)
                         )
                     ) \
-                    .order_by('-num_likes', '-is_food_critic', '-last_edit_date')
+                    .order_by(
+                        '-num_likes', 
+                        '-is_food_critic', 
+                        '-last_edit_date'
+                    )
             
             
             case 'last':
-                results = Recipe.objects.filter(last_edit_date__gte=(timezone.now() - timedelta(days=1))) \
+                results = Recipe.objects\
+                    .filter(
+                        last_edit_date__gte=(
+                            timezone.now() - timedelta(days=1)
+                        )
+                    ) \
                     .order_by('-last_edit_date')
             
             
             case 'search-recipes':
-                try:
-                    search_string = data.get('search_string')
-                except KeyError:
-                    return JsonResponse({'error': 'User Search String not provided'}, status=400)
+                if data.get('search_string') == None:
+                    return JsonResponse(
+                        {'error': 'User Search String not provided'}, 
+                        status=400
+                    )
                 
-                # results = Recipe.objects.filter(
-                #     Q(title__icontains=search_string) | 
-                #     Q(ingredient__name__icontains=search_string)
-                # ).distinct().annotate(
-                #     num_likes=Count('liked'),
-                #     num_saves=Count('saved'),
-                #     is_food_critic=Count('author__food_critic', filter=Q(author__food_critic=True))
-                # ).order_by('-num_likes', '-num_saves', '-is_food_critic')
-                
+                search_string = data.get('search_string')
                 
                 if not search_string == "":
                     recipes = Recipe.objects.all()
                     
                     for recipe in recipes:
-                        title_similarity = fuzz.ratio(search_string.lower(), recipe.title.lower())
+                        title_similarity = fuzz.ratio(
+                            search_string.lower(), 
+                            recipe.title.lower()
+                        )
                         
                         ingredient_similarity = max(
                             [
-                                fuzz.ratio(search_string.lower(), ingredient.name.lower()) 
+                                fuzz.ratio(
+                                    search_string.lower(), 
+                                    ingredient.name.lower()
+                                ) 
                                 for ingredient in recipe.ingredient.all()
                             ],
                             default=0
                         )
                         
-                        if title_similarity >= 50 or ingredient_similarity >= 50:
+                        if  title_similarity >= 50 or \
+                            ingredient_similarity >= 50:
+                            
                             results.append(recipe)
                     
-                    additional_results = Recipe.objects.filter(title__icontains=search_string) \
+                    additional_results = Recipe.objects\
+                        .filter(title__icontains=search_string) \
                         .exclude(id__in=[recipe.id for recipe in results])
                     
                     results.extend(additional_results)
                     
-                    results_queryset = Recipe.objects.filter(id__in=set(recipe.id for recipe in results))
+                    results_queryset = Recipe.objects\
+                        .filter(id__in=set(recipe.id for recipe in results))
                     
                     results = results_queryset.annotate(
                         num_likes=Count('liked'),
@@ -460,14 +569,22 @@ def getRecipes(request):
                             filter=Q(author__food_critic=True)
                         )
                         
-                    ).order_by('-num_likes', '-num_saved', '-is_food_critic')
+                    )\
+                    .order_by(
+                        '-num_likes', 
+                        '-num_saved', 
+                        '-is_food_critic'
+                    )
             
             
             case 'search-users':
-                try:
-                    search_string = data.get('search_string')
-                except KeyError:
-                    return JsonResponse({'error': 'User Search String not provided'}, status=400)
+                if data.get('search_string') == None:
+                    return JsonResponse(
+                        {'error': 'User Search String not provided'}, \
+                        status=400
+                    )
+                
+                search_string = data.get('search_string')
                 
                 # results = CustomUser.objects.filter(
                 #     Q(nickname__icontains=search_string) | 
@@ -490,13 +607,17 @@ def getRecipes(request):
                         first_name_similarity = 0
                         last_name_similarity = 0
                         
-                        if user.first_name != None and user.first_name != '':
+                        if  user.first_name != None and \
+                            user.first_name != '':
+                            
                             first_name_similarity = fuzz.ratio(
                                 search_string.lower(), 
                                 user.first_name.lower()
                             )
                         
-                        if user.last_name != None and user.last_name != '':
+                        if  user.last_name != None and \
+                            user.last_name != '':
+                            
                             last_name_similarity = fuzz.ratio(
                                 search_string.lower(), 
                                 user.last_name.lower()
@@ -508,19 +629,30 @@ def getRecipes(request):
                             
                             results.append(user)
                     
-                    results_queryset = CustomUser.objects.filter(id__in=set(user.id for user in results))
+                    results_queryset = CustomUser.objects\
+                        .filter(id__in=set(user.id for user in results))
                     
                     results = results_queryset.annotate(
                         num_followers=Count('followers'),
-                        is_food_critic=Count('food_critic', filter=Q(food_critic=True))
-                    ).order_by('-num_followers', '-is_food_critic')
+                        is_food_critic=Count(
+                            'food_critic', 
+                            filter=Q(food_critic=True)
+                        )
+                    )\
+                    .order_by(
+                        '-num_followers', 
+                        '-is_food_critic'
+                    )
             
             
             case 'user':
-                try:
-                    user_id = data.get('user_id')
-                except KeyError:
-                    return JsonResponse({'error': 'User ID not provided'}, status=400)
+                if data.get('user_id') == None:
+                    return JsonResponse(
+                        {'error': 'User ID not provided'}, 
+                        status=400
+                    )
+                
+                user_id = data.get('user_id')
                 
                 results = CustomUser.objects.get(id=user_id) \
                     .recipes_created.all() \
@@ -528,10 +660,13 @@ def getRecipes(request):
             
             
             case 'saved':
-                try:
-                    user_id = data.get('user_id')
-                except KeyError:
-                    return JsonResponse({'error': 'User ID not provided'}, status=400)
+                if data.get('user_id') == None:
+                    return JsonResponse(
+                        {'error': 'User ID not provided'}, 
+                        status=400
+                    )
+                
+                user_id = data.get('user_id')
                 
                 results = CustomUser.objects.get(id=user_id) \
                     .saved_recipes.all() \
@@ -539,10 +674,13 @@ def getRecipes(request):
             
             
             case 'liked':
-                try:
-                    user_id = data.get('user_id')
-                except KeyError:
-                    return JsonResponse({'error': 'User ID not provided'}, status=400)
+                if data.get('user_id') == None:
+                    return JsonResponse(
+                        {'error': 'User ID not provided'}, 
+                        status=400
+                    )
+                
+                user_id = data.get('user_id')
                 
                 results = CustomUser.objects.get(id=user_id) \
                     .liked_recipes.all() \
@@ -570,8 +708,11 @@ def getRecipes(request):
             'previous_page_number': page_obj.previous_page_number() 
                 if page_obj.has_previous() else None
         }, status=200)
-        
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+    return JsonResponse(
+        {'error': 'Invalid request method'}, 
+        status=405
+    )
 
 
 def update_liked(request):
@@ -579,27 +720,58 @@ def update_liked(request):
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse(
+                {'error': 'Invalid JSON'}, 
+                status=400
+            )
+        
+        
+        if data.get('id') == None:
+            return JsonResponse(
+                {'error': 'Recipe ID not provided'}, 
+                status=400
+            )
         
         try:
             recipe = Recipe.objects.get(id=data.get('id'))
             
             if request.user.liked_recipes.filter(id=recipe.id).exists():
                 request.user.liked_recipes.remove(recipe)
-                request.user.update_profile_remove(recipe.ingredients.all().values_list('name', flat=True))
+                request.user.update_profile_remove(
+                    recipe.ingredient.all()\
+                    .values_list('name', flat=True)
+                )
             else:
                 request.user.liked_recipes.add(recipe)
-                request.user.update_profile_add(recipe.ingredients.all().values_list('name', flat=True))
+                request.user.update_profile_add(
+                    recipe.ingredient.all()\
+                    .values_list(
+                        'name', 
+                        flat=True
+                    )
+                )
             
-            return JsonResponse({'message': 'Like updated successfully'}, status=201)
+            return JsonResponse(
+                {'message': 'Like updated successfully'}, 
+                status=201
+            )
         
         except Recipe.DoesNotExist:
-            return JsonResponse({'error': 'Recipe not found'}, status=404)
+            return JsonResponse(
+                {'error': 'Recipe not found'}, 
+                status=404
+            )
         
-        except Exception:
-            return JsonResponse({'error': 'Unable to update like'}, status=404)
+        except Exception as e:
+            return JsonResponse(
+                {'error': 'Unable to update like' + str(e)}, 
+                status=404
+            )
     
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return JsonResponse(
+        {'error': 'Invalid request method'}, 
+        status=405
+    )
 
 
 def update_saved(request):
@@ -607,27 +779,56 @@ def update_saved(request):
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse(
+                {'error': 'Invalid JSON'}, 
+                status=400
+            )
+        
+        if data.get('id') == None:
+            return JsonResponse(
+                {'error': 'Recipe ID not provided'}, 
+                status=400
+            )
         
         try:
             recipe = Recipe.objects.get(id=data.get('id'))
             
-            if request.user.saved_recipes.filter(id=recipe.id).exists():
+            if request.user.saved_recipes\
+                .filter(id=recipe.id).exists():
+                
                 request.user.saved_recipes.remove(recipe)
-                request.user.update_profile_remove(recipe.ingredients.all().values_list('name', flat=True))
+                request.user.update_profile_remove(
+                    recipe.ingredient.all()\
+                    .values_list('name', flat=True)
+                )
             else:
                 request.user.saved_recipes.add(recipe)
-                request.user.update_profile_add(recipe.ingredients.all().values_list('name', flat=True))
+                request.user.update_profile_add(
+                    recipe.ingredient.all()\
+                    .values_list('name', flat=True)
+                )
             
-            return JsonResponse({'message': 'Save updated successfully'}, status=201)
+            return JsonResponse(
+                {'message': 'Save updated successfully'}, 
+                status=201
+            )
         
         except Recipe.DoesNotExist:
-            return JsonResponse({'error': 'Recipe not found'}, status=404)
+            return JsonResponse(
+                {'error': 'Recipe not found'}, 
+                status=404
+            )
         
         except Exception:
-            return JsonResponse({'error': 'Unable to update save'}, status=404)
+            return JsonResponse(
+                {'error': 'Unable to update save'}, 
+                status=404
+            )
     
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return JsonResponse(
+        {'error': 'Invalid request method'}, 
+        status=405
+    )
 
 
 def update_follow(request):
@@ -635,7 +836,16 @@ def update_follow(request):
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse(
+                {'error': 'Invalid JSON'}, 
+                status=400
+            )
+        
+        if data.get('user') == None:
+            return JsonResponse(
+                {'error': 'User ID not provided'}, 
+                status=400
+            )
         
         try:
             user = CustomUser.objects.get(id=data.get('user'))
@@ -645,35 +855,56 @@ def update_follow(request):
             else:
                 request.user.followed.add(user)
                 
-            return JsonResponse({'message': 'Follow updated successfully'}, status=201)
+            return JsonResponse(
+                {'message': 'Follow updated successfully'}, 
+                status=201
+            )
         
         except CustomUser.DoesNotExist:
-            return JsonResponse({'error': 'User not found'}, status=404)
+            return JsonResponse(
+                {'error': 'User not found'}, 
+                status=404
+            )
     
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return JsonResponse(
+        {'error': 'Invalid request method'}, 
+        status=405
+    )
 
 
-def load_recipe_page(request, recipe_id, extra_path=None):
+def load_recipe_page(request, recipe_id):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse(
+                {'error': 'Invalid JSON'}, 
+                status=400
+            )
         
-        try:
-            recipe_id = data.get('id')
-        except KeyError:
-            return JsonResponse({'error': 'Recipe ID not provided'}, status=400)
+        if data.get('id') == None:
+            return JsonResponse(
+                {'error': 'Recipe ID not provided'}, 
+                status=400
+            )
+        
+        recipe_id = data.get('id')
         
         try:
             recipe = Recipe.objects.get(id=recipe_id)
         except Recipe.DoesNotExist:
-            return JsonResponse({'error': 'Recipe not found'}, status=404)
+            return JsonResponse(
+                {'error': 'Recipe not found'}, 
+                status=404
+            )
         
         try:
             author = recipe.author.all()[0]
         except Exception:
-            return JsonResponse({'error': 'Author not found'}, status=404)
+            return JsonResponse(
+                {'error': 'Author not found'}, 
+                status=404
+            )
         
         html = render(request, 'recipe/page/page.html', {   
             'recipe': recipe,
@@ -681,7 +912,10 @@ def load_recipe_page(request, recipe_id, extra_path=None):
             'pdf': True
         }).content.decode('utf-8')
         
-        return JsonResponse({'html': html}, status=200)
+        return JsonResponse(
+            {'html': html}, 
+            status=200
+        )
     
     recipe = Recipe.objects.get(id=recipe_id)
     author = recipe.author.all()[0]
@@ -719,7 +953,6 @@ def load_recipe_page(request, recipe_id, extra_path=None):
     return render(request, 'recipe/page/page.html', context)
 
 
-
 def user_page(request, nickname, index=False):
     user = CustomUser.objects.get(nickname=nickname)
     
@@ -744,10 +977,12 @@ def user_page(request, nickname, index=False):
     number_of_recipes_created = CustomUser.objects.filter(nickname=nickname) \
         .annotate(number_of_recipes=Count('recipes_created')).first()
     
-    if request.user.id != user.id:
+    if request.user.id != user.id or \
+        not request.user.is_authenticated:
         same_user = False
         
-        if request.user.followed.filter(id=user.id).exists():
+        if request.user.is_authenticated and \
+            request.user.followed.filter(id=user.id).exists():
             follow = True
     
     if same_user:
@@ -768,19 +1003,34 @@ def user_page(request, nickname, index=False):
             user=request.user
         )
         
-        if "profile-pic-form" in request.POST and profile_pic_form.is_valid():
+        if "profile-pic-form" in request.POST and \
+            profile_pic_form.is_valid():
+            
             profile_pic_form.save()
-            messages.success(request, 'Your profile picture is updated!')
+            messages.success(
+                request, 
+                'Your profile picture is updated!'
+            )
             return redirect("reload")
         
-        if "name-form" in request.POST and name_form.is_valid():
+        if "name-form" in request.POST and \
+            name_form.is_valid():
+            
             name_form.save()
-            messages.success(request, 'Your name is updated!')
+            messages.success(
+                request, 
+                'Your name is updated!'
+            )
             return redirect("reload")
         
-        if "password-form" in request.POST and password_form.is_valid():
+        if "password-form" in request.POST and \
+            password_form.is_valid():
+            
             password_form.save()
-            messages.success(request, 'Your password is updateds!')
+            messages.success(
+                request, 
+                'Your password is updateds!'
+            )
             return redirect("profile")
     
     context = { 

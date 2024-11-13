@@ -27,6 +27,7 @@ soupsieve = "==2.5"
 sqlparse = "==0.5.1"
 virtualenv = "==20.26.5"
 pytz = "*"
+coverage = "*"
 
 [dev-packages]
 
