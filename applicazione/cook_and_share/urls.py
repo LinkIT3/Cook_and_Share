@@ -29,7 +29,7 @@ urlpatterns = [
     
     # path('get-recipes/', getRecipes, name='get-recipes'),
     # path('<path:extra_path>/get-recipes/', getRecipes, name='get-recipes_exta_path'),
-    re_path(r'^(?:.*/)?get-recipes/$', getRecipes, name='get-recipes'),
+    re_path(r'^(?:.*/)?get-recipes/$', getRecipes, name='get_recipes'),
 
     # path('load-recipe-card/', load_recipe_card, name='load_recipe_card'),
     # path('<path:extra_path>/load-recipe-card/', load_recipe_card, name='load_recipe_card_extra_path'),
