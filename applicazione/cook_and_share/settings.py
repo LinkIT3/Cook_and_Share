@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django_browser_reload',
+    'django_extensions',
     'django_select2',
     'crispy_forms',
     'crispy_bootstrap5',
@@ -144,3 +145,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "cook_and_share", 'media')
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+GRAPH_MODELS = {
+    "all_applications": True,
+    "group_models": True
+}

@@ -9,7 +9,8 @@ from django.utils import timezone
 
 from datetime import timedelta
 
-from fuzzywuzzy import fuzz
+# from fuzzywuzzy import fuzz
+from thefuzz import fuzz
 
 import random
 import json

@@ -26,7 +26,6 @@
 {% block script %}
     <!-- #region js import -->        
         <!-- #region custom js -->            
-            {% comment %} <script async src="{% static 'js/script_recipe_page.js' %}"></script>               <!-- script show srecipe --> {% endcomment %}
 
             {% if user.is_authenticated %}
                 <script async src="{% static 'recipe/js/script_new_recipe.js' %}"></script>     <!-- script new recipe page -->
@@ -39,7 +38,6 @@
 
 {% block content %}
     {% block home_page %}
-        {% comment %} {% include "recipe/test_recipe_homepage.html" %} {% endcomment %}
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 loadPage(1,
