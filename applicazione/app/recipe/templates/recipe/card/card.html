@@ -1,51 +1,77 @@
 <div class="card mb-3 recipe" id="{{ recipe.id }}">
     <a href="{{ link_recipe }}" class="redirect-recipe">
-        <img src="{{ recipe.dish_pic.url }}" class="card-img-top" alt="{{ recipe.title }} pic">
+        <img 
+            src="{{ recipe.dish_pic.url }}" 
+            class="card-img-top" 
+            alt="{{ recipe.title }} pic"
+        />
     </a>
-
-    <a href={{ link_recipe }} class="card-body redirect-recipe">
+    
+    <a 
+        href={{ link_recipe }} 
+        class="card-body redirect-recipe"
+    >
         <h5 class="card-title">{{ recipe.title }}</h5>
         <p class="card-text">{{ recipe.description }}</p>
     </a>
-
+    
     <div class="card-footer bg-transparent">
-
-        <a href="/user/{{ author.nickname }}" class="profile-link">
+        <a 
+            href="/user/{{ author.nickname }}" 
+            class="profile-link"
+        >
             {% if author.profile_pic %}
-                <img src="{{ author.profile_pic.url }}" alt="author profile picture" class="author-pic"/>
+                <img 
+                    src="{{ author.profile_pic.url }}" 
+                    alt="author profile picture" 
+                    class="author-pic"
+                />
             {% endif %}
-
+            
             <b>{{ author }}</b>
-
+            
             {% if author.food_critic %}
                 <i class="fa-solid fa-utensils food-critic-icon"></i>
             {% endif %}
         </a>
         
         {% load tz %}
-        <p class="card-text"><small class="text-body-secondary">Last update: {{ recipe.last_edit_date | localtime }}</small></p>
+        <p class="card-text">
+            <small class="text-body-secondary">
+                Last update: {{ recipe.last_edit_date | localtime }}
+            </small>
+        </p>
         
         <br>
         
-        <div class="card-button">
-            
+        <div class="card-button">            
             <!-- Like button -->
             <a 
                 {% if not user.is_authenticated %}
                     href="#profile"
                 {% endif %}    
-
+                
                 class="like-button" 
                 title="Like"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 912.8 992.84" class="icon" aria-hidden="true" focusable="false" style="vertical-align: -0.125em;">
-                    <g id="michelinLogoFiller" {% if not liked %} style="display: none;" {% endif %}>
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 912.8 992.84" 
+                    class="icon" 
+                    aria-hidden="true" 
+                    focusable="false" 
+                    style="vertical-align: -0.125em;"
+                >
+                    <g 
+                        id="michelinLogoFiller" 
+                        {% if not liked %} style="display: none;" {% endif %}
+                    >
                         <path 
                             class="michelin-logo-filler"
                             d="M536.2,391.62q110.52-161,204.86-161,39.06,0,71,35.26T844,344.93Q844,463.09,588.6,485v27.63q126.74,10.49,191,45.74T844,652.7q0,42.87-31,78.61T741.06,767q-96.24,0-204.86-162l-24.78,14.29q54.32,110.53,54.31,186.76,0,118.14-107.67,118.15-51.45,0-80-31.45Q350.39,859.47,350.39,809q0-76.22,54.31-189.61l-24.77-14.29Q271.3,767,175.07,767q-39.07,0-71-33.83T72.16,652.7q0-118.16,254.41-140.07V485Q72.17,464,72.16,344.93q0-41.93,30.49-78.13t72.42-36.21q94.34,0,204.86,161l24.77-13.34Q350.4,266.8,350.39,187.71q0-50.49,27.63-83.85,28.59-31.44,80-31.44,107.67,0,107.67,117.2,0,77.17-54.31,188.66Z"
                         />
                     </g>
-
+                    
                     <g id="michelinLogoBorder">
                         <path 
                             class="michelin-logo-boorder"
@@ -65,14 +91,24 @@
                 class="bookmark-button" 
                 title="Save"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 511.95" class="icon" aria-hidden="true" focusable="false" style="vertical-align: -0.125em;">
-                    <g id="bookmarkFiller" {% if not saved %} style="display: none;" {% endif %}>
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 384 511.95" 
+                    class="icon" 
+                    aria-hidden="true" 
+                    focusable="false" 
+                    style="vertical-align: -0.125em;"
+                >
+                    <g 
+                        id="bookmarkFiller" 
+                        {% if not saved %} style="display: none;" {% endif %}
+                    >
                         <path 
                             class="bookmark-filler"
                             d="M48,48V441.4l130.1-92.9a23.87,23.87,0,0,1,27.9,0l130,92.9V48H48"
                         />
                     </g>
-
+                    
                     <g id="bookmarkBorder">
                         <path
                             class="bookmark-border"
@@ -82,12 +118,16 @@
                     </g>
                 </svg>
             </a>
-
+            
             <!-- Share button -->
-            <a class="share-button" link="{{ link_recipe }}" title="Share">
+            <a 
+                class="share-button" 
+                link="{{ link_recipe }}" 
+                title="Share"
+            >
                 <i class="fa-regular fa-2x fa-share-from-square"></i>
             </a>
-
+            
             <!-- Modify button -->
             <a 
                 {% if not user.is_authenticated %}
@@ -106,20 +146,31 @@
                                 id="editRecipe" 
                                 fill="currentColor"
                                 d="M16.46,384A16.47,16.47,0,0,1,0,367.52V275.77a16.58,16.58,0,0,1,4.83-11.63L251.51,17.5a59.7,59.7,0,0,1,84.42,0l0,0L366.48,48a59.7,59.7,0,0,1,0,84.42l0,0L119.86,379.15A16.38,16.38,0,0,1,108.21,384ZM32.92,282.57v68.49h68.47L275,177.48,206.5,109ZM298.26,154.22l45-45a26.85,26.85,0,0,0,0-37.9L312.7,40.72a26.81,26.81,0,0,0-37.9,0l-45,45Z" 
-                                />
+                            />
                         </svg>
                 {% endif %}
             </a>
-
+            
             <!-- Download button -->
-            <a class="download-button" pdf-name="{{ pdf_name }}" title="Download">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 635.75 800.75" class="icon" aria-hidden="true" focusable="false" style="vertical-align: -0.125em;">
+            <a 
+                class="download-button" 
+                pdf-name="{{ pdf_name }}" 
+                title="Download"
+            >
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 635.75 800.75" 
+                    class="icon" 
+                    aria-hidden="true" 
+                    focusable="false" 
+                    style="vertical-align: -0.125em;"
+                >
                     <g id="fileDownload">
                         <path 
                             fill="currentColor"
                             d="M401.1,448.14a30.76,30.76,0,0,1,38.39,48.06L337.32,578.05A30.55,30.55,0,0,1,318,585h-.36a30.61,30.61,0,0,1-19.05-6.83l-102.31-82a30.76,30.76,0,0,1,38.39-48.06l52.5,42.06V349.09a30.73,30.73,0,1,1,61.45,0V490.2Z"
-                            />
-                            
+                        />
+                        
                         <path 
                             fill="currentColor"
                             d="M113,.38A112.74,112.74,0,0,0,.38,113.2V687.55A112.75,112.75,0,0,0,113,800.38H522.71A112.75,112.75,0,0,0,635.38,687.55V244.39a71.89,71.89,0,0,0-13.45-41.86L498.48,30.31A71.64,71.64,0,0,0,440.24.38ZM61.83,113.2A51.24,51.24,0,0,1,113,61.91h297v180.4a30.75,30.75,0,0,0,30.73,30.76H573.92V687.55a51.24,51.24,0,0,1-51.21,51.29H113a51.24,51.24,0,0,1-51.21-51.29Z" 

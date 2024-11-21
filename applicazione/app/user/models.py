@@ -6,7 +6,10 @@ from django.db import models
 from .custom.validators import validate_image as vi
 
 # Validators
-valid_char_nickname = RegexValidator(r'^[0-9a-z._-]*$', "Only alphanumeric characters and the characters . - _ are allowed")
+valid_char_nickname = RegexValidator(
+    r'^[0-9a-z._-]*$', 
+    "Only alphanumeric characters and the characters . - _ are allowed"
+)
 profile_pic_validators = [vi.validate_profile_image]
 
 

@@ -1,6 +1,10 @@
 {% load crispy_forms_tags %}
 
-<div id="new-recipe-page" class="page new-recipe container" style="display: none;">
+<div 
+    id="new-recipe-page" 
+    class="page new-recipe container" 
+    style="display: none;
+">
     <h2 class="mt-4"> 
         {% if remix %}
             Remix
@@ -9,21 +13,32 @@
         {% else %}
             New
         {% endif %}  
-
+        
         Recipe 
     </h2>
     
     {% if remix or edit %}
         <div class="mt-4">
-            <a class="cancel-remix-edit" href="remix_edit_recipe/0">
-                <button type="button" class="btn btn-danger cancel-edit-remix" id="{{ id_recipe_to_edit_remix }}">
+            <a 
+                class="cancel-remix-edit" 
+                href="remix_edit_recipe/0"
+            >
+                <button 
+                    type="button" 
+                    class="btn btn-danger cancel-edit-remix" 
+                    id="{{ id_recipe_to_edit_remix }}"
+                >
                     Cancel
                 </button>
             </a>
         </div>
     {% endif %}
-
-    <form method="post" enctype="multipart/form-data" id="recipe-form">
+    
+    <form 
+        method="post" 
+        enctype="multipart/form-data" 
+        id="recipe-form"
+    >
         {% csrf_token %}
         {% crispy new_recipe_form %}
     </form>

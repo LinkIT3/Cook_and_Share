@@ -49,38 +49,81 @@ class SignUpForm(forms.ModelForm):
         self.helper.layout = Layout(
             
             HTML("<div class='mb-3 mt-4'>"),
-            FloatingField('nickname', css_class='form-control', id="id_nickname"),
-            Div(id='nickname-feedback', css_class='invalid-feedback'),
+            FloatingField(
+                'nickname', 
+                css_class='form-control', 
+                id="id_nickname"
+            ),
+            Div(
+                id='nickname-feedback', 
+                css_class='invalid-feedback'
+            ),
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
-            FloatingField('email', css_class='form-control', id="id_email"),
-            Div(id='email-feedback', css_class='invalid-feedback'),
+            FloatingField(
+                'email', 
+                css_class='form-control', 
+                id="id_email"
+            ),
+            Div(
+                id='email-feedback', 
+                css_class='invalid-feedback'
+            ),
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
-            FloatingField('password', css_class='form-control password-input', id="id_password1"),
+            FloatingField(
+                'password', 
+                css_class='form-control password-input', 
+                id="id_password1"
+            ),
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
-            FloatingField('password_confirm', css_class='form-control password-input', id="id_password2"),
-            Div(id='password-feedback', css_class='invalid-feedback'),
+            FloatingField(
+                'password_confirm', 
+                css_class='form-control password-input', 
+                id="id_password2"
+            ),
+            Div(
+                id='password-feedback', 
+                css_class='invalid-feedback'
+            ),
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
-            Field('profile_pic', css_class='form-control', id="formFile", accept=".avif, .jpg, .jpeg, .png, .webp"),
+            Field(
+                'profile_pic', 
+                css_class='form-control', 
+                id="formFile", 
+                accept=".avif, .jpg, .jpeg, .png, .webp"
+            ),
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
-            FloatingField('first_name', css_class='form-control', id="id_first_name"),
+            FloatingField(
+                'first_name', 
+                css_class='form-control', 
+                id="id_first_name"
+            ),
             HTML("</div>"),
             
             HTML("<div class='mb-3'>"),
-            FloatingField('last_name', css_class='form-control', id="id_last_name"),
+            FloatingField(
+                'last_name', 
+                css_class='form-control', 
+                id="id_last_name"
+            ),
             HTML("</div>"),
             
             FormActions(
-                Submit('submit', 'Sign Up', css_class='btn btn-primary', id="submit-btn"),
+                Submit(
+                    'submit', 
+                    'Sign Up', 
+                    css_class='btn btn-primary', 
+                    id="submit-btn"
+                ),
             ),
         )
     

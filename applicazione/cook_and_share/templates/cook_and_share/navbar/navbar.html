@@ -2,58 +2,115 @@
     <header>
         <nav class="navbar navbar-custom navbar-expand fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand navbar-brand-font" href="">Cook & Share</a>
+                <a 
+                    class="navbar-brand navbar-brand-font" 
+                    href=""
+                >
+                    Cook & Share
+                </a>
                 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <button 
+                    class="navbar-toggler" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#navbarToggler" 
+                    aria-controls="navbarToggler" 
+                    aria-expanded="false" 
+                    aria-label="Toggle navigation"
+                >
                     <i class="fas fa-bars text-white"></i>
                 </button>
                 <div class="moving-bg"></div>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
+                <div 
+                    class="collapse navbar-collapse justify-content-end" 
+                    id="navbarToggler"
+                >
                     <ul class="navbar-nav mb-2 mb-lg-0">        
-                        <li class="nav-item home active" id="home">
-                            <a href="#home" class="nav-link active" aria-current="page">
+                        <li 
+                            class="nav-item home active" 
+                            id="home"
+                        >
+                            <a 
+                                href="#home" 
+                                class="nav-link active" 
+                                aria-current="page"
+                            >
                                 <i class="fa-solid fa-home"></i>
                                 Home
                             </a>
                         </li>
                         
                         {% if user.is_authenticated %}
-                            <li class="nav-item trending" id="trending">
-                                <a href="#trending" class="nav-link">
+                            <li 
+                                class="nav-item trending" 
+                                id="trending"
+                            >
+                                <a 
+                                    href="#trending" 
+                                    class="nav-link"
+                                >
                                     <i class="fa-solid fa-arrow-trend-up"></i>
                                     Trending
                                 </a>
                             </li>
                         {% endif %}
                         
-                            <li class="nav-item last" id="last">
-                                <a href="#last" class="nav-link">
+                            <li 
+                                class="nav-item last" 
+                                id="last"
+                            >
+                                <a 
+                                    href="#last" 
+                                    class="nav-link"
+                                >
                                     <i class="fa-solid fa-newspaper"></i>
                                     Last
                                 </a>
                             </li>
                             
-                            <li class="nav-item search" id="search">
-                                <a href="#search" class="nav-link">
+                            <li 
+                                class="nav-item search" 
+                                id="search"
+                            >
+                                <a 
+                                    href="#search" 
+                                    class="nav-link"
+                                >
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                     Search
                                 </a>
                             </li>
                         
                         {% if user.is_authenticated %}
-                            <li class="nav-item new-recipe" id="new-recipe">
-                                <a href="#new-recipe" class="nav-link">
+                            <li 
+                                class="nav-item new-recipe" 
+                                id="new-recipe"
+                            >
+                                <a 
+                                    href="#new-recipe" 
+                                    class="nav-link"
+                                >
                                     <i class="fa-solid fa-plus"></i>
                                     New
                                 </a>
                             </li>
                         {% endif %}
                         
-                        <li class="nav-item profile" id="profile">
-                            <a href="#profile" class="nav-link profile">        
+                        <li 
+                            class="nav-item profile" 
+                            id="profile"
+                        >
+                            <a 
+                                href="#profile" 
+                                class="nav-link profile"
+                            >        
                                 <!-- If authenticated show the profile picture -->
                                 {% if user.is_authenticated %}
-                                    <img src="{{ profile_pic_path }}" alt="profile picture" class="profile_pic_navbar"/>
+                                    <img 
+                                        src="{{ profile_pic_path }}" 
+                                        alt="profile picture" 
+                                        class="profile_pic_navbar"
+                                    />
                                 {% else %}
                                     <i class="fa-solid fa-user"></i>
                                 {% endif %}

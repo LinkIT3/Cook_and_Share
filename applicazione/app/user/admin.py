@@ -5,15 +5,71 @@ from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):    
     fieldsets = (
-        ('Login credentials', {'fields': ('email', 'password')}),
-        ('User info', {'fields': ('nickname', 'first_name', 'last_name', 'food_critic')}),
-        ('Recipe info', {'fields': ('recipes_created',)}),
-        ('Permission', {'fields': ('is_staff', 'is_superuser')}),
+        (
+            'Login credentials', 
+            {
+                'fields': (
+                    'email', 
+                    'password'
+                )
+            }
+        ),
+        (
+            'User info', 
+            {
+                'fields': (
+                    'nickname', 
+                    'first_name', 
+                    'last_name', 
+                    'food_critic'
+                )
+            }
+        ),
+        (
+            'Recipe info', 
+            {
+                'fields': (
+                    'recipes_created',
+                )
+            }
+        ),
+        (
+            'Permission', 
+            {
+                'fields': (
+                    'is_staff', 
+                    'is_superuser'
+                )
+            }
+        ),
     )
     
-    list_display = ['id', 'nickname', 'email', 'first_name', 'last_name', 'food_critic', 'is_staff']
-    search_fields = ['id', 'nickname', 'email', 'first_name', 'last_name']
-    list_filter = ['food_critic', 'is_staff']
-    ordering = ['id', 'nickname']     
+    list_display = [
+        'id', 
+        'nickname', 
+        'email', 
+        'first_name', 
+        'last_name', 
+        'food_critic', 
+        'is_staff'
+    ]
+    
+    search_fields = [
+        'id', 
+        'nickname', 
+        'email', 
+        'first_name', 
+        'last_name'
+    ]
+    
+    list_filter = [
+        'food_critic', 
+        'is_staff'
+    ]
+    
+    ordering = [
+        'id', 
+        'nickname'
+    ]     
 
 admin.site.register(CustomUser, CustomUserAdmin)

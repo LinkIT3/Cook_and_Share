@@ -149,7 +149,10 @@ class PasswordForm(forms.ModelForm):
                         css_class='form-control password-input', 
                         id="id_password_new_2"
                     ),
-                    Div(id='password-feedback', css_class='invalid-feedback'),
+                    Div(
+                        id='password-feedback', 
+                        css_class='invalid-feedback'
+                    ),
                 HTML("</div>"),    
             HTML("</div>"),
             
