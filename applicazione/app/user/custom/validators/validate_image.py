@@ -17,7 +17,14 @@ def validate_image_size(image, max_size_kb) -> None:
 
 
 def validate_image_extension(image) -> None:
-    valid_format = ["AVIF", "GIF", "JPEG", "JPG", "PNG", "WEBP"]
+    valid_format = [
+        "AVIF", 
+        "GIF", 
+        "JPEG", 
+        "JPG", 
+        "PNG", 
+        "WEBP"
+    ]
     
     try:
         img = Image.open(image)

@@ -13,7 +13,14 @@ class NewRecipeForm(forms.ModelForm):
     
     class Meta:
         model = Recipe
-        fields = ['title','description', 'text', 'dish_pic', 'original_recipe']
+        fields = [
+            'title',
+            'description', 
+            'text', 
+            'dish_pic', 
+            'original_recipe'
+        ]
+        
         widgets = {'dish_pic': forms.FileInput(attrs={'id': 'id_dish_pic'})}
     
     def __init__(self, *args, **kwargs):
@@ -44,15 +51,26 @@ class NewRecipeForm(forms.ModelForm):
                 HTML("</div>"),
                 
                 HTML("<div class='dish-pic-form mb-3'>"),
-                    Field('dish_pic', css_class='form-control', id="formFile", accept=".avif, .jpg, .jpeg, .png, .webp"),
+                    Field(
+                        'dish_pic', 
+                        css_class='form-control', 
+                        id="formFile", 
+                        accept=".avif, .jpg, .jpeg, .png, .webp"
+                    ),
                 HTML("</div>"),
                 
                 HTML("<div class='mb-3 description-div'>"),
-                    Field('description', css_class='description-field'),
+                    Field(
+                        'description', 
+                        css_class='description-field'
+                    ),
                 HTML("</div>"),
                 
                 HTML("<div class='mb-3 text-div'>"),
-                    Field('text', css_class='text-field'),
+                    Field(
+                        'text', 
+                        css_class='text-field'
+                    ),
                 HTML("</div>"),
                 
                 HTML("<div class='mb-3 ingredients-quantities-div' id='ingredient-list'>"),
@@ -64,7 +82,12 @@ class NewRecipeForm(forms.ModelForm):
                 HTML("</div>"),
                 
                 FormActions(
-                    Submit("new-recipe-form", 'Submit', css_class='btn btn-primary btn-lg', id="submit-btn"),
+                    Submit(
+                        "new-recipe-form", 
+                        'Submit', 
+                        css_class='btn btn-primary btn-lg', 
+                        id="submit-btn"
+                    ),
                 ),
                 
             HTML("</div>"),
@@ -77,7 +100,11 @@ class NewRecipeForm(forms.ModelForm):
         ingredients = []
         
         data = self.data
-        non_declared_fields = {key: value for key, value in data.items() if key not in self.fields}
+        non_declared_fields = {
+            key: value for key, 
+            value in data.items() 
+            if key not in self.fields
+        }
         
         for field_name in non_declared_fields.keys():
             if field_name.startswith('ingredients_'):

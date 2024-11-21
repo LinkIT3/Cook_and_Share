@@ -22,7 +22,6 @@
 }
 
 .navbar-brand, .navbar-brand:hover{
-    /* margin-right: 20vw; */
     color: var(--brand-color);
     
 }
@@ -69,7 +68,6 @@ li.nav-item{
     border-radius: 10px;
     transition: all 0.5s ease;
     z-index: 2;
-    /* border: 1px solid rgb(17, 17, 107); */
 }
 
 img.profile_pic_navbar{

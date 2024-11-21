@@ -26,7 +26,6 @@
 {% block script %}
     <!-- #region js import -->        
         <!-- #region custom js -->            
-            {% comment %} <script async src="{% static 'js/script_recipe_page.js' %}"></script>               <!-- script show srecipe --> {% endcomment %}
 
             {% if user.is_authenticated %}
                 <script async src="{% static 'recipe/js/script_new_recipe.js' %}"></script>     <!-- script new recipe page -->
@@ -39,7 +38,6 @@
 
 {% block content %}
     {% block home_page %}
-        {% comment %} {% include "recipe/test_recipe_homepage.html" %} {% endcomment %}
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 loadPage(1,
@@ -51,8 +49,12 @@
                     , "home");
             });
         </script>
-
-        <div class="home page container" id="home-page" style="display: none;">
+        
+        <div 
+            class="home page container" 
+            id="home-page" 
+            style="display: none;"
+        >
             <div class="container-recipes-home container mt-3 mb-5"></div>
             
             <div id="pagination-container-home"></div>
@@ -65,8 +67,12 @@
                 loadPage(1, 'trending', "trending");
             });
         </script>
-
-        <div class="trending page container" id="trending-page" style="display: none;">
+        
+        <div 
+            class="trending page container" 
+            id="trending-page" 
+            style="display: none;"
+        >
             <div class="container-recipes-trending container mt-3 mb-5"></div>
             
             <div id="pagination-container-trending"></div>
@@ -79,8 +85,12 @@
                 loadPage(1, 'last', "last");
             });
         </script>
-
-        <div class="last page container" id="last-page" style="display: none;">
+        
+        <div 
+            class="last page container" 
+            id="last-page" 
+            style="display: none;"
+        >
             <div class="container-recipes-last container mt-3 mb-5"></div>
             
             <div id="pagination-container-last"></div>
@@ -88,7 +98,11 @@
     {% endblock last_page %}
     
     {% block search_page %}
-        <div class="search page" id="search-page" style="display: none;">
+        <div 
+            class="search page" 
+            id="search-page" 
+            style="display: none;"
+        >
             {% include "search/search.html" with all=True %}
         </div>
     {% endblock search_page %}
@@ -98,10 +112,14 @@
             {% include "recipe/new_recipe/new_recipe.html" %}
         {% endblock new_recipe_page %}
     {% endif %}
-
+    
     {% block profile_page %}
         {% if user.is_authenticated %}
-            <div class="page profile" id="profile-page" style="display: none;">
+            <div 
+                class="page profile" 
+                id="profile-page" 
+                style="display: none;"
+            >
                 {% include "user/user_page.html" with all=True %}
             </div>
         {% else %}
