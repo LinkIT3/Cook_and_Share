@@ -12,13 +12,14 @@ Key features include:
 
 
 ## How to run
-After cloning the repository, install [pipenv](https://pypi.org/project/pipenv/):
+Clone the repository and install [pipenv](https://pypi.org/project/pipenv/):
 ```bash
 pip3 install pipenv
 ```
 
 Navigate to the `applicazione` folder and install the dependencies:
 ```bash
+cd applicazione
 pipenv install
 ```
 
@@ -27,9 +28,13 @@ Activate the virtual environement:
 pipenv shell
 ```
 
-If you want a clean databese, delete the existing `db.sqlite3` file and create a new one:
+If you want a clean databese:
+- Delete the existing `db.sqlite3` file.
+- Remove the `dish_pics` and `profile_pics` folders.inside the `cook_and_share/media/` directory.
+- Then apply the migrations:
 ```bash
 rm db.sqlite3
+rm -r cook_and_share/media/dish_pics/ cook_and_share/media/profile_pics/
 python3 manage.py migrate
 ```
 
