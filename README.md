@@ -30,7 +30,7 @@ pipenv shell
 
 If you want a clean databese:
 - Delete the existing `db.sqlite3` file.
-- Remove the `dish_pics` and `profile_pics` folders.inside the `cook_and_share/media/` directory.
+- Remove the `dish_pics` and `profile_pics` folders inside the `cook_and_share/media/` directory.
 - Then apply the migrations:
 ```bash
 rm db.sqlite3
